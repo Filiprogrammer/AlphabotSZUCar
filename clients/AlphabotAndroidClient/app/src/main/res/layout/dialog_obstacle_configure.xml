@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="16dp">
+
+<LinearLayout
+    android:id="@+id/lytXY"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_alignParentTop="true"
+    android:baselineAligned="false">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txtInptLytX"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="X">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edTxtX"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txtInptLytY"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Y">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edTxtY"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>
+
+<LinearLayout
+    android:id="@+id/lytWH"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@+id/lytXY"
+    android:baselineAligned="false">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txtInptLytWidth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Width">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edTxtWidth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txtInptLytHeight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Height">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edTxtHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>
+
+</RelativeLayout>

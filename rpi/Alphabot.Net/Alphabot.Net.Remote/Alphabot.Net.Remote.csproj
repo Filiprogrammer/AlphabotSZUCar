@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Alphabot.Net.Car\Alphabot.Net.Car.csproj" />
+      <ProjectReference Include="..\Alphabot.Net.Shared\Alphabot.Net.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

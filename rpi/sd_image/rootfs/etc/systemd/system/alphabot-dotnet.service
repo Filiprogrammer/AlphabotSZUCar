@@ -1,0 +1,18 @@
+[Unit]
+Description=Alphabot.Net
+After=rpi-set-sysconf.service
+
+[Service]
+Type=idle
+User=alphabot
+ExecStart=/bin/sh -c 'if [ -f /home/alphabot/Alphabot.Net/Alphabot.Net.Cli/bin/Release/net5.0/Alphabot.Net.Cli.dll ]; then dotnet /home/alphabot/Alphabot.Net/Alphabot.Net.Cli/bin/Release/net5.0/Alphabot.Net.Cli.dll; else dotnet run -c Release --project /home/alphabot/Alphabot.Net/Alphabot.Net.Cli/Alphabot.Net.Cli.csproj; fi'
+Environment=DOTNET_ROOT=/opt/dotnet
+Environment=DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+Environment=DOTNET_CLI_TELEMETRY_OPTOUT=1
+WorkingDirectory=/home/alphabot
+StandardInput=tty-force
+StandardOutput=tty
+StandardError=tty
+
+[Install]
+WantedBy=basic.target

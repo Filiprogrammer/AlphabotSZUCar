@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edTxtBleMac"
+        android:layout_centerHorizontal="true"
+        android:text="BluetoothLE MAC - Address" />
+
+    <EditText
+        android:id="@+id/edTxtBleMac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:inputType="textPersonName"
+        android:text="30:AE:A4:74:93:9A" />
+
+    <Button
+        android:id="@+id/btnConnectBLE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edTxtBleMac"
+        android:layout_centerHorizontal="true"
+        android:text="Connect BLE" />
+
+</RelativeLayout>

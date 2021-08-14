@@ -1,0 +1,13 @@
+#!/bin/sh -e
+# Copy missing firmware files for brcmfmac driver
+PREREQ=""
+prereqs () { echo "${PREREQ}"; }
+case "${1}" in prereqs) prereqs; exit 0 ;; esac ;
+. /usr/share/initramfs-tools/hook-functions
+echo "Copying missing firmware files for brcmfmac..."
+cp /lib/firmware/brcm/brcmfmac43455-sdio.bin ${DESTDIR}/lib/firmware/brcm/
+#cp /lib/firmware/brcm/brcmfmac43455-sdio.clm_blob ${DESTDIR}/lib/firmware/brcm/
+cp /lib/firmware/brcm/brcmfmac43455-sdio.txt ${DESTDIR}/lib/firmware/brcm/
+cp /lib/firmware/brcm/brcmfmac43430-sdio.raspberrypi,3-model-b.txt ${DESTDIR}/lib/firmware/brcm/
+cp /lib/firmware/brcm/brcmfmac43455-sdio.raspberrypi,3-model-b-plus.txt ${DESTDIR}/lib/firmware/brcm/
+cp /lib/firmware/brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt ${DESTDIR}/lib/firmware/brcm/

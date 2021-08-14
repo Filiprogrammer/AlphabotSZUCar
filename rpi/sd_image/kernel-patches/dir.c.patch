@@ -1,0 +1,11 @@
+--- a/fs/sysfs/dir.c
++++ b/fs/sysfs/dir.c
+@@ -57,7 +57,7 @@
+ 	kobject_get_ownership(kobj, &uid, &gid);
+ 
+ 	kn = kernfs_create_dir_ns(parent, kobject_name(kobj),
+-				  S_IRWXU | S_IRUGO | S_IXUGO, uid, gid,
++				  S_IRWXU | S_IRWXG | S_IRUGO | S_IXUGO, uid, gid,
+ 				  kobj, ns);
+ 	if (IS_ERR(kn)) {
+ 		if (PTR_ERR(kn) == -EEXIST)

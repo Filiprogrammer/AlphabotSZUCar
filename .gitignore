@@ -1,0 +1,13 @@
+__pycache__/
+rpi/sd_image/initrd.img
+rpi/sd_image/raspi_alphabot.img
+rpi/sd_image/vmlinuz-*-arm64
+rpi/sd_image/bcm2*-rpi-*.dtb
+.vs
+[Bb]in/
+[Oo]bj/
+.gradle/
+*.iml
+.idea/
+build/
+clients/AlphabotAndroidClient/local.properties

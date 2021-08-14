@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1585
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphabotTcpClient", "AlphabotTcpClient\AlphabotTcpClient.csproj", "{12BB98BE-E4EB-4753-9260-381932C41BE8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12BB98BE-E4EB-4753-9260-381932C41BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12BB98BE-E4EB-4753-9260-381932C41BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12BB98BE-E4EB-4753-9260-381932C41BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12BB98BE-E4EB-4753-9260-381932C41BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DBB548B8-EE67-4E06-931E-A7DDEC14FA4B}
+	EndGlobalSection
+EndGlobal

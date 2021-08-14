@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/controlview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ControlActivity">
+
+    <at.mg6.filip.alphabotandroidclient.LPSView
+        android:id="@+id/lps_canvas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/speedBar"
+        android:layout_below="@+id/btnDisconnect"
+        android:layout_toLeftOf="@id/btnCalibrateCompassDirection"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/pingView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Ping: 0ms"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget"
+        tools:layout_editor_absoluteX="162dp"
+        tools:layout_editor_absoluteY="151dp" />
+
+    <Button
+        android:id="@+id/btnDisconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Disconnect"
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Switch
+        android:id="@+id/swtchCollisionDetect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/btnBrake"
+        android:layout_below="@+id/speedBar"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:checked="true"
+        android:text="Collision detection"
+        tools:checked="true"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="74dp" />
+
+    <Switch
+        android:id="@+id/swtchLPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/btnBrake"
+        android:layout_below="@+id/swtchCollisionDetect"
+        android:layout_marginRight="20dp"
+        android:text="LPS"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="111dp" />
+
+    <Switch
+        android:id="@+id/swtchAIDrive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/btnBrake"
+        android:layout_below="@+id/swtchLPS"
+        android:layout_marginRight="20dp"
+        android:text="AI Drive"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="111dp" />
+
+    <Button
+        android:id="@+id/btnBrake"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="Brake" />
+
+    <Button
+        android:id="@+id/btnAccelerate"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="Accelerate" />
+
+    <TextView
+        android:id="@+id/kmphView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/speedBar"
+        android:layout_toEndOf="@+id/btnAccelerate"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="0.0 km/h"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget" />
+
+    <TextView
+        android:id="@+id/lpsPosView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/kmphView"
+        android:text="X: 0\nY: 0"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget" />
+
+    <TextView
+        android:id="@+id/mpsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kmphView"
+        android:layout_toEndOf="@+id/btnAccelerate"
+        android:layout_marginLeft="20dp"
+        android:text="0.0 m/s"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget" />
+
+    <ProgressBar
+        android:id="@+id/speedBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnAccelerate"
+        android:layout_alignParentStart="true"
+        android:max="64"
+        android:progress="0" />
+
+    <Switch
+        android:id="@+id/swtchInvite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="Invite" />
+
+    <Button
+        android:id="@+id/btnCalibrateSteering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/swtchInvite"
+        android:fontFamily="sans-serif-condensed"
+        android:minHeight="32sp"
+        android:text="Calibr Steering"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
+    <Button
+        android:id="@+id/btnCalibrateCompassDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/btnCalibrateSteering"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Calibr Compass Dir"
+        android:minHeight="32sp"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
+    <Switch
+        android:id="@+id/swtchCalibrateMagnetometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/btnCalibrateCompassDirection"
+        android:text="Calibr MAG" />
+
+    <Button
+        android:id="@+id/btnAddObstacle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/swtchCalibrateMagnetometer"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Add Obstacle"
+        android:minHeight="32sp"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
+    <Button
+        android:id="@+id/btnRemoveObstacle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/btnAddObstacle"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Remove Obstacle"
+        android:minHeight="32sp"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
+</RelativeLayout>

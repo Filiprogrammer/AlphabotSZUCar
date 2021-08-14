@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  build_qemu_rpi:
+    name: Build QEMU Raspberry Pi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Cache QEMU Raspberry Pi
+        id: qemu-rpi-build
+        uses: actions/cache@v2
+        with:
+          path: qemu_rpi/build/qemu-system-aarch64.xz
+          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('qemu_rpi') }}
+      - name: Install tools
+        if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build git
+      - name: Build QEMU
+        if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
+        run: |
+          mkdir qemu_rpi/build
+          cd qemu_rpi/build
+          ../configure --target-list=aarch64-softmmu --static
+          make -j$(nproc)
+        shell: sh
+      - name: Compress QEMU Raspberry Pi
+        if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
+        run: xz -T $(nproc) qemu_rpi/build/qemu-system-aarch64
+        shell: sh
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: qemu-system-aarch64
+          path: qemu_rpi/build/qemu-system-aarch64.xz
+  build_rpi_image:
+    name: Build Raspberry Pi SD Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Cache Raspberry Pi SD Image
+        id: rpi-sd-image
+        uses: actions/cache@v2
+        with:
+          path: rpi/sd_image/raspi_alphabot.tar.xz
+          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('rpi') }}
+      - name: Setup Docker
+        if: steps.rpi-sd-image.outputs.cache-hit != 'true'
+        uses: docker-practice/actions-setup-docker@v1
+      - name: Install tools
+        if: steps.rpi-sd-image.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get install kpartx parted
+      - name: Build Image
+        if: steps.rpi-sd-image.outputs.cache-hit != 'true'
+        run: sudo rpi/sd_image/build.sh
+        shell: sh
+      - name: Compress artifacts
+        if: steps.rpi-sd-image.outputs.cache-hit != 'true'
+        run: cd rpi/sd_image && tar c raspi_alphabot.img vmlinuz-*-arm64 initrd.img bcm2837-rpi-*.dtb | xz -T $(nproc) > raspi_alphabot.tar.xz
+        shell: sh
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: raspi_alphabot.img
+          path: rpi/sd_image/raspi_alphabot.tar.xz
+  test_rpi:
+    name: Test Raspberry Pi
+    needs: [build_qemu_rpi, build_rpi_image]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Download QEMU artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: qemu-system-aarch64
+          path: qemu_rpi/build/
+      - name: Decompress QEMU artifact
+        run: xz --decompress qemu_rpi/build/qemu-system-aarch64.xz
+        shell: sh
+      - name: Download Raspberry Pi SD Image artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: raspi_alphabot.img
+          path: rpi/sd_image/
+      - name: Decompress Raspberry Pi SD Image artifact
+        run: tar -xf rpi/sd_image/raspi_alphabot.tar.xz -C rpi/sd_image && rm rpi/sd_image/raspi_alphabot.tar.xz
+        shell: sh
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.6"
+      - name: Install Python modules
+        run: pip install colorama
+      - name: Run emulator with all tests
+        run: |
+          chmod +x qemu_rpi/build/qemu-system-aarch64
+          python3 emulator_rpi.py --headless --test-all --auto-exit
+        shell: sh

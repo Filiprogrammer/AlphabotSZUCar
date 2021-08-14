@@ -1,0 +1,82 @@
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -9,6 +9,7 @@
+ #include <linux/kdev_t.h>
+ #include <linux/slab.h>
+ #include <linux/ctype.h>
++#include <linux/uidgid.h>
+ 
+ #include "gpiolib.h"
+ #include "gpiolib-sysfs.h"
+@@ -97,7 +98,7 @@
+ 
+ 	return status ? : size;
+ }
+-static DEVICE_ATTR_RW(direction);
++static DEVICE_ATTR(direction, 0664, direction_show, direction_store);
+ 
+ static ssize_t value_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+@@ -150,7 +151,7 @@
+ 
+ 	return status;
+ }
+-static DEVICE_ATTR_PREALLOC(value, S_IWUSR | S_IRUGO, value_show, value_store);
++static DEVICE_ATTR_PREALLOC(value, S_IWUSR | S_IWGRP | S_IRUGO, value_show, value_store);
+ 
+ static irqreturn_t gpio_sysfs_irq(int irq, void *priv)
+ {
+@@ -299,7 +300,7 @@
+ 
+ 	return status;
+ }
+-static DEVICE_ATTR_RW(edge);
++static DEVICE_ATTR(edge, 0664, edge_show, edge_store);
+ 
+ /* Caller holds gpiod-data mutex. */
+ static int gpio_sysfs_set_active_low(struct device *dev, int value)
+@@ -361,7 +362,7 @@
+ 
+ 	return status ? : size;
+ }
+-static DEVICE_ATTR_RW(active_low);
++static DEVICE_ATTR(active_low, 0664, active_low_show, active_low_store);
+ 
+ static umode_t gpio_is_visible(struct kobject *kobj, struct attribute *attr,
+ 			       int n)
+@@ -496,7 +497,7 @@
+ 		pr_debug("%s: status %d\n", __func__, status);
+ 	return status ? : len;
+ }
+-static CLASS_ATTR_WO(export);
++static CLASS_ATTR(export, 0220, NULL, export_store);
+ 
+ static ssize_t unexport_store(struct class *class,
+ 				struct class_attribute *attr,
+@@ -532,7 +533,7 @@
+ 		pr_debug("%s: status %d\n", __func__, status);
+ 	return status ? : len;
+ }
+-static CLASS_ATTR_WO(unexport);
++static CLASS_ATTR(unexport, 0220, NULL, unexport_store);
+ 
+ static struct attribute *gpio_class_attrs[] = {
+ 	&class_attr_export.attr,
+@@ -636,6 +645,8 @@
+ 		goto err_free_data;
+ 	}
+ 
++	device_change_owner(dev, KUIDT_INIT(0), KGIDT_INIT(20));
++
+ 	set_bit(FLAG_EXPORT, &desc->flags);
+ 	mutex_unlock(&sysfs_lock);
+ 	return 0;
+@@ -769,6 +780,8 @@
+ 	if (IS_ERR(dev))
+ 		return PTR_ERR(dev);
+ 
++	device_change_owner(dev, KUIDT_INIT(0), KGIDT_INIT(20));
++
+ 	mutex_lock(&sysfs_lock);
+ 	gdev->mockdev = dev;
+ 	mutex_unlock(&sysfs_lock);

@@ -1,0 +1,3 @@
+[submodule "qemu_rpi"]
+	path = qemu_rpi
+	url = https://github.com/Filiprogrammer/qemu_rpi.git

@@ -1,0 +1,11 @@
+[Unit]
+Description=WLAN Hack
+After=networking.service
+
+[Service]
+Type=exec
+RemainAfterExit=yes
+ExecStart=/bin/sh -c 'while true; do ps -e -o command | cut -d " " -f1 | grep /sbin/wpa_supplicant > /dev/null || (/sbin/wpa_supplicant -B -P /run/wpa_supplicant.wlan0.pid -i wlan0 -D nl80211,wext -c /etc/wpa_supplicant/wpa_supplicant.conf; /sbin/dhclient wlan0); sleep 5; done'
+
+[Install]
+WantedBy=multi-user.target

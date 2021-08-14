@@ -1,0 +1,50 @@
+#!/bin/sh
+set -e
+
+#
+# List the soft prerequisites here.  This is a space separated list of
+# names, of scripts that are in the same directory as this one, that
+# must be run before this one can be.
+#
+PREREQS=""
+case $1 in
+    prereqs) echo "$PREREQS"; exit 0;;
+esac
+
+. /scripts/functions
+
+# Given the root partition, get the underlying device and partition number
+rootpart=$(realpath $ROOT)
+rootpart_nr=$(blkid -sPART_ENTRY_NUMBER -o value -p $rootpart)
+rootdev="/dev/$(lsblk -no pkname "$rootpart")"
+
+# Check if there's free space on the device (note: we align the first
+# partition at 4MB, so there's always at least 3MB free)
+free_space="$(sfdisk -qF $rootdev | tail -n1 | grep -v [^0-9]3M)"
+if test -z "$free_space"; then
+    # Great, we already resized; nothing left to do!
+    exit 0
+fi
+
+log_begin_msg "$0 resizing $ROOT"
+
+# Unmount for safety
+umount "${rootmnt}"
+
+# Expand the partition size to fill the entire device
+sfdisk -f $rootdev -N $rootpart_nr <<EOF
+,+
+EOF
+
+wait_for_udev 5
+
+# Now resize the filesystem
+partprobe $rootdev
+resize2fs $rootpart
+
+# Remount root
+if ! mount -r ${FSTYPE:+-t "${FSTYPE}"} ${ROOTFLAGS} "${ROOT}" "${rootmnt?}"; then
+    panic "Failed to mount ${ROOT} as root file system."
+fi
+
+log_end_msg
