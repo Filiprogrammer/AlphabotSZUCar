@@ -30,7 +30,7 @@ DW1000Device::DW1000Device() {
 	randomShortAddress();
 }
 
-DW1000Device::DW1000Device(byte deviceAddress[], boolean shortOne) {
+DW1000Device::DW1000Device(const byte deviceAddress[], boolean shortOne) {
 	if(!shortOne) {
 		//we have a 8 bytes address
 		setAddress(deviceAddress);
@@ -42,7 +42,7 @@ DW1000Device::DW1000Device(byte deviceAddress[], boolean shortOne) {
 	}
 }
 
-DW1000Device::DW1000Device(byte deviceAddress[], byte shortAddress[]) {
+DW1000Device::DW1000Device(const byte deviceAddress[], const byte shortAddress[]) {
 	//we have a 8 bytes address
 	setAddress(deviceAddress);
 	//we set the 2 bytes address
@@ -55,13 +55,13 @@ DW1000Device::~DW1000Device() {
 //setters:
 void DW1000Device::setReplyTime(uint16_t replyDelayTimeUs) { _replyDelayTimeUS = replyDelayTimeUs; }
 
-void DW1000Device::setAddress(char deviceAddress[]) { DW1000.convertToByte(deviceAddress, _ownAddress); }
+void DW1000Device::setAddress(const char deviceAddress[]) { DW1000.convertToByte(deviceAddress, _ownAddress); }
 
-void DW1000Device::setAddress(byte* deviceAddress) {
+void DW1000Device::setAddress(const byte* deviceAddress) {
 	memcpy(_ownAddress, deviceAddress, 8);
 }
 
-void DW1000Device::setShortAddress(byte deviceAddress[]) {
+void DW1000Device::setShortAddress(const byte deviceAddress[]) {
 	memcpy(_shortAddress, deviceAddress, 2);
 }
 

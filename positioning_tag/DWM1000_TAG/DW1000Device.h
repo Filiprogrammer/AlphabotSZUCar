@@ -38,15 +38,15 @@ class DW1000Device {
 public:
 	//Constructor and destructor
 	DW1000Device();
-	DW1000Device(byte address[], byte shortAddress[]);
-	DW1000Device(byte address[], boolean shortOne = false);
+	DW1000Device(const byte address[], const byte shortAddress[]);
+	DW1000Device(const byte address[], boolean shortOne = false);
 	~DW1000Device();
 
 	//setters:
 	void setReplyTime(uint16_t replyDelayTimeUs);
-	void setAddress(char address[]);
-	void setAddress(byte* address);
-	void setShortAddress(byte address[]);
+	void setAddress(const char address[]);
+	void setAddress(const byte* address);
+	void setShortAddress(const byte address[]);
 
 	void setRange(float range);
 	void setRXPower(float power);

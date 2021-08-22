@@ -159,7 +159,7 @@ void DW1000RangingClass::generalStart() {
 }
 
 
-void DW1000RangingClass::startAsAnchor(char address[], const byte mode[], const bool randomShortAddress) {
+void DW1000RangingClass::startAsAnchor(const char address[], const byte mode[], const bool randomShortAddress) {
 	//save the address
 	DW1000.convertToByte(address, _currentAddress);
 	//write the address on the DW1000 chip
@@ -192,7 +192,7 @@ void DW1000RangingClass::startAsAnchor(char address[], const byte mode[], const 
 
 }
 
-void DW1000RangingClass::startAsTag(char address[], const byte mode[], const bool randomShortAddress) {
+void DW1000RangingClass::startAsTag(const char address[], const byte mode[], const bool randomShortAddress) {
 	//save the address
 	DW1000.convertToByte(address, _currentAddress);
 	//write the address on the DW1000 chip
@@ -307,7 +307,7 @@ void DW1000RangingClass::setReplyTime(uint16_t replyDelayTimeUs) { _replyDelayTi
 void DW1000RangingClass::setResetPeriod(uint32_t resetPeriod) { _resetPeriod = resetPeriod; }
 
 
-DW1000Device* DW1000RangingClass::searchDistantDevice(byte shortAddress[]) {
+DW1000Device* DW1000RangingClass::searchDistantDevice(const byte shortAddress[]) {
 	//we compare the 2 bytes address with the others
 	for(uint16_t i = 0; i < _networkDevicesNumber; i++) { // TODO 8bit?
 		if(memcmp(shortAddress, _networkDevices[i].getByteShortAddress(), 2) == 0) {
@@ -356,7 +356,7 @@ void DW1000RangingClass::checkForInactiveDevices() {
 }
 
 // TODO check return type
-int16_t DW1000RangingClass::detectMessageType(byte datas[]) {
+int16_t DW1000RangingClass::detectMessageType(const byte datas[]) {
 	if(datas[0] == FC_1_BLINK) {
 		return BLINK;
 	}
@@ -746,7 +746,7 @@ void DW1000RangingClass::timerTick() {
 }
 
 
-void DW1000RangingClass::copyShortAddress(byte address1[], byte address2[]) {
+void DW1000RangingClass::copyShortAddress(byte address1[], const byte address2[]) {
 	*address1     = *address2;
 	*(address1+1) = *(address2+1);
 }
@@ -761,13 +761,13 @@ void DW1000RangingClass::transmitInit() {
 }
 
 
-void DW1000RangingClass::transmit(byte datas[]) {
+void DW1000RangingClass::transmit(const byte datas[]) {
 	DW1000.setData(datas, LEN_DATA);
 	DW1000.startTransmit();
 }
 
 
-void DW1000RangingClass::transmit(byte datas[], DW1000Time time) {
+void DW1000RangingClass::transmit(const byte datas[], DW1000Time time) {
 	DW1000.setDelay(time);
 	DW1000.setData(data, LEN_DATA);
 	DW1000.startTransmit();
@@ -967,7 +967,7 @@ void DW1000RangingClass::computeRangeAsymmetric(DW1000Device* myDistantDevice, D
 
 
 /* FOR DEBUGGING*/
-void DW1000RangingClass::visualizeDatas(byte datas[]) {
+void DW1000RangingClass::visualizeDatas(const byte datas[]) {
 	char string[60];
 	sprintf(string, "%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X",
 					datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7], datas[8], datas[9], datas[10], datas[11], datas[12], datas[13], datas[14], datas[15]);

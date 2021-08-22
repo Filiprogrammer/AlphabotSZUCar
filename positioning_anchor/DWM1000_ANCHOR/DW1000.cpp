@@ -897,7 +897,7 @@ uint8_t DW1000Class::nibbleFromChar(char c) {
 	return 255;
 }
 
-void DW1000Class::convertToByte(char string[], byte* bytes) {
+void DW1000Class::convertToByte(const char string[], byte* bytes) {
 	byte eui_byte[LEN_EUI];
 	// we fill it with the char array under the form of "AA:FF:1C:...."
 	for(uint16_t i = 0; i < LEN_EUI; i++) {
@@ -921,13 +921,13 @@ void DW1000Class::getTempAndVbat(float& temp, float& vbat) {
 	temp = (sar_ltemp - _tmeas23C) * 1.14f + 23.0f;
 }
 
-void DW1000Class::setEUI(char eui[]) {
+void DW1000Class::setEUI(const char eui[]) {
 	byte eui_byte[LEN_EUI];
 	convertToByte(eui, eui_byte);
 	setEUI(eui_byte);
 }
 
-void DW1000Class::setEUI(byte eui[]) {
+void DW1000Class::setEUI(const byte eui[]) {
 	//we reverse the address->
 	byte    reverseEUI[8];
 	uint8_t     size = 8;
@@ -1290,7 +1290,7 @@ void DW1000Class::setDefaults() {
 	}
 }
 
-void DW1000Class::setData(byte data[], uint16_t n) {
+void DW1000Class::setData(const byte data[], uint16_t n) {
 	if(_frameCheck) {
 		n += 2; // two bytes CRC-16
 	}
@@ -1733,7 +1733,7 @@ void DW1000Class::writeByte(byte cmd, uint16_t offset, byte data) {
  * 		the register).
  */
 // TODO offset really bigger than byte?
-void DW1000Class::writeBytes(byte cmd, uint16_t offset, byte data[], uint16_t data_size) {
+void DW1000Class::writeBytes(byte cmd, uint16_t offset, const byte data[], uint16_t data_size) {
 	byte header[3];
 	uint8_t  headerLen = 1;
 	uint16_t  i = 0;
@@ -1767,7 +1767,7 @@ void DW1000Class::writeBytes(byte cmd, uint16_t offset, byte data[], uint16_t da
 }
 
 
-void DW1000Class::getPrettyBytes(byte data[], char msgBuffer[], uint16_t n) {
+void DW1000Class::getPrettyBytes(const byte data[], char msgBuffer[], uint16_t n) {
 	uint16_t i, j, b;
 	b     = sprintf(msgBuffer, "Data, bytes: %d\nB: 7 6 5 4 3 2 1 0\n", n); // TODO - type
 	for(i = 0; i < n; i++) {
