@@ -46,12 +46,12 @@ void DW1000Mac::generateBlinkFrame(byte frame[], byte sourceAddress[], byte sour
 	byte sourceAddressReverse[8];
 	reverseArray(sourceAddressReverse, sourceAddress, 8);
 	memcpy(frame+2, sourceAddressReverse, 8);
-	
+
 	//tag 2bytes address:
 	byte sourceShortAddressReverse[2];
 	reverseArray(sourceShortAddressReverse, sourceShortAddress, 2);
 	memcpy(frame+10, sourceShortAddressReverse, 2);
-	
+
 	//we increment seqNumber
 	incrementSeqNumber();
 }
@@ -68,19 +68,19 @@ void DW1000Mac::generateShortMACFrame(byte frame[], byte sourceShortAddress[], b
 	//PAN ID
 	*(frame+3) = 0xCA;
 	*(frame+4) = 0xDE;
-	
-	
+
+
 	//destination address (2 bytes)
 	byte destinationShortAddressReverse[2];
 	reverseArray(destinationShortAddressReverse, destinationShortAddress, 2);
 	memcpy(frame+5, destinationShortAddressReverse, 2);
-	
+
 	//source address (2 bytes)
 	byte sourceShortAddressReverse[2];
 	reverseArray(sourceShortAddressReverse, sourceShortAddress, 2);
 	memcpy(frame+7, sourceShortAddressReverse, 2);
-	
-	
+
+
 	//we increment seqNumber
 	incrementSeqNumber();
 }
@@ -97,17 +97,17 @@ void DW1000Mac::generateLongMACFrame(byte frame[], byte sourceShortAddress[], by
 	//PAN ID (0xDECA)
 	*(frame+3) = 0xCA;
 	*(frame+4) = 0xDE;
-	
+
 	//destination address (8 bytes) - we need to reverse the byte array
 	byte destinationAddressReverse[8];
 	reverseArray(destinationAddressReverse, destinationAddress, 8);
 	memcpy(frame+5, destinationAddressReverse, 8);
-	
+
 	//source address (2 bytes)
 	byte sourceShortAddressReverse[2];
 	reverseArray(sourceShortAddressReverse, sourceShortAddress, 2);
 	memcpy(frame+13, sourceShortAddressReverse, 2);
-	
+
 	//we increment seqNumber
 	incrementSeqNumber();
 }
@@ -118,7 +118,7 @@ void DW1000Mac::decodeBlinkFrame(byte frame[], byte address[], byte shortAddress
 	byte reverseAddress[8];
 	memcpy(reverseAddress, frame+2, 8);
 	reverseArray(address, reverseAddress, 8);
-	
+
 	byte reverseShortAddress[2];
 	memcpy(reverseShortAddress, frame+10, 2);
 	reverseArray(shortAddress, reverseShortAddress, 2);

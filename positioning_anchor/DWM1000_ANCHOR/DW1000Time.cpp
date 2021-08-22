@@ -317,7 +317,7 @@ size_t DW1000Time::printTo(Print& p) const {
 	printed += i;
 	for(; i > 0; i--)
 		p.print((char)(buf[i-1] < 10 ? '0'+buf[i-1] : 'A'+buf[i-1]-10));
-	
+
 	return printed;
 }
 #endif // DW1000Time_H_PRINTABLE

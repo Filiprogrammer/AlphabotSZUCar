@@ -146,7 +146,7 @@ void DW1000Class::select(uint8_t ss) {
 	delay(5);
 	enableClock(AUTO_CLOCK);
 	delay(5);
-	
+
 	// read the temp and vbat readings from OTP that were recorded during production test
 	// see 6.3.1 OTP memory map
 	byte buf_otp[4];
@@ -166,7 +166,7 @@ void DW1000Class::begin(uint8_t irq, uint8_t rst) {
 	// generous initial init/wake-up-idle delay
 	delay(5);
 	// Configure the IRQ pin as INPUT. Required for correct interrupt setting for ESP8266
-    	pinMode(irq, INPUT);
+	pinMode(irq, INPUT);
 	// start SPI
 	SPI.begin();
 #ifndef ESP8266
@@ -238,7 +238,7 @@ void DW1000Class::enableDebounceClock() {
 	setBit(pmscctrl0, LEN_PMSC_CTRL0, GPDCE_BIT, 1);
 	setBit(pmscctrl0, LEN_PMSC_CTRL0, KHZCLKEN_BIT, 1);
 	writeBytes(PMSC, PMSC_CTRL0_SUB, pmscctrl0, LEN_PMSC_CTRL0);
-        _debounceClockEnabled = true;
+	_debounceClockEnabled = true;
 }
 
 void DW1000Class::enableLedBlinking() {
@@ -292,12 +292,12 @@ void DW1000Class::deepSleep() {
 }
 
 void DW1000Class::spiWakeup(){
-        digitalWrite(_ss, LOW);
-        delay(2);
-        digitalWrite(_ss, HIGH);
-        if (_debounceClockEnabled){
-                DW1000Class::enableDebounceClock();
-        }
+	digitalWrite(_ss, LOW);
+	delay(2);
+	digitalWrite(_ss, HIGH);
+	if (_debounceClockEnabled){
+		DW1000Class::enableDebounceClock();
+	}
 }
 
 
@@ -898,7 +898,7 @@ uint8_t DW1000Class::nibbleFromChar(char c) {
 }
 
 void DW1000Class::convertToByte(char string[], byte* bytes) {
-	byte    eui_byte[LEN_EUI];
+	byte eui_byte[LEN_EUI];
 	// we fill it with the char array under the form of "AA:FF:1C:...."
 	for(uint16_t i = 0; i < LEN_EUI; i++) {
 		eui_byte[i] = (nibbleFromChar(string[i*3]) << 4)+nibbleFromChar(string[i*3+1]);
@@ -915,7 +915,7 @@ void DW1000Class::getTempAndVbat(float& temp, float& vbat) {
 	byte step5 = 0x00; writeBytes(TX_CAL, NO_SUB, &step5, 1);
 	byte sar_lvbat = 0; readBytes(TX_CAL, 0x03, &sar_lvbat, 1);
 	byte sar_ltemp = 0; readBytes(TX_CAL, 0x04, &sar_ltemp, 1);
-	
+
 	// calculate voltage and temperature
 	vbat = (sar_lvbat - _vmeas3v3) / 173.0f + 3.3f;
 	temp = (sar_ltemp - _tmeas23C) * 1.14f + 23.0f;
@@ -1250,9 +1250,9 @@ void DW1000Class::setPreambleCode(byte preacode) {
 
 void DW1000Class::setDefaults() {
 	if(_deviceMode == TX_MODE) {
-		
+
 	} else if(_deviceMode == RX_MODE) {
-		
+
 	} else if(_deviceMode == IDLE_MODE) {
 		useExtendedFrameLength(false);
 		useSmartPower(false);
@@ -1278,10 +1278,10 @@ void DW1000Class::setDefaults() {
 		// default mode when powering up the chip
 		// still explicitly selected for later tuning
 		enableMode(MODE_LONGDATA_RANGE_ACCURACY);
-		
+
 		// TODO add channel and code to mode tuples
-	    // TODO add channel and code settings with checks (see DW1000 user manual 10.5 table 61)/
-	    setChannel(CHANNEL_5);
+		// TODO add channel and code settings with checks (see DW1000 user manual 10.5 table 61)/
+		setChannel(CHANNEL_5);
 		if(getPulseFrequency() == TX_PULSE_FREQ_16MHZ) {
 			setPreambleCode(PREAMBLE_CODE_16MHZ_4);
 		} else {
@@ -1350,7 +1350,7 @@ void DW1000Class::getData(String& data) {
 	getData(dataBytes, n);
 	// clear string
 	data.remove(0);
-	data  = "";
+	data = "";
 	// append to string
 	for(i = 0; i < n; i++) {
 		data += (char)dataBytes[i];
@@ -1375,9 +1375,9 @@ void DW1000Class::getReceiveTimestamp(DW1000Time& time) {
 // TODO check function, different type violations between byte and int
 void DW1000Class::correctTimestamp(DW1000Time& timestamp) {
 	// base line dBm, which is -61, 2 dBm steps, total 18 data points (down to -95 dBm)
-	float rxPowerBase     = -(getReceivePower()+61.0f)*0.5f;
-	int16_t   rxPowerBaseLow  = (int16_t)rxPowerBase; // TODO check type
-	int16_t   rxPowerBaseHigh = rxPowerBaseLow+1; // TODO check type
+	float rxPowerBase       = -(getReceivePower()+61.0f)*0.5f;
+	int16_t rxPowerBaseLow  = (int16_t)rxPowerBase; // TODO check type
+	int16_t rxPowerBaseHigh = rxPowerBaseLow+1; // TODO check type
 	if(rxPowerBaseLow <= 0) {
 		rxPowerBaseLow  = 0;
 		rxPowerBaseHigh = 0;
@@ -1607,7 +1607,7 @@ float DW1000Class::getReceivePower() {
 void DW1000Class::setBit(byte data[], uint16_t n, uint16_t bit, boolean val) {
 	uint16_t idx;
 	uint8_t shift;
-	
+
 	idx = bit/8;
 	if(idx >= n) {
 		return; // TODO proper error handling: out of bounds
@@ -1634,14 +1634,14 @@ void DW1000Class::setBit(byte data[], uint16_t n, uint16_t bit, boolean val) {
 boolean DW1000Class::getBit(byte data[], uint16_t n, uint16_t bit) {
 	uint16_t idx;
 	uint8_t  shift;
-	
+
 	idx = bit/8;
 	if(idx >= n) {
 		return false; // TODO proper error handling: out of bounds
 	}
 	byte targetByte = data[idx];
 	shift = bit%8;
-	
+
 	return bitRead(targetByte, shift); // TODO wrong type returned byte instead of boolean
 }
 
@@ -1666,7 +1666,7 @@ void DW1000Class::readBytes(byte cmd, uint16_t offset, byte data[], uint16_t n) 
 	byte header[3];
 	uint8_t headerLen = 1;
 	uint16_t i = 0;
-	
+
 	// build SPI header
 	if(offset == NO_SUB) {
 		header[0] = READ | cmd;
@@ -1698,7 +1698,7 @@ void DW1000Class::readBytes(byte cmd, uint16_t offset, byte data[], uint16_t n) 
 // TODO why always 4 bytes? can be different, see p. 58 table 10 otp memory map
 void DW1000Class::readBytesOTP(uint16_t address, byte data[]) {
 	byte addressBytes[LEN_OTP_ADDR];
-	
+
 	// p60 - 6.3.3 Reading a value from OTP memory
 	// bytes of address
 	addressBytes[0] = (address & 0xFF);
@@ -1737,7 +1737,7 @@ void DW1000Class::writeBytes(byte cmd, uint16_t offset, byte data[], uint16_t da
 	byte header[3];
 	uint8_t  headerLen = 1;
 	uint16_t  i = 0;
-	
+
 	// TODO proper error handling: address out of bounds
 	// build SPI header
 	if(offset == NO_SUB) {
