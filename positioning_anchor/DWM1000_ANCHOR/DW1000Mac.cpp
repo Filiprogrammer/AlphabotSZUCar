@@ -37,7 +37,7 @@ DW1000Mac::~DW1000Mac() {
 
 //for poll message we use just 2 bytes address
 //total=12 bytes
-void DW1000Mac::generateBlinkFrame(byte frame[], byte sourceAddress[], byte sourceShortAddress[]) {
+void DW1000Mac::generateBlinkFrame(byte frame[], const byte sourceAddress[], const byte sourceShortAddress[]) {
 	//Frame Control
 	*frame     = FC_1_BLINK;
 	//sequence number
@@ -59,7 +59,7 @@ void DW1000Mac::generateBlinkFrame(byte frame[], byte sourceAddress[], byte sour
 //the short fram usually for Resp, Final, or Report
 //2 bytes for Desination Address and 2 bytes for Source Address
 //total=9 bytes
-void DW1000Mac::generateShortMACFrame(byte frame[], byte sourceShortAddress[], byte destinationShortAddress[]) {
+void DW1000Mac::generateShortMACFrame(byte frame[], const byte sourceShortAddress[], const byte destinationShortAddress[]) {
 	//Frame controle
 	*frame     = FC_1;
 	*(frame+1) = FC_2_SHORT;
@@ -88,7 +88,7 @@ void DW1000Mac::generateShortMACFrame(byte frame[], byte sourceShortAddress[], b
 //the long frame for Ranging init
 //8 bytes for Destination Address and 2 bytes for Source Address
 //total=15
-void DW1000Mac::generateLongMACFrame(byte frame[], byte sourceShortAddress[], byte destinationAddress[]) {
+void DW1000Mac::generateLongMACFrame(byte frame[], const byte sourceShortAddress[], const byte destinationAddress[]) {
 	//Frame controle
 	*frame     = FC_1;
 	*(frame+1) = FC_2;
@@ -113,7 +113,7 @@ void DW1000Mac::generateLongMACFrame(byte frame[], byte sourceShortAddress[], by
 }
 
 
-void DW1000Mac::decodeBlinkFrame(byte frame[], byte address[], byte shortAddress[]) {
+void DW1000Mac::decodeBlinkFrame(const byte frame[], byte address[], byte shortAddress[]) {
 	//we save the long address of the sender into the device. -- reverse direction
 	byte reverseAddress[8];
 	memcpy(reverseAddress, frame+2, 8);
@@ -124,7 +124,7 @@ void DW1000Mac::decodeBlinkFrame(byte frame[], byte address[], byte shortAddress
 	reverseArray(shortAddress, reverseShortAddress, 2);
 }
 
-void DW1000Mac::decodeShortMACFrame(byte frame[], byte address[]) {
+void DW1000Mac::decodeShortMACFrame(const byte frame[], byte address[]) {
 	byte reverseAddress[2];
 	memcpy(reverseAddress, frame+7, 2);
 	reverseArray(address, reverseAddress, 2);
@@ -133,7 +133,7 @@ void DW1000Mac::decodeShortMACFrame(byte frame[], byte address[]) {
 	//memcpy(destinationAddress, frame+5, 2);
 }
 
-void DW1000Mac::decodeLongMACFrame(byte frame[], byte address[]) {
+void DW1000Mac::decodeLongMACFrame(const byte frame[], byte address[]) {
 	byte reverseAddress[2];
 	memcpy(reverseAddress, frame+13, 2);
 	reverseArray(address, reverseAddress, 2);
@@ -152,7 +152,7 @@ void DW1000Mac::incrementSeqNumber() {
 		_seqNumber++;
 }
 
-void DW1000Mac::reverseArray(byte to[], byte from[], int16_t size) {
+void DW1000Mac::reverseArray(byte to[], const byte from[], int16_t size) {
 	for(int16_t i = 0; i < size; i++) {
 		*(to+i) = *(from+size-i-1);
 	}

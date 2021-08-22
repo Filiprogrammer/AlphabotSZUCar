@@ -69,7 +69,7 @@ public:
 	// constructor
 	DW1000Time();
 	DW1000Time(int64_t time);
-	DW1000Time(byte data[]);
+	DW1000Time(const byte data[]);
 	DW1000Time(const DW1000Time& copy);
 	DW1000Time(float timeUs);
 	DW1000Time(int32_t value, float factorUs);
@@ -78,7 +78,7 @@ public:
 	// setter
 	// dw1000 timestamp, increase of +1 approx approx. 15.65ps real time
 	void setTimestamp(int64_t value);
-	void setTimestamp(byte data[]);
+	void setTimestamp(const byte data[]);
 	void setTimestamp(const DW1000Time& copy);
 
 	// real time in us

@@ -168,8 +168,8 @@ public:
 	static void setDeviceAddress(uint16_t val);
 	// TODO MAC and filters
 
-	static void setEUI(char eui[]);
-	static void setEUI(byte eui[]);
+	static void setEUI(const char eui[]);
+	static void setEUI(const byte eui[]);
 
 	/* ##### General device configuration ######################################## */
 	/** 
@@ -243,7 +243,7 @@ public:
 	/* transmit and receive configuration. */
 	static DW1000Time   setDelay(const DW1000Time& delay);
 	static void         receivePermanently(boolean val);
-	static void         setData(byte data[], uint16_t n);
+	static void         setData(const byte data[], uint16_t n);
 	static void         setData(const String& data);
 	static void         getData(byte data[], uint16_t n);
 	static void         getData(String& data);
@@ -342,11 +342,11 @@ public:
 
 	/* debug pretty print registers. */
 	static void getPrettyBytes(byte cmd, uint16_t offset, char msgBuffer[], uint16_t n);
-	static void getPrettyBytes(byte data[], char msgBuffer[], uint16_t n);
+	static void getPrettyBytes(const byte data[], char msgBuffer[], uint16_t n);
 
 	//convert from char to 4 bits (hexadecimal)
 	static uint8_t nibbleFromChar(char c);
-	static void convertToByte(char string[], byte* eui_byte);
+	static void convertToByte(const char string[], byte* eui_byte);
 
 	// host-initiated reading of temperature and battery voltage
 	static void getTempAndVbat(float& temp, float& vbat);
@@ -533,7 +533,7 @@ public:
 	static void readBytes(byte cmd, uint16_t offset, byte data[], uint16_t n);
 	static void readBytesOTP(uint16_t address, byte data[]);
 	static void writeByte(byte cmd, uint16_t offset, byte data);
-	static void writeBytes(byte cmd, uint16_t offset, byte data[], uint16_t n);
+	static void writeBytes(byte cmd, uint16_t offset, const byte data[], uint16_t n);
 
 	/* writing numeric values to bytes. */
 	static void writeValueToBytes(byte data[], int32_t val, uint16_t n);
