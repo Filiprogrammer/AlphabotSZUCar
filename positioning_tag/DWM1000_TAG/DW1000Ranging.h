@@ -76,7 +76,7 @@ public:
 	//variables
 	// data buffer
 	static byte data[LEN_DATA];
-	
+
 	//initialisation
 	static void    initCommunication(uint8_t myRST = DEFAULT_RST_PIN, uint8_t mySS = DEFAULT_SPI_SS_PIN, uint8_t myIRQ = 2);
 	static void    configureNetwork(uint16_t deviceAddress, uint16_t networkId, const byte mode[]);
@@ -86,39 +86,39 @@ public:
 	static boolean addNetworkDevices(DW1000Device* device, boolean shortAddress);
 	static boolean addNetworkDevices(DW1000Device* device);
 	static void    removeNetworkDevices(int16_t index);
-	
+
 	//setters
 	static void setReplyTime(uint16_t replyDelayTimeUs);
 	static void setResetPeriod(uint32_t resetPeriod);
-	
+
 	//getters
 	static byte* getCurrentAddress() { return _currentAddress; };
-	
+
 	static byte* getCurrentShortAddress() { return _currentShortAddress; };
-	
+
 	static uint8_t getNetworkDevicesNumber() { return _networkDevicesNumber; };
-	
+
 	//ranging functions
 	static int16_t detectMessageType(byte datas[]); // TODO check return type
 	static void loop();
 	static void useRangeFilter(boolean enabled);
 	// Used for the smoothing algorithm (Exponential Moving Average). newValue must be >= 2. Default 15.
 	static void setRangeFilterValue(uint16_t newValue);
-	
+
 	//Handlers:
 	static void attachNewRange(void (* handleNewRange)(void)) { _handleNewRange = handleNewRange; };
-	
+
 	static void attachBlinkDevice(void (* handleBlinkDevice)(DW1000Device*)) { _handleBlinkDevice = handleBlinkDevice; };
-	
+
 	static void attachNewDevice(void (* handleNewDevice)(DW1000Device*)) { _handleNewDevice = handleNewDevice; };
-	
+
 	static void attachInactiveDevice(void (* handleInactiveDevice)(DW1000Device*)) { _handleInactiveDevice = handleInactiveDevice; };
-	
-	
-	
+
+
+
 	static DW1000Device* getDistantDevice();
 	static DW1000Device* searchDistantDevice(byte shortAddress[]);
-	
+
 	//FOR DEBUGGING
 	static void visualizeDatas(byte datas[]);
 
@@ -134,13 +134,13 @@ private:
 	static DW1000Mac    _globalMac;
 	static int32_t      timer;
 	static int16_t      counterForBlink;
-	
+
 	//Handlers:
 	static void (* _handleNewRange)(void);
 	static void (* _handleBlinkDevice)(DW1000Device*);
 	static void (* _handleNewDevice)(DW1000Device*);
 	static void (* _handleInactiveDevice)(DW1000Device*);
-	
+
 	//sketch type (tag or anchor)
 	static int16_t          _type; //0 for tag and 1 for anchor
 	// TODO check type, maybe enum?
@@ -173,19 +173,19 @@ private:
 	static int16_t _bias_PRF_16[17]; // TODO remove or use
 	//17 bytes in SRAM
 	static char  _bias_PRF_64[17]; // TODO remove or use
-	
-	
+
+
 	//methods
 	static void handleSent();
 	static void handleReceived();
 	static void noteActivity();
 	static void resetInactive();
-	
+
 	//global functions:
 	static void checkForReset();
 	static void checkForInactiveDevices();
 	static void copyShortAddress(byte address1[], byte address2[]);
-	
+
 	//for ranging protocole (ANCHOR)
 	static void transmitInit();
 	static void transmit(byte datas[]);
@@ -196,16 +196,16 @@ private:
 	static void transmitRangeReport(DW1000Device* myDistantDevice);
 	static void transmitRangeFailed(DW1000Device* myDistantDevice);
 	static void receiver();
-	
+
 	//for ranging protocole (TAG)
 	static void transmitPoll(DW1000Device* myDistantDevice);
 	static void transmitRange(DW1000Device* myDistantDevice);
-	
+
 	//methods for range computation
 	static void computeRangeAsymmetric(DW1000Device* myDistantDevice, DW1000Time* myTOF);
-	
+
 	static void timerTick();
-	
+
 	//Utils
 	static float filterValue(float value, float previousValue, uint16_t numberOfElements);
 };
