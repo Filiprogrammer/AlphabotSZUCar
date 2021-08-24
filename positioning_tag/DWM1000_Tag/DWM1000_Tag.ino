@@ -18,7 +18,7 @@ void setup() {
     // Enable the filter to smooth the distance
     // DW1000Ranging.useRangeFilter(true);
 
-    DW1000.setAntennaDelay(16480);
+    DW1000.setAntennaDelay(16407);
 
     // we start the module as a tag
     DW1000Ranging.startAsTag("B2:04:C5:78:05:5E:E6:2F", DW1000.MODE_LONGDATA_RANGE_ACCURACY);

@@ -18,7 +18,7 @@ void setup() {
     // Enable the filter to smooth the distance
     // DW1000Ranging.useRangeFilter(true);
 
-    DW1000.setAntennaDelay(16480);
+    DW1000.setAntennaDelay(16407);
 
     // we start the module as an anchor
     // Anchor 1 "BE:0C:61:69:A4:1B:41:D7"

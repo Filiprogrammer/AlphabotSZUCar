@@ -59,7 +59,7 @@ byte       DW1000Class::_pulseFrequency      = TX_PULSE_FREQ_16MHZ;
 byte       DW1000Class::_dataRate            = TRX_RATE_6800KBPS;
 byte       DW1000Class::_preambleLength      = TX_PREAMBLE_LEN_128;
 byte       DW1000Class::_preambleCode        = PREAMBLE_CODE_16MHZ_4;
-byte       DW1000Class::_channel             = CHANNEL_5;
+byte       DW1000Class::_channel             = CHANNEL_7;
 DW1000Time DW1000Class::_antennaDelay;
 boolean	   DW1000Class::_antennaCalibrated	 = false;
 boolean    DW1000Class::_smartPower          = false;
@@ -666,7 +666,7 @@ void DW1000Class::tune() {
 			if(_smartPower) {
 				writeValueToBytes(txpower, 0x5171B1D1L, LEN_TX_POWER);
 			} else {
-				writeValueToBytes(txpower, 0xD1D1D1D1L, LEN_TX_POWER);
+				writeValueToBytes(txpower, 0x1F1F1F1FL, LEN_TX_POWER);
 			}
 		} else {
 			// TODO proper error/warning handling
@@ -1281,7 +1281,7 @@ void DW1000Class::setDefaults() {
 
 		// TODO add channel and code to mode tuples
 		// TODO add channel and code settings with checks (see DW1000 user manual 10.5 table 61)/
-		setChannel(CHANNEL_5);
+		setChannel(CHANNEL_7);
 		if(getPulseFrequency() == TX_PULSE_FREQ_16MHZ) {
 			setPreambleCode(PREAMBLE_CODE_16MHZ_4);
 		} else {
