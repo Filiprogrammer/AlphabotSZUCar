@@ -5,8 +5,8 @@
 #include "BLEHandler.h"
 #include "config.h"
 #include <esp32-hal-cpu.h>
-#include <soc\soc.h>
-#include <soc\rtc_cntl_reg.h>
+#include <soc/soc.h>
+#include <soc/rtc_cntl_reg.h>
 #include "PositioningSystem.h"
 #include <math.h>
 #include "Compass.h"
