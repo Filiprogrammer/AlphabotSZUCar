@@ -5,7 +5,7 @@ set -x
 
 RASPI_DEBIAN_ROOT=$1
 
-echo "deb http://ftp.de.debian.org/debian sid main" >> /etc/apt/sources.list
+echo "deb http://ftp.de.debian.org/debian buster main" >> /etc/apt/sources.list
 apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
 apt-get install -y --no-install-recommends git make gcc device-tree-compiler bison flex libssl-dev libncurses-dev bc wget ca-certificates xz-utils patch cpio
 
@@ -93,7 +93,7 @@ rm $RASPI_DEBIAN_ROOT/usr/bin/qemu-aarch64-static
 # Add some mirrors to the package manager.
 echo "deb http://deb.debian.org/debian buster main contrib non-free" > $RASPI_DEBIAN_ROOT/etc/apt/sources.list
 echo "deb http://security.debian.org/debian-security buster/updates main contrib non-free" >> $RASPI_DEBIAN_ROOT/etc/apt/sources.list
-echo "deb http://ftp.de.debian.org/debian sid main" >> $RASPI_DEBIAN_ROOT/etc/apt/sources.list
+echo "deb http://ftp.de.debian.org/debian buster main" >> $RASPI_DEBIAN_ROOT/etc/apt/sources.list
 
 mkdir -p $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks
 cp /root/build-debian/rootfs/etc/initramfs-tools/hooks/rpi-resizerootfs $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/rpi-resizerootfs
