@@ -198,6 +198,10 @@ rm $RASPI_DEBIAN_ROOT/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.
 rm $RASPI_DEBIAN_ROOT/etc/systemd/system/dbus-org.freedesktop.timesync1.service
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-timesyncd.service
 
+# Remove service/target that waits for the network to come online.
+rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-networkd-wait-online.service
+rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/network-online.target
+
 # Remove apt-daily services/timers.
 rm $RASPI_DEBIAN_ROOT/etc/systemd/system/timers.target.wants/apt-daily.timer
 rm $RASPI_DEBIAN_ROOT/etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
