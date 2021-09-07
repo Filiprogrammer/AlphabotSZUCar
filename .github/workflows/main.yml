@@ -23,7 +23,7 @@ jobs:
       - name: Install tools
         if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
         run: |
-          sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build git
+          sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build
       - name: Build QEMU
         if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
         run: |
