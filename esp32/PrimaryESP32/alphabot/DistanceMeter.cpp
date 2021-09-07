@@ -8,7 +8,7 @@ void DistanceMeter::readValues(uint16_t* front, uint16_t* left, uint16_t* right,
     if (err)
         return;
 
-    uint8_t size = Wire.requestFrom(this->address, 9);
+    uint8_t size = Wire.requestFrom(this->address, 9U);
 
     if (size < 9)
         return;
