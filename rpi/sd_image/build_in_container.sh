@@ -102,7 +102,7 @@ mkdir -p $RASPI_DEBIAN_ROOT/etc/initramfs-tools/scripts/local-bottom
 cp /root/build-debian/rootfs/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs $RASPI_DEBIAN_ROOT/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
 chmod 755 $RASPI_DEBIAN_ROOT/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
 chroot $RASPI_DEBIAN_ROOT apt-get update
-chroot $RASPI_DEBIAN_ROOT apt-get -y install ca-certificates dosfstools iw parted ssh xauth- ncurses-term- wpasupplicant raspi3-firmware initramfs-tools kmod linux-base firmware-brcm80211
+chroot $RASPI_DEBIAN_ROOT apt-get -y install ca-certificates dosfstools iw parted ssh xauth- ncurses-term- wpasupplicant raspi3-firmware initramfs-tools kmod linux-base firmware-brcm80211 chrony
 
 # Clean up package manager cache to free up some space.
 chroot $RASPI_DEBIAN_ROOT apt-get clean
@@ -191,6 +191,12 @@ ln -s /etc/systemd/system/wlan-hack.service $RASPI_DEBIAN_ROOT/etc/systemd/syste
 # Remove wpa_supplicant service because it is replaced by the wlan-hack service.
 rm $RASPI_DEBIAN_ROOT/etc/systemd/system/multi-user.target.wants/wpa_supplicant.service
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/wpa_supplicant.service
+
+# Remove systemd-timesync services, which are replaced by chrony.
+rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-time-wait-sync.service
+rm $RASPI_DEBIAN_ROOT/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service
+rm $RASPI_DEBIAN_ROOT/etc/systemd/system/dbus-org.freedesktop.timesync1.service
+rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-timesyncd.service
 
 # Remove apt-daily services/timers.
 rm $RASPI_DEBIAN_ROOT/etc/systemd/system/timers.target.wants/apt-daily.timer
