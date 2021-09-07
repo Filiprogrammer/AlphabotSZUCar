@@ -102,7 +102,7 @@ mkdir -p $RASPI_DEBIAN_ROOT/etc/initramfs-tools/scripts/local-bottom
 cp /root/build-debian/rootfs/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs $RASPI_DEBIAN_ROOT/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
 chmod 755 $RASPI_DEBIAN_ROOT/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
 chroot $RASPI_DEBIAN_ROOT apt-get update
-chroot $RASPI_DEBIAN_ROOT apt-get -y install ca-certificates dosfstools iw parted ssh xauth- ncurses-term- wpasupplicant raspi3-firmware initramfs-tools kmod linux-base firmware-brcm80211 chrony
+chroot $RASPI_DEBIAN_ROOT apt-get -y install ca-certificates dosfstools iw parted ssh xauth- ncurses-term- raspi3-firmware initramfs-tools kmod linux-base firmware-brcm80211 chrony hostapd dnsmasq
 
 # Clean up package manager cache to free up some space.
 chroot $RASPI_DEBIAN_ROOT apt-get clean
@@ -146,6 +146,7 @@ ln -s /boot/vmlinuz-$KERNEL_RELEASE-arm64 $RASPI_DEBIAN_ROOT/vmlinuz-$KERNEL_REL
 ln -s /boot/initrd.img $RASPI_DEBIAN_ROOT/initrd.img
 
 echo "alphabot" > $RASPI_DEBIAN_ROOT/etc/hostname
+echo "192.168.1.1\talphabot" >> $RASPI_DEBIAN_ROOT/etc/hosts
 sed -i 's,root:[^:]*:,root::,' $RASPI_DEBIAN_ROOT/etc/shadow
 
 # Add alphabot user.
@@ -180,17 +181,19 @@ install -m 644 -o root -g root /root/build-debian/rootfs/etc/systemd/system/rpi-
 ln -s /etc/systemd/system/rpi-generate-ssh-host-keys.service $RASPI_DEBIAN_ROOT/etc/systemd/system/multi-user.target.requires/rpi-generate-ssh-host-keys.service
 rm -f $RASPI_DEBIAN_ROOT/etc/ssh/ssh_host_*_key*
 
-# Create the raspberrypi-net-mods service to automatically move the wpa_supplicant.conf file from the boot partition to /etc/wpa_supplicant/ on startup.
-install -m 644 -o root -g root /root/build-debian/rootfs/etc/systemd/system/raspberrypi-net-mods.service $RASPI_DEBIAN_ROOT/etc/systemd/system/
-ln -s /etc/systemd/system/raspberrypi-net-mods.service $RASPI_DEBIAN_ROOT/etc/systemd/system/multi-user.target.requires/raspberrypi-net-mods.service
+# Create service that sets the IP address on the wlan0 network interface.
+install -m 644 -o root -g root /root/build-debian/rootfs/etc/systemd/system/set-wlan-ip-addr.service $RASPI_DEBIAN_ROOT/etc/systemd/system/
+ln -s /etc/systemd/system/set-wlan-ip-addr.service $RASPI_DEBIAN_ROOT/etc/systemd/system/basic.target.requires/set-wlan-ip-addr.service
 
-# Create the wlan-hack service to automatically establish a WLAN connection on startup.
-install -m 644 -o root -g root /root/build-debian/rootfs/etc/systemd/system/wlan-hack.service $RASPI_DEBIAN_ROOT/etc/systemd/system/
-ln -s /etc/systemd/system/wlan-hack.service $RASPI_DEBIAN_ROOT/etc/systemd/system/multi-user.target.wants/wlan-hack.service
+# Configure DNS/DHCP server.
+install -m 644 -o root -g root /root/build-debian/rootfs/etc/dnsmasq.conf $RASPI_DEBIAN_ROOT/etc/dnsmasq.conf
 
-# Remove wpa_supplicant service because it is replaced by the wlan-hack service.
-rm $RASPI_DEBIAN_ROOT/etc/systemd/system/multi-user.target.wants/wpa_supplicant.service
-rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/wpa_supplicant.service
+# Configure WiFi access point.
+install -D -m 644 -o root -g root /root/build-debian/rootfs/etc/hostapd/hostapd.conf $RASPI_DEBIAN_ROOT/etc/hostapd/hostapd.conf
+
+# Disable auto-restart of the service responsible for the WiFi access point to prevent a restart loop in the emulator.
+awk '!/^Restart/' $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/hostapd.service > $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/hostapd.service_
+mv $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/hostapd.service_ $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/hostapd.service
 
 # Remove systemd-timesync services, which are replaced by chrony.
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-time-wait-sync.service
@@ -202,6 +205,9 @@ rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-timesyncd.service
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-networkd-wait-online.service
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/network-online.target
 
+# Remove systemd-resolved service.
+rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/systemd-resolved.service
+
 # Remove apt-daily services/timers.
 rm $RASPI_DEBIAN_ROOT/etc/systemd/system/timers.target.wants/apt-daily.timer
 rm $RASPI_DEBIAN_ROOT/etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
@@ -209,16 +215,6 @@ rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/apt-daily.timer
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/apt-daily-upgrade.timer
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/apt-daily.service
 rm $RASPI_DEBIAN_ROOT/usr/lib/systemd/system/apt-daily-upgrade.service
-
-# Create wpa_supplicant.conf template in the boot partition.
-echo "country=AT" > $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
-echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" >> $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
-echo "update_config=1" >> $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
-echo "network={" >> $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
-echo "    ssid=\"YourSSID\"" >> $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
-echo "    psk=\"YourPassword\"" >> $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
-echo "    key_mgmt=WPA-PSK" >> $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
-echo "}" >> $RASPI_DEBIAN_ROOT/boot/firmware/wpa_supplicant.conf
 
 # Install i2c-tools & nano.
 chroot $RASPI_DEBIAN_ROOT apt-get -y --no-install-recommends install i2c-tools nano
