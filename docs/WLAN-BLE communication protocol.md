@@ -1,6 +1,5 @@
-<h1>
-    1. WLAN – bitbasierendes Protokoll
-</h1>
+# 1. WLAN – bitbasierendes Protokoll
+
 <table border="1" cellspacing="0" cellpadding="0">
     <tbody>
         <tr>
@@ -457,14 +456,11 @@
         </tr>
     </tbody>
 </table>
-<p>
-    *Da für die Darstellung von 360° 9 Bit benötigt werden ist das MSB (Bit 8)
-    noch im Steuerungsbyte enthalten. Die restlichen 8 Bit werden im nächsten
-    Byte gesendet.
-</p>
-<h1>
-    2. BLE Protokoll
-</h1>
+*Da für die Darstellung von 360° 9 Bit benötigt werden ist das MSB (Bit 8)
+noch im Steuerungsbyte enthalten. Die restlichen 8 Bit werden im nächsten
+Byte gesendet.
+
+# 2. BLE Protokoll
 <table border="1" cellspacing="0" cellpadding="0">
     <tbody>
         <tr>
@@ -795,25 +791,19 @@
         </tr>
     </tbody>
 </table>
-<h1>
-    3. Bitfelder
-</h1>
-<h2>
-    3.1. Toggle - Bitfeld
-</h2>
-<p>
-    <br/>
-    Im WLAN Protokoll wird mit der Bit-Folge 1100 0000 anschließend ein 2 Byte
-    großes Bitfeld mitgesendet, im BLE Protokoll ist es eine Characteristic
-    welche 2 Byte groß ist. Dieses Bitfeld ermöglicht es verschiedene
-    Einstellungen ein- bzw. ausschalten zu lassen. Wird eine 0 gesendet, ist
-    die jeweilige Einstellung zu deaktivieren, wird eine 1 gesendet soll es
-    aktiviert werden. Im 1. Byte werden allgemeine Einstellungen gesendet. Das
-    2. Byte ändert bestimmte Logging Optionen.
-</p>
-<h3>
-    3.1.1. Bitfeld – 1. Byte (Einstellungen)
-</h3>
+# 3. Bitfelder
+## 3.1. Toggle - Bitfeld
+
+Im WLAN Protokoll wird mit der Bit-Folge 1100 0000 anschließend ein 2 Byte
+großes Bitfeld mitgesendet, im BLE Protokoll ist es eine Characteristic
+welche 2 Byte groß ist. Dieses Bitfeld ermöglicht es verschiedene
+Einstellungen ein- bzw. ausschalten zu lassen. Wird eine 0 gesendet, ist
+die jeweilige Einstellung zu deaktivieren, wird eine 1 gesendet soll es
+aktiviert werden. Im 1. Byte werden allgemeine Einstellungen gesendet. 
+Das 2. Byte ändert bestimmte Logging Optionen.
+
+### 3.1.1. Bitfeld – 1. Byte (Einstellungen)
+
 <table border="1" cellspacing="0" cellpadding="0" align="left" width="613">
     <tbody>
         <tr>
@@ -902,15 +892,8 @@
         </tr>
     </tbody>
 </table>
-<h3>
-    <br/>
-</h3>
-<h3>
-    <br/>
-</h3>
-<h3>
-    3.1.2. Bitfeld – 2. Byte (Logging)
-</h3>
+
+### 3.1.2. Bitfeld – 2. Byte (Logging)
 <table border="1" cellspacing="0" cellpadding="0">
     <tbody>
         <tr>
@@ -999,14 +982,12 @@
         </tr>
     </tbody>
 </table>
-<h2>
-    3.2. Sensor – Bitfeld
-</h2>
-<p>
-    Das Sensor Bitfeld kommt nur im BLE Protokoll zur Anwendung. Durch den MSB
-    wird angezeigt ob es eine Anforderung durch den Client ist (0) oder eine
-    Antwort des Alphabots (1).
-</p>
+## 3.2. Sensor – Bitfeld
+
+Das Sensor Bitfeld kommt nur im BLE Protokoll zur Anwendung. Durch den MSB
+wird angezeigt ob es eine Anforderung durch den Client ist (0) oder eine
+Antwort des Alphabots (1).
+
 <table border="1" cellspacing="0" cellpadding="0" align="left">
     <tbody>
         <tr>
@@ -1126,9 +1107,10 @@
         </tr>
     </tbody>
 </table>
-<br><br><br><br><br><br><br><br>
-<p>
-    *Da für die Darstellung von 360° 9 Bit benötigt werden ist das MSB (Bit 8)
-    noch im Steuerungsbyte enthalten. Die restlichen 8 Bit werden im nächsten
-    Byte gesendet.
-</p>
+
+
+
+*Da für die Darstellung von 360° 9 Bit benötigt werden ist das MSB (Bit 8)
+noch im Steuerungsbyte enthalten. Die restlichen 8 Bit werden im nächsten
+Byte gesendet.
+
