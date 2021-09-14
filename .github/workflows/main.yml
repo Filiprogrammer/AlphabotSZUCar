@@ -22,8 +22,7 @@ jobs:
           key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('qemu_rpi') }}
       - name: Install tools
         if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
-        run: |
-          sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build
+        run: sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build
       - name: Build QEMU
         if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
         run: |
@@ -58,8 +57,7 @@ jobs:
         uses: docker-practice/actions-setup-docker@v1
       - name: Install tools
         if: steps.rpi-sd-image.outputs.cache-hit != 'true'
-        run: |
-          sudo apt-get install kpartx parted
+        run: sudo apt-get install kpartx parted
       - name: Build Image
         if: steps.rpi-sd-image.outputs.cache-hit != 'true'
         run: sudo rpi/sd_image/build.sh
