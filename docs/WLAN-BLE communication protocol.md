@@ -193,7 +193,7 @@
             </td>
         </tr>
         <tr>
-            <td width="110" rowspan="9" valign="top">
+            <td width="110" rowspan="10" valign="top">
                     11 / Sonstiges
             </td>
             <td width="116" valign="top">
@@ -210,7 +210,7 @@
             </td>
         </tr>
         <tr>
-            <td width="116" rowspan="4" valign="top">
+            <td width="116" rowspan="5" valign="top">
                     01 / Obstacle
             </td>
             <td width="152" valign="top">
@@ -221,6 +221,17 @@
             </td>
             <td width="72" valign="top">
                     7
+            </td>
+        </tr>
+        <tr>
+            <td width="152" valign="top">
+                    0010 / New obstacle registered (Alphabot to Client)
+            </td>
+            <td width="152" valign="top">
+                    ID (1B) + X, Y Koordinaten (4B) + Breite und Höhe (2B)
+            </td>
+            <td width="72" valign="top">
+                    8
             </td>
         </tr>
         <tr>
@@ -416,10 +427,10 @@ Byte gesendet.
             </td>
         </tr>
         <tr>
-            <td width="98" rowspan="3" valign="top">
+            <td width="98" rowspan="4" valign="top">
                     60db37c7-afeb-4d40-bb17-a19a07d6fc95
             </td>
-            <td width="158" rowspan="3" valign="top">
+            <td width="158" rowspan="4" valign="top">
                     BLE_CHAR_OBSTACLE
             </td>
             <td width="95" valign="top">
@@ -428,16 +439,24 @@ Byte gesendet.
             <td width="149" colspan="2" valign="top">
                     Koordinaten (4B), Breite und Höhe (2B)
             </td>
-            <td width="49" rowspan="3" valign="top">
-                    6
+            <td width="49" rowspan="4" valign="top">
+                    7
             </td>
-            <td width="51" rowspan="3" valign="top">
-                    W
+            <td width="51" rowspan="4" valign="top">
+                    RWN
             </td>
         </tr>
         <tr>
             <td width="95" valign="top">
-                    2 für Remove one
+                    2 für Registered
+            </td>
+            <td width="149" colspan="2" valign="top">
+                    ID (1B), Koordinaten (4B), Breite und Höhe (2B)
+            </td>
+        </tr>
+        <tr>
+            <td width="95" valign="top">
+                    3 für Remove one
             </td>
             <td width="149" colspan="2" valign="top">
                     Koordinaten (4B), ID (1B)
@@ -445,7 +464,7 @@ Byte gesendet.
         </tr>
         <tr>
             <td width="95" valign="top">
-                    3 für Remove all
+                    4 für Remove all
             </td>
             <td width="83" valign="top">
             </td>
