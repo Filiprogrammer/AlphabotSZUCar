@@ -1,311 +1,311 @@
 # 1. WLAN – bitbasierendes Protokoll
 
-<table border="1" cellspacing="0" cellpadding="0">
+<table>
     <tbody>
         <tr>
-            <td width="377" colspan="3" valign="top">
-                    <strong>Steuerungsbyte</strong>
+            <td  colspan="3" >
+                <b>Steuerungsbyte</b>
             </td>
-            <td width="152" rowspan="2" valign="top">
-                    <strong>Weitere Byte</strong>
+            <td  rowspan="2" >
+                <b>Weitere Byte</b>
             </td>
-            <td width="72" rowspan="2" valign="top">
-                    <strong>Gesamtgröße Byte</strong>
-            </td>
-        </tr>
-        <tr>
-            <td width="110" valign="top">
-                    <strong>Kategorie</strong>
-            </td>
-            <td width="116" valign="top">
-                    <strong>Unterkategorie</strong>
-            </td>
-            <td width="152" valign="top">
-                    <strong>Beschreibung</strong>
+            <td  rowspan="2" >
+                <b>Gesamtgröße Byte</b>
             </td>
         </tr>
         <tr>
-            <td width="110" rowspan="3" valign="top">
+            <td>
+                <b>Kategorie</b>
+            </td>
+            <td>
+                <b>Unterkategorie</b>
+            </td>
+            <td>
+                <b>Beschreibung</b>
+            </td>
+        </tr>
+        <tr>
+            <td  rowspan="3" >
                     00 / Ansteuerung
             </td>
-            <td width="116" valign="top">
+            <td>
                     00 / Steer &amp; Speed
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000
             </td>
-            <td width="152" valign="top">
+            <td>
                     Anzahl der Steps sbyte (1B) + Speed in sbyte (1B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     3
             </td>
         </tr>
         <tr>
-            <td width="116" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     01 / Calibrate
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000 / Steering
             </td>
-            <td width="152" valign="top">
+            <td>
             </td>
-            <td width="72" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     1
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     1111 / Compass
             </td>
-            <td width="152" valign="top">
+            <td>
             </td>
         </tr>
         <tr>
-            <td width="110" rowspan="5" valign="top">
+            <td  rowspan="5" >
                     01 / Anforderung (durch Client)
             </td>
-            <td width="116" valign="top">
+            <td>
                     00 / Distanzsensor
             </td>
-            <td width="152" valign="top">
+            <td>
                     000 + Grad des Sensors Bit 8 (MSB)*
             </td>
-            <td width="152" valign="top">
+            <td>
                     Grad des Sensors Bit 0-7 (1B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     2
             </td>
         </tr>
         <tr>
-            <td width="116" valign="top">
+            <td>
                     01 / Kartengröße
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000
             </td>
-            <td width="152" valign="top">
+            <td>
             </td>
-            <td width="72" valign="top">
+            <td>
                     1
             </td>
         </tr>
         <tr>
-            <td width="116" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     10 / Positionierung &amp; Path Finding
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000 / Positionierung
             </td>
-            <td width="152" rowspan="2" valign="top">
+            <td  rowspan="2" >
             </td>
-            <td width="72" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     1
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     1111 / Path Finding
             </td>
         </tr>
         <tr>
-            <td width="116" valign="top">
+            <td>
                     11 / Kompass
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000
             </td>
-            <td width="152" valign="top">
+            <td>
             </td>
-            <td width="72" valign="top">
+            <td>
                     1
             </td>
         </tr>
         <tr>
-            <td width="110" rowspan="5" valign="top">
+            <td  rowspan="5" >
                     10 / Antwort (von Alphabot)
             </td>
-            <td width="116" valign="top">
+            <td>
                     00 / Distanzsensor
             </td>
-            <td width="152" valign="top">
+            <td>
                     000 + Grad des Sensors Bit 8 (MSB)*
             </td>
-            <td width="152" valign="top">
+            <td>
                     Grad des Sensors Bit 0-7 (1B) + Distanz (1B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     3
             </td>
         </tr>
         <tr>
-            <td width="116" valign="top">
+            <td>
                     01 / Kartengröße
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000
             </td>
-            <td width="152" valign="top">
+            <td>
                     X und Y Länge (4B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     5
             </td>
         </tr>
         <tr>
-            <td width="116" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     10 / Positionierung &amp; Path Finding
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000 / Positionierung
             </td>
-            <td width="152" valign="top">
+            <td>
                     X und Y Koordinaten (4B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     5
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     1111 / Path Finding
             </td>
-            <td width="152" valign="top">
+            <td>
                     Path Finding Daten (max. 20B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     21
             </td>
         </tr>
         <tr>
-            <td width="116" valign="top">
+            <td>
                     11 / Kompass
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000
             </td>
-            <td width="152" valign="top">
+            <td>
                     Kompassdaten (2B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     3
             </td>
         </tr>
         <tr>
-            <td width="110" rowspan="10" valign="top">
+            <td  rowspan="10" >
                     11 / Sonstiges
             </td>
-            <td width="116" valign="top">
+            <td>
                     00 / Toggle
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000
             </td>
-            <td width="152" valign="top">
+            <td>
                     Siehe Toggle-Bitfeld (2B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     3
             </td>
         </tr>
         <tr>
-            <td width="116" rowspan="5" valign="top">
+            <td  rowspan="5" >
                     01 / Obstacle
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000 / Add
             </td>
-            <td width="152" valign="top">
+            <td>
                     X, Y Koordinaten (4B) + Breite und Höhe (2B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     7
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     0010 / New obstacle registered (Alphabot to Client)
             </td>
-            <td width="152" valign="top">
+            <td>
                     ID (1B) + X, Y Koordinaten (4B) + Breite und Höhe (2B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     8
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     1100 / Remove one by ID
             </td>
-            <td width="152" valign="top">
+            <td>
                     ID (1B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     2
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     1101 / Remove one by Coordinates
             </td>
-            <td width="152" valign="top">
+            <td>
                     X, Y Koordinaten (4B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     5
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     1111 / Remove all
             </td>
-            <td width="152" valign="top">
+            <td>
             </td>
-            <td width="72" valign="top">
+            <td>
                     1
             </td>
         </tr>
         <tr>
-            <td width="116" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     10 / Ping
             </td>
-            <td width="152" valign="top">
+            <td>
                     0000 / sendet Client
             </td>
-            <td width="152" rowspan="2" valign="top">
+            <td  rowspan="2" >
             </td>
-            <td width="72" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     1
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     1111 / sendet Alphabot
             </td>
         </tr>
         <tr>
-            <td width="116" rowspan="2" valign="top">
+            <td  rowspan="2" >
                     11 / Sonstiges
             </td>
-            <td width="152" valign="top">
+            <td>
                     0001 / Configure positioning anchors location
             </td>
-            <td width="152" valign="top">
+            <td>
                     Anchor ID (1B) + X, Y Koordinaten (4B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     6
             </td>
         </tr>
         <tr>
-            <td width="152" valign="top">
+            <td>
                     0010 / Set target position for navigation
             </td>
-            <td width="152" valign="top">
+            <td>
                     X, Y Koordinaten der Position (4B)
             </td>
-            <td width="72" valign="top">
+            <td>
                     5
             </td>
         </tr>
@@ -318,27 +318,27 @@ Byte gesendet.
 
 # 2. BLE Protokoll
 
-<br>
-<table border="1" cellspacing="0" cellpadding="0">
+
+<table>
     <tbody>
         <tr>
-            <td width="98" rowspan="2" valign="top">
+            <td  rowspan="2" >
                 <p align="center">
                     UUID
             </td>
-            <td width="158" rowspan="2" valign="top">
+            <td  rowspan="2" >
                 <p align="center">
                     Name
             </td>
-            <td width="244" colspan="3" valign="top">
+            <td  colspan="3" >
                 <p align="center">
                     Beschreibung
             </td>
-            <td width="49" rowspan="2" valign="top">
+            <td  rowspan="2" >
                 <p align="center">
                     Größe in Byte
             </td>
-            <td width="51" rowspan="2" valign="top">
+            <td  rowspan="2" >
                 <p align="center">
                     <u>R</u>
                     ead/
@@ -351,209 +351,209 @@ Byte gesendet.
             </td>
         </tr>
         <tr>
-            <td width="95" valign="top">
+            <td>
                 <p align="center">
                     1. Byte
             </td>
-            <td width="83" valign="top">
+            <td>
                 <p align="center">
                     2. Byte
             </td>
-            <td width="66" valign="top">
+            <td>
                 <p align="center">
                     Weitere Byte
             </td>
         </tr>
         <tr>
-            <td width="98" valign="top">
+            <td>
                     a04295f7-eaa8-4536-b3a4-4e7ae4d72dc2
             </td>
-            <td width="158" valign="top">
+            <td>
                     BLE_CHAR_DRIVE_STEER
             </td>
-            <td width="95" valign="top">
+            <td>
                     Lenkung Steps in sbyte (negativ für links, positiv für
                     rechts)
             </td>
-            <td width="83" valign="top">
+            <td>
                     Speed in sbyte (negativ für rückwärts, positiv für
                     vorwärts)
             </td>
-            <td width="66" valign="top">
+            <td>
             </td>
-            <td width="49" valign="top">
+            <td>
                     2
             </td>
-            <td width="51" valign="top">
+            <td>
                     RW
             </td>
         </tr>
         <tr>
-            <td width="98" valign="top">
+            <td>
                     4c999381-35e2-4af4-8443-ee8b9fe56ba0
             </td>
-            <td width="158" valign="top">
+            <td>
                     BLE_CHAR_SENSOR
             </td>
-            <td width="178" colspan="2" valign="top">
+            <td  colspan="2" >
                     Siehe Sensor-Bitfeld (3.2.)
             </td>
-            <td width="66" valign="top">
+            <td>
             </td>
-            <td width="49" valign="top">
+            <td>
                     5
             </td>
-            <td width="51" valign="top">
+            <td>
                     RWN
             </td>
         </tr>
         <tr>
-            <td width="98" valign="top">
+            <td>
                     fce001d4-864a-48f4-9c95-de928f1da07b
             </td>
-            <td width="158" valign="top">
+            <td>
                     BLE_CHAR_TOGGLE
             </td>
-            <td width="178" colspan="2" valign="top">
+            <td  colspan="2" >
                     Siehe Toggle-Bitfeld (3.1.)
             </td>
-            <td width="66" valign="top">
+            <td>
             </td>
-            <td width="49" valign="top">
+            <td>
                     2
             </td>
-            <td width="51" valign="top">
+            <td>
                     RWN
             </td>
         </tr>
         <tr>
-            <td width="98" rowspan="4" valign="top">
+            <td  rowspan="4" >
                     60db37c7-afeb-4d40-bb17-a19a07d6fc95
             </td>
-            <td width="158" rowspan="4" valign="top">
+            <td  rowspan="4" >
                     BLE_CHAR_OBSTACLE
             </td>
-            <td width="95" valign="top">
+            <td>
                     1 für Add
             </td>
-            <td width="149" colspan="2" valign="top">
+            <td  colspan="2" >
                     Koordinaten (4B), Breite und Höhe (2B)
             </td>
-            <td width="49" rowspan="4" valign="top">
+            <td  rowspan="4" >
                     7
             </td>
-            <td width="51" rowspan="4" valign="top">
+            <td  rowspan="4" >
                     RWN
             </td>
         </tr>
         <tr>
-            <td width="95" valign="top">
+            <td>
                     2 für Registered
             </td>
-            <td width="149" colspan="2" valign="top">
+            <td  colspan="2" >
                     ID (1B), Koordinaten (4B), Breite und Höhe (2B)
             </td>
         </tr>
         <tr>
-            <td width="95" valign="top">
+            <td>
                     3 für Remove one
             </td>
-            <td width="149" colspan="2" valign="top">
+            <td  colspan="2" >
                     Koordinaten (4B), ID (1B)
             </td>
         </tr>
         <tr>
-            <td width="95" valign="top">
+            <td>
                     4 für Remove all
             </td>
-            <td width="83" valign="top">
+            <td>
             </td>
-            <td width="66" valign="top">
+            <td>
             </td>
         </tr>
         <tr>
-            <td width="98" valign="top">
+            <td>
                     117ad3a5-b257-4465-abd4-7dc12a4cf77d
             </td>
-            <td width="158" valign="top">
+            <td>
                     BLE_CHAR_PINGCLIENT
             </td>
-            <td width="95" valign="top">
+            <td>
             </td>
-            <td width="83" valign="top">
+            <td>
             </td>
-            <td width="66" valign="top">
+            <td>
             </td>
-            <td width="49" valign="top">
+            <td>
                     1
             </td>
-            <td width="51" valign="top">
+            <td>
                     RN
             </td>
         </tr>
         <tr>
-            <td width="98" valign="top">
+            <td>
                     d39e8d54-8019-46c8-a977-db13871bac59
             </td>
-            <td width="158" valign="top">
+            <td>
                     BLE_CHAR_CALIBRATE
             </td>
-            <td width="95" valign="top">
+            <td>
                     0 für calibrate abgeschlossen
                     1 für calibrate steering Anforderung
                     2 für calibrate compass direction Anforderung
             </td>
-            <td width="83" valign="top">
+            <td>
             </td>
-            <td width="66" valign="top">
+            <td>
             </td>
-            <td width="49" valign="top">
+            <td>
                     1
             </td>
-            <td width="51" valign="top">
+            <td>
                     RWN
             </td>
         </tr>
         <tr>
-            <td width="98" valign="top">
+            <td>
                     f56f0a15-52ae-4ad5-bfe1-557eed983618
             </td>
-            <td width="158" valign="top">
+            <td>
                     BLE_CHAR_TARGET_NAVI
             </td>
-            <td width="178" colspan="2" valign="top">
+            <td  colspan="2" >
                     X Koordinate
             </td>
-            <td width="66" valign="top">
+            <td>
                     Y Koordinate (2B)
             </td>
-            <td width="49" valign="top">
+            <td>
                     4
             </td>
-            <td width="51" valign="top">
+            <td>
                     RW
             </td>
         </tr>
         <tr>
-            <td width="98" valign="top">
+            <td>
                     8dad4c9a-1a1c-4a42-a522-ded592f4ed99
             </td>
-            <td width="158" valign="top">
+            <td>
                     BLE_CHAR_PATH_FINDING
             </td>
-            <td width="244" colspan="3" valign="top">
+            <td  colspan="3" >
                     Path Finding Daten
             </td>
-            <td width="49" valign="top">
+            <td>
                     20
             </td>
-            <td width="51" valign="top">
+            <td>
                     R
             </td>
         </tr>
     </tbody>
 </table>
-<br>
+
 
 # 3. Bitfelder
 
@@ -566,122 +566,122 @@ Einstellungen ein- bzw. ausschalten zu lassen. Wird eine 0 gesendet, ist
 die jeweilige Einstellung zu deaktivieren, wird eine 1 gesendet soll es
 aktiviert werden. Im 1. Byte werden allgemeine Einstellungen gesendet. 
 Das 2. Byte ändert bestimmte Logging Optionen.
-<br>
+
 
 ### 3.1.1. Bitfeld – 1. Byte (Einstellungen)
-<br>
 
-<table border="1" cellspacing="0" cellpadding="0" align="left" width="613">
+
+<table border="1" cellspacing="0" cellpadding="0" align="left" >
     <tbody>
         <tr>
-            <td width="78" valign="top">
+            <td>
                     Bit 7 (MSB)
             </td>
-            <td width="76" valign="top">
+            <td>
                     Bit 6
             </td>
-            <td width="76" valign="top">
+            <td>
                     Bit 5
             </td>
-            <td width="76" valign="top">
+            <td>
                     Bit 4
             </td>
-            <td width="76" valign="top">
+            <td>
                     Bit 3
             </td>
-            <td width="76" valign="top">
+            <td>
                     Bit 2
             </td>
-            <td width="76" valign="top">
+            <td>
                     Bit 1
             </td>
-            <td width="76" valign="top">
+            <td>
                     Bit 0 (LSB)
             </td>
         </tr>
         <tr>
-            <td width="78" valign="top">
+            <td>
                     Compass calibration
             </td>
-            <td width="76" valign="top">
+            <td>
                     Invite
             </td>
-            <td width="76" valign="top">
+            <td>
                     Positionierung
             </td>
-            <td width="76" valign="top">
+            <td>
                     Collision Avoidance
             </td>
-            <td width="76" valign="top">
+            <td>
                     Navigation-Mode
             </td>
-            <td width="76" valign="top">
+            <td>
                     Explore-Mode
             </td>
-            <td width="76" valign="top">
+            <td>
                     unbelegt
             </td>
-            <td width="76" valign="top">
+            <td>
                     unbelegt
             </td>
         </tr>
     </tbody>
 </table>
-<br><br><br><br>
+
 
 ### 3.1.2. Bitfeld – 2. Byte (Logging)
 
-<table border="1" cellspacing="0" cellpadding="0">
+<table>
     <tbody>
         <tr>
-            <td width="75" valign="top">
+            <td>
                     Bit 7 (MSB)
             </td>
-            <td width="75" valign="top">
+            <td>
                     Bit 6
             </td>
-            <td width="75" valign="top">
+            <td>
                     Bit 5
             </td>
-            <td width="75" valign="top">
+            <td>
                     Bit 4
             </td>
-            <td width="75" valign="top">
+            <td>
                     Bit 3
             </td>
-            <td width="75" valign="top">
+            <td>
                     Bit 2
             </td>
-            <td width="75" valign="top">
+            <td>
                     Bit 1
             </td>
-            <td width="75" valign="top">
+            <td>
                     Bit 0 (LSB)
             </td>
         </tr>
         <tr>
-            <td width="75" valign="top">
+            <td>
                     Position
             </td>
-            <td width="75" valign="top">
+            <td>
                     Obstacle distance
             </td>
-            <td width="75" valign="top">
+            <td>
                     Pathfinder path
             </td>
-            <td width="75" valign="top">
+            <td>
                     Compass direction
             </td>
-            <td width="75" valign="top">
+            <td>
                     Anchor distances
             </td>
-            <td width="75" valign="top">
+            <td>
                     Wheel speed
             </td>
-            <td width="75" valign="top">
+            <td>
                     Accelerometer
             </td>
-            <td width="75" valign="top">
+            <td>
                     Gyroscope
             </td>
         </tr>
@@ -694,84 +694,84 @@ Das Sensor Bitfeld kommt nur im BLE Protokoll zur Anwendung. Durch den MSB
 wird angezeigt ob es eine Anforderung durch den Client ist (0) oder eine
 Antwort des Alphabots (1).
 
-<table border="1" cellspacing="0" cellpadding="0" align="left">
+<table>
     <tbody>
         <tr>
-            <td width="150" valign="top">
+            <td>
                     Bit 7 (MSB)
             </td>
-            <td width="150" valign="top">
+            <td>
                     Bit 4-6
             </td>
-            <td width="150" valign="top">
+            <td>
                     Bit 0-3 (LSB)
             </td>
-            <td width="150" valign="top">
+            <td>
                     Weitere Byte
             </td>
         </tr>
         <tr>
-            <td width="150" rowspan="5" valign="top">
+            <td  rowspan="5" >
                     0 für Anforderung /
                     1 für Antwort
             </td>
-            <td width="150" valign="top">
+            <td>
                     000 / Distanzsensor
             </td>
-            <td width="150" valign="top">
+            <td>
                     000 + Grad des Sensors Bit 8 (MSB)*
             </td>
-            <td width="150" valign="top">
+            <td>
                     Grad des Sensors Bit 0-7 (1B) + Distanz (1B)
             </td>
         </tr>
         <tr>
-            <td width="150" valign="top">
+            <td>
                     001 / Kompass
             </td>
-            <td width="150" valign="top">
+            <td>
                     0000
             </td>
-            <td width="150" valign="top">
+            <td>
                     Kompassdaten (2B)
             </td>
         </tr>
         <tr>
-            <td width="150" valign="top">
+            <td>
                     010 / Kartengröße
             </td>
-            <td width="150" valign="top">
+            <td>
                     0000
             </td>
-            <td width="150" valign="top">
+            <td>
                     Länge und Breite (2B)
             </td>
         </tr>
         <tr>
-            <td width="150" valign="top">
+            <td>
                     011 / Positionierung
             </td>
-            <td width="150" valign="top">
+            <td>
                     0000
             </td>
-            <td width="150" valign="top">
+            <td>
                     Koordinaten (4B)
             </td>
         </tr>
         <tr>
-            <td width="150" valign="top">
+            <td>
                     100 / Pos. Anchors
             </td>
-            <td width="150" valign="top">
+            <td>
                     ID des Anchors
             </td>
-            <td width="150" valign="top">
+            <td>
                     Koordinaten (4B)
             </td>
         </tr>
     </tbody>
 </table>
-<br><br><br><br><br><br><br><br><br><br><br>
+
 *Da für die Darstellung von 360° 9 Bit benötigt werden ist das MSB (Bit 8)
 noch im Steuerungsbyte enthalten. Die restlichen 8 Bit werden im nächsten
 Byte gesendet.
