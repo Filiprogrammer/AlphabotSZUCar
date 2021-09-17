@@ -323,44 +323,44 @@ Byte gesendet.
     <tbody>
         <tr>
             <td  rowspan="2" >
-                <p align="center">
+                
                     UUID
             </td>
             <td  rowspan="2" >
-                <p align="center">
+                
                     Name
             </td>
             <td  colspan="3" >
-                <p align="center">
+                
                     Beschreibung
             </td>
             <td  rowspan="2" >
-                <p align="center">
+                
                     Größe in Byte
             </td>
             <td  rowspan="2" >
-                <p align="center">
+                
                     <u>R</u>
                     ead/
-                <p align="center">
+                
                     <u>W</u>
                     rite/
-                <p align="center">
+                
                     <u>N</u>
                     otify
             </td>
         </tr>
         <tr>
             <td>
-                <p align="center">
+                
                     1. Byte
             </td>
             <td>
-                <p align="center">
+                
                     2. Byte
             </td>
             <td>
-                <p align="center">
+                
                     Weitere Byte
             </td>
         </tr>
