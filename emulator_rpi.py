@@ -295,7 +295,7 @@ while i < (len(sys.argv) - 1):
 
     i += 1
 
-init()
+init(strip=False)
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
