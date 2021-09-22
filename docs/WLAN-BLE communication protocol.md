@@ -1,320 +1,123 @@
 # 1. WLAN – bitbasierendes Protokoll
 
-<table>
-    <tbody>
-        <tr>
-            <td  colspan="3" >
-                <b>Steuerungsbyte</b>
-            </td>
-            <td  rowspan="2" >
-                <b>Weitere Byte</b>
-            </td>
-            <td  rowspan="2" >
-                <b>Gesamtgröße Byte</b>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <b>Kategorie</b>
-            </td>
-            <td>
-                <b>Unterkategorie</b>
-            </td>
-            <td>
-                <b>Beschreibung</b>
-            </td>
-        </tr>
-        <tr>
-            <td  rowspan="3" >
-                00 / Ansteuerung
-            </td>
-            <td>
-                00 / Steer &amp; Speed
-            </td>
-            <td>
-                0000
-            </td>
-            <td>
-                Anzahl der Steps sbyte (1B) + Speed in sbyte (1B)
-            </td>
-            <td>
-                3
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" >
-                01 / Calibrate
-            </td>
-            <td>
-                0000 / Steering
-            </td>
-            <td>
-            </td>
-            <td rowspan="2" >
-                1
-            </td>
-        </tr>
-        <tr>
-            <td>
-                1111 / Compass
-            </td>
-            <td>
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="5" >
-                01 / Anforderung (durch Client)
-            </td>
-            <td>
-                00 / Distanzsensor
-            </td>
-            <td>
-                000 + Grad des Sensors Bit 8 (MSB)*
-            </td>
-            <td>
-                Grad des Sensors Bit 0-7 (1B)
-            </td>
-            <td>
-                2
-            </td>
-        </tr>
-        <tr>
-            <td>
-                01 / Kartengröße
-            </td>
-            <td>
-                0000
-            </td>
-            <td>
-            </td>
-            <td>
-                1
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" >
-                10 / Positionierung &amp; Path Finding
-            </td>
-            <td>
-                0000 / Positionierung
-            </td>
-            <td rowspan="2" >
-            </td>
-            <td rowspan="2" >
-                1
-            </td>
-        </tr>
-        <tr>
-            <td>
-                1111 / Path Finding
-            </td>
-        </tr>
-        <tr>
-            <td>
-                11 / Kompass
-            </td>
-            <td>
-                0000
-            </td>
-            <td>
-            </td>
-            <td>
-                1
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="5" >
-                10 / Antwort (von Alphabot)
-            </td>
-            <td>
-                00 / Distanzsensor
-            </td>
-            <td>
-                000 + Grad des Sensors Bit 8 (MSB)*
-            </td>
-            <td>
-                Grad des Sensors Bit 0-7 (1B) + Distanz (1B)
-            </td>
-            <td>
-                3
-            </td>
-        </tr>
-        <tr>
-            <td>
-                01 / Kartengröße
-            </td>
-            <td>
-                0000
-            </td>
-            <td>
-                X und Y Länge (4B)
-            </td>
-            <td>
-                5
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" >
-                10 / Positionierung &amp; Path Finding
-            </td>
-            <td>
-                0000 / Positionierung
-            </td>
-            <td>
-                X und Y Koordinaten (4B)
-            </td>
-            <td>
-                5
-            </td>
-        </tr>
-        <tr>
-            <td>
-                1111 / Path Finding
-            </td>
-            <td>
-                Path Finding Daten (max. 20B)
-            </td>
-            <td>
-                21
-            </td>
-        </tr>
-        <tr>
-            <td>
-                11 / Kompass
-            </td>
-            <td>
-                0000
-            </td>
-            <td>
-                Kompassdaten (2B)
-            </td>
-            <td>
-                3
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="10" >
-                11 / Sonstiges
-            </td>
-            <td>
-                00 / Toggle
-            </td>
-            <td>
-                0000
-            </td>
-            <td>
-                Siehe Toggle-Bitfeld (2B)
-            </td>
-            <td>
-                3
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="5" >
-                01 / Obstacle
-            </td>
-            <td>
-                0000 / Add
-            </td>
-            <td>
-                X, Y Koordinaten (4B) + Breite und Höhe (2B)
-            </td>
-            <td>
-                7
-            </td>
-        </tr>
-        <tr>
-            <td>
-                0010 / New obstacle registered (Alphabot to Client)
-            </td>
-            <td>
-                ID (1B) + X, Y Koordinaten (4B) + Breite und Höhe (2B)
-            </td>
-            <td>
-                8
-            </td>
-        </tr>
-        <tr>
-            <td>
-                1100 / Remove one by ID
-            </td>
-            <td>
-                ID (1B)
-            </td>
-            <td>
-                2
-            </td>
-        </tr>
-        <tr>
-            <td>
-                1101 / Remove one by Coordinates
-            </td>
-            <td>
-                X, Y Koordinaten (4B)
-            </td>
-            <td>
-                5
-            </td>
-        </tr>
-        <tr>
-            <td>
-                1111 / Remove all
-            </td>
-            <td>
-            </td>
-            <td>
-                1
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" >
-                10 / Ping
-            </td>
-            <td>
-                0000 / sendet Client
-            </td>
-            <td rowspan="2" >
-            </td>
-            <td rowspan="2" >
-                1
-            </td>
-        </tr>
-        <tr>
-            <td>
-                1111 / sendet Alphabot
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" >
-                11 / Sonstiges
-            </td>
-            <td>
-                0001 / Configure positioning anchors location
-            </td>
-            <td>
-                Anchor ID (1B) + X, Y Koordinaten (4B)
-            </td>
-            <td>
-                6
-            </td>
-        </tr>
-        <tr>
-            <td>
-                0010 / Set target position for navigation
-            </td>
-            <td>
-                X, Y Koordinaten der Position (4B)
-            </td>
-            <td>
-                5
-            </td>
-        </tr>
-    </tbody>
-</table>
+## 1.1. Requests (Client to Alphabot)
 
-*Da für die Darstellung von 360° 9 Bit benötigt werden ist das MSB (Bit 8)
-noch im Steuerungsbyte enthalten. Die restlichen 8 Bit werden im nächsten
-Byte gesendet.
+### Speed & Steer (Packet ID: 0x01)
+
+| Field Name | Field Type | Notes                                                                                                            |
+|------------|------------|------------------------------------------------------------------------------------------------------------------|
+| Speed      | int8       | The desired speed (negative values indicate backward driving, positive values forward driving)                   |
+| Steer      | int8       | The desired steering direction (negative values indicate left steering, positive values indicate right steering) |
+
+### Distance sensor request (Packet ID: 0x02)
+
+| Field Name | Field Type  | Notes                    |
+|------------|-------------|--------------------------|
+| Degree     | int16       | The degree of the sensor |
+
+### Calibrate steering (Packet ID: 0x03)
+
+No further data
+
+### Calibrate compass (Packet ID: 0x04)
+
+No further data
+
+### Toggle request (Packet ID: 0x05)
+
+see [3.1. Toggle bit field](#3.1.)
+
+### Ping request (Packet ID: 0x06)
+
+| Field Name | Field Type  | Notes                              |
+|------------|-------------|------------------------------------|
+| Time       | int64       | The time when the packet gets sent |
+
+### Configure positioning anchors location (Packet ID: 0x07)
+
+| Field Name | Field Type  | Notes                           |
+|------------|-------------|---------------------------------|
+| AnchorID   | uint8       | The ID of the anchor            |
+| Position X | int16       | The x coordinate in centimetres |
+| Position Y | int16       | The y coordinate in centimetres |
+
+### Set target position for navigation (Packet ID: 0x08)
+
+| Field Name | Field Type  | Notes                           |
+|------------|-------------|---------------------------------|
+| Position X | int16       | The x coordinate in centimetres |
+| Position Y | int16       | The y coordinate in centimetres |
+
+### Add obstacle (Packet ID: 0x09)
+
+| Field Name | Field Type  | Notes                           |
+|------------|-------------|---------------------------------|
+| Position X | int16       | The x coordinate in centimetres |
+| Position Y | int16       | The y coordinate in centimetres |
+| Width      | uint16      | The width in centimetres        |
+| Height     | uint16      | The height in centimetres       |
+
+### Remove one obstacle by ID (Packet ID: 0x0A)
+
+| Field Name | Field Type  | Notes                           |
+|------------|-------------|---------------------------------|
+| ID         | uint8       | ID of the obstacle              |
+
+### Remove one obstacle by Position (Packet ID: 0x0B)
+
+| Field Name | Field Type  | Notes                           |
+|------------|-------------|---------------------------------|
+| Position X | int16       | The x coordinate in centimetres |
+| Position Y | int16       | The y coordinate in centimetres |
+
+### Remove all obstacles (Packet ID: 0x0C)
+
+No further data
+
+## 1.2. Responses (Alphabot to Client)
+
+### Distance sensor response (Packet ID: 0x81)
+
+| Field Name | Field Type  | Notes                       |
+|------------|-------------|-----------------------------|
+| Degree     | int16       | The degree of the sensor    |
+| Distance   | uint16      | The distance in centimetres |
+
+### Positioning response (Packet ID: 0x82)
+
+| Field Name | Field Type | Notes                           |
+|------------|------------|---------------------------------|
+| Position X | int16      | The x coordinate in centimetres |
+| Position Y | int16      | The y coordinate in centimetres |
+
+### Path finding response (Packet ID: 0x83)
+
+| Field Name | Field Type | Notes                           |
+|------------|------------|---------------------------------|
+fehlt noch
+
+### Compass response (Packet ID: 0x84)
+
+| Field Name | Field Type | Notes               |
+|------------|------------|---------------------|
+| Degree     | int16      | The measured degree |
+
+### Ping response (Packet ID: 0x85)
+
+| Field Name | Field Type  | Notes                             |
+|------------|-------------|-----------------------------------|
+| Time       | int64       | The time when the packet was sent |
+
+### New obstacle registered (Packet ID: 0x86)
+
+| Field Name | Field Type  | Notes                           |
+|------------|-------------|---------------------------------|
+| ID         | uint8       | The ID of the obstacle          |
+| Position X | int16       | The x coordinate in centimetres |
+| Position Y | int16       | The y coordinate in centimetres |
+| Width      | uint16      | The width in centimetres        |
+| Height     | uint16      | The height in centimetres       |
+
 
 # 2. BLE Protokoll
 
