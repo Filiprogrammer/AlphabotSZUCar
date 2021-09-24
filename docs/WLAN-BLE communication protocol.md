@@ -1,6 +1,17 @@
 # 1. WLAN – bit based protocol
 
-## 1.1. Requests (Client to Alphabot)
+## 1.1. Packet header
+
+The packet header consists of 1 byte. All following bytes are the payload of the packet.
+The last 3 bits (MSB) of the packet header define the protocol version. The currently only version is 000.
+
+### 1.1.1. Example packet
+
+| Bit 7-5 (MSB) <br> [Version 0] | Bit 4-0 (LSB) <br> [Packet ID 0x01] |
+|--------------------------------|-------------------------------------|
+| 0 0 0                          | 0 0 0 0 1                           |
+
+## 1.2. Requests (Client to Alphabot)
 
 ### Speed & Steer (Packet ID: 0x01)
 
@@ -78,23 +89,23 @@ All obstacles (manually added and discovered by the Alphabot) will be removed.
 
 No further data
 
-## 1.2. Responses (Alphabot to Client)
+## 1.3. Responses (Alphabot to client)
 
-### Distance sensor response (Packet ID: 0x81)
+### Distance sensor response (Packet ID: 0x01)
 
 | Field Name | Field Type | Notes                       |
 |------------|------------|-----------------------------|
 | Degree     | int16      | The degree of the sensor    |
 | Distance   | uint16     | The distance in centimetres |
 
-### Positioning response (Packet ID: 0x82)
+### Positioning response (Packet ID: 0x02)
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
 | Position X | int16      | The x coordinate in centimetres |
 | Position Y | int16      | The y coordinate in centimetres |
 
-### Path finding response (Packet ID: 0x83)
+### Path finding response (Packet ID: 0x03)
 
 | Field Name      | Field Type                | Notes                                                       |
 |-----------------|---------------------------|-------------------------------------------------------------|
@@ -102,19 +113,19 @@ No further data
 | Y-start         | int8                      | Y coordinate of the start position in decimeters            |
 | Path steps data | Path steps data structure | see [Path steps data structure](#Path-steps-data-structure) |
 
-### Compass response (Packet ID: 0x84)
+### Compass response (Packet ID: 0x04)
 
 | Field Name | Field Type | Notes               |
 |------------|------------|---------------------|
 | Degree     | int16      | The measured degree |
 
-### Ping response (Packet ID: 0x85)
+### Ping response (Packet ID: 0x05)
 
 | Field Name | Field Type | Notes                                                        |
 |------------|------------|--------------------------------------------------------------|
 | Timestamp  | int64      | The Unix epoch time in milliseconds when the packet was sent |
 
-### New obstacle registered (Packet ID: 0x86)
+### New obstacle registered (Packet ID: 0x06)
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
