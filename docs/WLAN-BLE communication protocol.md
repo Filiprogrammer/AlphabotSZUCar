@@ -135,6 +135,14 @@ No further data
 | Width      | uint16     | The width in centimetres        |
 | Height     | uint16     | The height in centimetres       |
 
+### Error message (Packet ID: 0x07)
+
+| Field Name     | Field Type         | Notes                                          |
+|----------------|--------------------|------------------------------------------------|
+| Error ID       | uint8              | The error ID, see [3.4.](#34Error-id-format)   |
+| Packet header  | uint8              | The packet header that threw the error         |
+| Payload        | uint8 array (0-20) | The payload of the packet that threw the error |
+
 # 2. BLE Protocol
 
 ### BLE_CHAR_DRIVE_STEER (UUID: a04295f7-eaa8-4536-b3a4-4e7ae4d72dc2)
@@ -204,6 +212,17 @@ If there are multiple objects on the same position, all of them will be removed.
 | X-start         | int8                      | X coordinate of the start position in decimeters            |
 | Y-start         | int8                      | Y coordinate of the start position in decimeters            |
 | Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
+
+### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
+
+The BLE protocol won't reply with the characteristic that threw an error,
+it will only show the payload that has wrong content. If the original payload
+was 20 bytes long, the last byte won't be shown.
+
+| Field Name     | Field Type         | Notes                                          |
+|----------------|--------------------|------------------------------------------------|
+| Error ID       | uint8              | The error ID, see [3.4.](#34Error-id-format)   |
+| Payload        | uint8 array (0-19) | The payload of the packet that threw the error |
 
 # 3. Bit fields
 
@@ -310,3 +329,12 @@ The following example shows a possible bit stream of the path finding data. In t
 | <span style="color:#3d99f5">111</span>    | right                    |
 | <span style="color:#3d3df5">111</span>    | right                    |
 
+## 3.4. Error id format
+
+| Encoded value | Error                             |
+|---------------|-----------------------------------|
+| 0x00          | unknown error                     |
+| 0x01          | unknown protocol                  |
+| 0x02          | known but not supported protocol  |
+| 0x03          | unknown packet id                 |
+| 0x04          | wrong payload                     |
