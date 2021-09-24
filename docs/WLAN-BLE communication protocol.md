@@ -111,7 +111,7 @@ No further data
 |-----------------|---------------------------|-------------------------------------------------------------|
 | X-start         | int8                      | X coordinate of the start position in decimeters            |
 | Y-start         | int8                      | Y coordinate of the start position in decimeters            |
-| Path steps data | Path steps data structure | see [Path steps data structure](#Path-steps-data-structure) |
+| Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
 
 ### Compass response (Packet ID: 0x04)
 
