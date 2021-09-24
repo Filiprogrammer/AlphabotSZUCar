@@ -96,7 +96,11 @@ No further data
 
 ### Path finding response (Packet ID: 0x83)
 
-WIP
+| Field Name      | Field Type                | Notes                                                       |
+|-----------------|---------------------------|-------------------------------------------------------------|
+| X-start         | int8                      | X coordinate of the start position in decimeters            |
+| Y-start         | int8                      | Y coordinate of the start position in decimeters            |
+| Path steps data | Path steps data structure | see [Path steps data structure](#Path-steps-data-structure) |
 
 ### Compass response (Packet ID: 0x84)
 
@@ -184,7 +188,11 @@ If there are multiple objects on the same position, all of them will be removed.
 
 ### BLE_CHAR_PATH_FINDING (UUID: 8dad4c9a-1a1c-4a42-a522-ded592f4ed99)
 
-WIP
+| Field Name      | Field Type                | Notes                                                       |
+|-----------------|---------------------------|-------------------------------------------------------------|
+| X-start         | int8                      | X coordinate of the start position in decimeters            |
+| Y-start         | int8                      | Y coordinate of the start position in decimeters            |
+| Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
 
 # 3. Bit fields
 
@@ -232,3 +240,62 @@ The first byte in the BLE characteristic describes which type of packet it is. T
 | Field Name | Field Type | Notes               |
 |------------|------------|---------------------|
 | Degree     | int16      | The measured degree |
+
+## 3.3. Path steps data structure
+
+The Path steps data structure contains a list of steps in certain directions which together form a path.
+The length of the data structure can be anywhere between 1 to 18 bytes long.
+The first 6 bits of the first byte contain the number of the following path steps.
+Note that bit 1 refers to the least significant bit.
+The path steps are stored such that several entries are within a single byte and sometimes an entry overlaps between multiple bytes.
+The first entry is stored in bits 7 and 8 of the first byte and in bit 1 of the second byte.
+Bits 2 through 4 of the second byte are the second entry, bits 5 through 7 are the third entry, and so on.
+With 3 bits per path step there are 8 possible values. The format of a path step is described in [Path step format](#331-Path-step-format)
+
+### 3.3.1. Path step format
+
+| Encoded value | Direction  |
+|---------------|------------|
+| 0             | left-up    |
+| 1             | left       |
+| 2             | left-down  |
+| 3             | up         |
+| 4             | right-down |
+| 5             | down       |
+| 6             | right-up   |
+| 7             | right      |
+
+### 3.3.2. Example bit stream
+
+The following example shows a possible bit stream of the path finding data. In the [example encoded in bytes](#333-example-encoded-in-bytes) all steps are explained explicitly.
+
+<span style="color:#f53d3d">001000</span>
+| <span style="color:#f5993d">001</span>
+| <span style="color:#f5f53d">010</span>
+| <span style="color:#99f53d">101</span>
+| <span style="color:#3df53d">101</span>
+| <span style="color:#3df599">100</span>
+| <span style="color:#3df5f5">100</span>
+| <span style="color:#3d99f5">111</span>
+| <span style="color:#3d3df5">111</span>
+| 00
+
+### 3.3.3. Example encoded in bytes
+
+<span style="color:#f5993d">01</span><span style="color:#f53d3d">001000</span>
+<span style="color:#3df53d">1</span><span style="color:#99f53d">101</span><span style="color:#f5f53d">010</span><span style="color:#f5993d">0</span>
+<span style="color:#3df5f5">100</span><span style="color:#3df599">100</span><span style="color:#3df53d">10</span>
+00<span style="color:#3d3df5">111</span><span style="color:#3d99f5">111</span>
+
+| Binary value of step                      | Step direction           |
+|-------------------------------------------|--------------------------|
+| <span style="color:#f53d3d">001000</span> | Number of path steps = 8 |
+| <span style="color:#f5993d">001</span>    | left                     |
+| <span style="color:#f5f53d">010</span>    | left-down                |
+| <span style="color:#99f53d">101</span>    | down                     |
+| <span style="color:#3df53d">101</span>    | down                     |
+| <span style="color:#3df599">100</span>    | right-down               |
+| <span style="color:#3df5f5">100</span>    | right-down               |
+| <span style="color:#3d99f5">111</span>    | right                    |
+| <span style="color:#3d3df5">111</span>    | right                    |
+
