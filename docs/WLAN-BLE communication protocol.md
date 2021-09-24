@@ -246,10 +246,10 @@ The first byte in the BLE characteristic describes which type of packet it is. T
 The Path steps data structure contains a list of steps in certain directions which together form a path.
 The length of the data structure can be anywhere between 1 to 18 bytes long.
 The first 6 bits of the first byte contain the number of the following path steps.
-Note that bit 1 refers to the least significant bit.
+Note that bit 0 refers to the least significant bit.
 The path steps are stored such that several entries are within a single byte and sometimes an entry overlaps between multiple bytes.
-The first entry is stored in bits 7 and 8 of the first byte and in bit 1 of the second byte.
-Bits 2 through 4 of the second byte are the second entry, bits 5 through 7 are the third entry, and so on.
+The first entry is stored in bits 6 and 7 of the first byte and in bit 0 of the second byte.
+Bits 1 to 3 of the second byte are the second entry, bits 4 to 6 are the third entry, and so on.
 With 3 bits per path step there are 8 possible values. The format of a path step is described in [Path step format](#331-Path-step-format)
 
 ### 3.3.1. Path step format
