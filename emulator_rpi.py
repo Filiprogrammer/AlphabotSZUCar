@@ -41,8 +41,6 @@ from emulator_devices import ULN2003_Steering
 from emulator_devices import HCSR04
 from emulator_devices import L298N_Driving
 from colorama import init, Fore, Back, Style
-import tkinter
-from tkinter import *
 
 def usage(arg0):
     print("Usage: " + arg0 + " <options>")
@@ -294,6 +292,10 @@ while i < (len(sys.argv) - 1):
         sys.exit(1)
 
     i += 1
+
+if not headless:
+    import tkinter
+    from tkinter import *
 
 init(strip=False)
 
