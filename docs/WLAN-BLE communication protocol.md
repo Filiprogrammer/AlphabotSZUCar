@@ -32,7 +32,9 @@ No further data
 
 ### Calibrate compass (Packet ID: 0x04)
 
-No further data
+| Field Name       | Field Type | Notes                                                                                                                                                  |
+|------------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Calibration type | uint8      | 0x01 for automatical compass calibration; 0x02 to start manual compass calibration; 0x03 to end manual compass calibration; 0x04 to set compass offset |
 
 ### Toggle request (Packet ID: 0x05)
 
