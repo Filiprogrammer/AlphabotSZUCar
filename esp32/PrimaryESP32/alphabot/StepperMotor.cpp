@@ -14,72 +14,70 @@ void StepperMotor::calibrate() {
     #endif
 }
 
-void stepperTask(void* parameter) {
-    StepperMotor* _this = (StepperMotor*)parameter;
-
+void StepperMotor::stepperTask() {
     for (;;) {
         delay(5);
 
-        if (_this->state == calibrating) {
-            if (_this->calibration_step < STEPPER_CALIBRATION_STEPS) {
-                _this->current_direction--;
-                digitalWrite(_this->pin_in4, (_this->current_direction % 4) == 0);
-                digitalWrite(_this->pin_in3, ((_this->current_direction + 1) % 4) == 0);
-                digitalWrite(_this->pin_in2, ((_this->current_direction + 2) % 4) == 0);
-                digitalWrite(_this->pin_in1, ((_this->current_direction + 3) % 4) == 0);
-            } else if (_this->calibration_step < (STEPPER_CALIBRATION_STEPS + STEPPER_CALIBRATION_STEPS / 2)) {
-                _this->current_direction++;
-                digitalWrite(_this->pin_in4, (_this->current_direction % 4) == 0);
-                digitalWrite(_this->pin_in3, ((_this->current_direction + 1) % 4) == 0);
-                digitalWrite(_this->pin_in2, ((_this->current_direction + 2) % 4) == 0);
-                digitalWrite(_this->pin_in1, ((_this->current_direction + 3) % 4) == 0);
+        if (state == calibrating) {
+            if (calibration_step < STEPPER_CALIBRATION_STEPS) {
+                current_direction--;
+                digitalWrite(pin_in4, (current_direction % 4) == 0);
+                digitalWrite(pin_in3, ((current_direction + 1) % 4) == 0);
+                digitalWrite(pin_in2, ((current_direction + 2) % 4) == 0);
+                digitalWrite(pin_in1, ((current_direction + 3) % 4) == 0);
+            } else if (calibration_step < (STEPPER_CALIBRATION_STEPS + STEPPER_CALIBRATION_STEPS / 2)) {
+                current_direction++;
+                digitalWrite(pin_in4, (current_direction % 4) == 0);
+                digitalWrite(pin_in3, ((current_direction + 1) % 4) == 0);
+                digitalWrite(pin_in2, ((current_direction + 2) % 4) == 0);
+                digitalWrite(pin_in1, ((current_direction + 3) % 4) == 0);
             } else {
                 #ifdef DEBUG
                 Serial.println("Calibrated");
                 #endif
-                _this->current_direction = 0;
-                _this->state = inactive;
-                digitalWrite(_this->pin_in4, 0);
-                digitalWrite(_this->pin_in3, 0);
-                digitalWrite(_this->pin_in2, 0);
-                digitalWrite(_this->pin_in1, 0);
+                current_direction = 0;
+                state = inactive;
+                digitalWrite(pin_in4, 0);
+                digitalWrite(pin_in3, 0);
+                digitalWrite(pin_in2, 0);
+                digitalWrite(pin_in1, 0);
             }
 
-            _this->calibration_step++;
+            calibration_step++;
             continue;
         }
 
-        if (_this->desired_direction == _this->current_direction) {
-            _this->state = inactive;
-            digitalWrite(_this->pin_in4, 0);
-            digitalWrite(_this->pin_in3, 0);
-            digitalWrite(_this->pin_in2, 0);
-            digitalWrite(_this->pin_in1, 0);
+        if (desired_direction == current_direction) {
+            state = inactive;
+            digitalWrite(pin_in4, 0);
+            digitalWrite(pin_in3, 0);
+            digitalWrite(pin_in2, 0);
+            digitalWrite(pin_in1, 0);
             continue;
         }
 
-        _this->state = turning;
+        state = turning;
 
-        if (_this->desired_direction > _this->current_direction)
-            _this->current_direction++;
-        else if (_this->desired_direction < _this->current_direction)
-            _this->current_direction--;
+        if (desired_direction > current_direction)
+            current_direction++;
+        else if (desired_direction < current_direction)
+            current_direction--;
 
-        digitalWrite(_this->pin_in4, (_this->current_direction % 4) == 0);
-        digitalWrite(_this->pin_in3, ((_this->current_direction + 1) % 4) == 0);
-        digitalWrite(_this->pin_in2, ((_this->current_direction + 2) % 4) == 0);
-        digitalWrite(_this->pin_in1, ((_this->current_direction + 3) % 4) == 0);
+        digitalWrite(pin_in4, (current_direction % 4) == 0);
+        digitalWrite(pin_in3, ((current_direction + 1) % 4) == 0);
+        digitalWrite(pin_in2, ((current_direction + 2) % 4) == 0);
+        digitalWrite(pin_in1, ((current_direction + 3) % 4) == 0);
     }
 
     vTaskDelete(NULL);
 }
 
-void startStepperTask(StepperMotor* _this) {
+void StepperMotor::startStepperTask() {
     xTaskCreate(
-        &stepperTask,
+        [](void* o) { static_cast<StepperMotor*>(o)->stepperTask(); },
         "stepperTask",
         8192,           // Stack size of task
-        _this,          // parameter of the task
+        this,           // parameter of the task
         1,              // priority of the task
         NULL);          // Task handle to keep track of created task
 }
@@ -98,5 +96,5 @@ StepperMotor::StepperMotor(uint8_t pin_in1, uint8_t pin_in2, uint8_t pin_in3, ui
     pinMode(pin_in3, OUTPUT);
     pinMode(pin_in4, OUTPUT);
 
-    startStepperTask(this);
+    startStepperTask();
 }
