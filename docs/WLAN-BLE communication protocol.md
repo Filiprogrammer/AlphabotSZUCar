@@ -3,7 +3,7 @@
 ## 1.1. Packet header
 
 The packet header consists of 1 byte. All following bytes are the payload of the packet.
-The last 3 bits (MSB) of the packet header define the protocol version. The currently only version is 000.
+The last 3 bits (MSB) of the packet header define the protocol version. Currently the only version is 000.
 
 ### 1.1.1. Example packet
 
@@ -38,7 +38,7 @@ No further data
 
 ### Toggle request (Packet ID: 0x05)
 
-see [3.1. Toggle bit field](#31-toggle---bitfield)
+see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 ### Ping request (Packet ID: 0x06)
 
@@ -78,7 +78,7 @@ see [3.1. Toggle bit field](#31-toggle---bitfield)
 
 ### Remove obstacle by position (Packet ID: 0x0B)
 
-If there are multiple objects on the same position, all of them will be removed.
+If there are multiple objects in the same position, all of them will be removed.
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
@@ -141,7 +141,7 @@ No further data
 
 | Field Name     | Field Type         | Notes                                          |
 |----------------|--------------------|------------------------------------------------|
-| Error ID       | uint8              | The error ID, see [3.4.](#34Error-id-format)   |
+| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)  |
 | Packet header  | uint8              | The packet header that threw the error         |
 | Payload        | uint8 array (0-20) | The payload of the packet that threw the error |
 
@@ -162,7 +162,7 @@ No further data
 
 ### BLE_CHAR_TOGGLE (UUID: fce001d4-864a-48f4-9c95-de928f1da07b)
 
-see [3.1. Toggle bit field](#31-toggle---bitfield)
+see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 ### BLE_CHAR_SENSOR (UUID: 4c999381-35e2-4af4-8443-ee8b9fe56ba0)
 
@@ -223,7 +223,7 @@ was 20 bytes long, the last byte won't be shown.
 
 | Field Name     | Field Type         | Notes                                          |
 |----------------|--------------------|------------------------------------------------|
-| Error ID       | uint8              | The error ID, see [3.4.](#34Error-id-format)   |
+| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)  |
 | Payload        | uint8 array (0-19) | The payload of the packet that threw the error |
 
 # 3. Bit fields
@@ -251,7 +251,7 @@ The 2nd byte changes certain logging options.
 
 ## 3.2. Sensor – Packets (BLE only)
 
-The first byte in the BLE characteristic describes which type of packet it is. The following bytes represent the data.
+The first byte in the BLE characteristic "BLE_CHAR_SENSOR" describes which type of packet it is. The following bytes represent the data.
 
 ### Distance sensor response (BLE Packet ID: 0x01)
 
