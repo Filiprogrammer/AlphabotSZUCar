@@ -137,7 +137,14 @@ No further data
 | Width      | uint16     | The width in centimetres        |
 | Height     | uint16     | The height in centimetres       |
 
-### Error message (Packet ID: 0x07)
+### Toggle response (Packet ID: 0x07)
+
+The toggle settings get automatically sent upon a new client connection, but they will aso be sent if
+the Alphabot changes a setting by himself.
+
+see [3.1. Toggle bit field](#31-toggle---bit-field)
+
+### Error message (Packet ID: 0x08)
 
 | Field Name     | Field Type         | Notes                                          |
 |----------------|--------------------|------------------------------------------------|
