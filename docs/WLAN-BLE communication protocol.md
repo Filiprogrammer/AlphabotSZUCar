@@ -139,7 +139,8 @@ No further data
 
 ### Toggle response (Packet ID: 0x07)
 
-The toggle settings get automatically sent upon a new client connection, but they will aso be sent if
+The toggle settings get automatically sent upon a new client connection, but they will also be sent if
+the Alphabot changes a setting by itself.
 
 see [3.1. Toggle bit field](#31-toggle---bit-field)
 
