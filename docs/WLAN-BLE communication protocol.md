@@ -258,27 +258,29 @@ The 2nd byte changes certain logging options.
 
 ## 3.2. Sensor – Packets (BLE only)
 
-The first byte in the BLE characteristic "BLE_CHAR_SENSOR" describes which type of packet it is. The following bytes represent the data.
+The first two bytes describe the packet types that will follow. There can be multiple sensor responses sent at a time. The following responses can be sent in one packet:
 
-### Distance sensor response (BLE Packet ID: 0x01)
+### Distance sensor response (Sensor type: 01)
 
-| Field Name | Field Type | Notes                       |
-|------------|------------|-----------------------------|
-| Degree     | int16      | The degree of the sensor    |
-| Distance   | uint16     | The distance in centimetres |
+| Field Name | Field Type | Notes                                    |
+|------------|------------|------------------------------------------|
+| Degree     | int8       | The degree of the sensor divided by 2    |
+| Distance   | uint8      | The distance in centimetres divided by 2 |
 
-### Positioning response (BLE Packet ID: 0x02)
+### Positioning response (Sensor type: 10)
+
+The position will be splitted in 3 bytes, 12 bit per coordinate
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
-| Position X | int16      | The x coordinate in centimetres |
-| Position Y | int16      | The y coordinate in centimetres |
+| Position X | int12      | The x coordinate in centimetres |
+| Position Y | int12      | The y coordinate in centimetres |
 
-### Compass response (BLE Packet ID: 0x03)
+### Compass response (Sensor type: 11)
 
-| Field Name | Field Type | Notes               |
-|------------|------------|---------------------|
-| Degree     | int16      | The measured degree |
+| Field Name | Field Type | Notes                            |
+|------------|------------|----------------------------------|
+| Degree     | int8       | The measured degree divided by 2 |
 
 ## 3.3. Path steps data structure
 
