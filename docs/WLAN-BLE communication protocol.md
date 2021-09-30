@@ -269,7 +269,7 @@ The first two bytes describe the packet types that will follow. There can be mul
 
 ### Positioning response (Sensor type: 10)
 
-The position will be splitted in 3 bytes, 12 bit per coordinate
+The position will be split into 3 bytes, 12 bit per coordinate
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
