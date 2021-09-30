@@ -1,4 +1,4 @@
-# 1. WLAN – bit based protocol
+# 1. WiFi – bit based protocol
 
 ## 1.1. Packet header
 
@@ -237,7 +237,7 @@ was 20 bytes long, the last byte won't be shown.
 
 ## 3.1. Toggle - Bit field
 
-In the WLAN protocol, the packet 0x05 is followed by a 2-byte bit field.
+In the WiFi protocol, the packet 0x05 is followed by a 2-byte bit field.
 in the BLE protocol it is a characteristic which is 2 bytes in size.
 This bit field allows various settings to be switched on or off. If a 0 is sent,
 that setting is going to be deactivated, if a 1 is sent it is going to be activated.
