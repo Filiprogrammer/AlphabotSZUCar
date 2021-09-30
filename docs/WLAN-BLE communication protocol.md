@@ -278,9 +278,9 @@ The position will be split into 3 bytes, 12 bit per coordinate
 
 ### Compass response (Sensor type: 11b)
 
-| Field Name | Field Type | Notes                            |
-|------------|------------|----------------------------------|
-| Degree     | int8       | The measured degree divided by 2 |
+| Field Name | Field Type | Notes               |
+|------------|------------|---------------------|
+| Degree     | int16      | The measured degree |
 
 ## 3.3. Path steps data structure
 
