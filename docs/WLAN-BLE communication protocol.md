@@ -264,7 +264,7 @@ The first two bytes describe the packet types that will follow. There can be mul
 
 | Field Name | Field Type | Notes                                    |
 |------------|------------|------------------------------------------|
-| Degree     | int8       | The degree of the sensor divided by 2    |
+| Degree     | uint8      | The degree of the sensor divided by 2    |
 | Distance   | uint8      | The distance in centimetres divided by 2 |
 
 ### Positioning response (Sensor type: 10b)
