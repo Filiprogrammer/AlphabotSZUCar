@@ -78,7 +78,7 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
-| ID         | uint8      | ID of the obstacle              |
+| ID         | uint16     | ID of the obstacle              |
 
 ### Remove obstacle by position (Packet ID: 0x0B)
 
@@ -141,7 +141,7 @@ Degree 90 is the right direction.
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
-| ID         | uint8      | The ID of the obstacle          |
+| ID         | uint16     | The ID of the obstacle          |
 | Position X | int16      | The x coordinate in centimetres |
 | Position Y | int16      | The y coordinate in centimetres |
 | Width      | uint16     | The width in centimetres        |
@@ -208,21 +208,27 @@ At first position, width and height is sent by the client, the Alphabot will ans
 | Position Y | int16      | The y coordinate in centimetres                   |
 | Width      | uint16     | The width in centimetres                          |
 | Height     | uint16     | The height in centimetres                         |
-| ID         | uint8      | The ID of the obstacle (gets set by the Alphabot) |
+| ID         | uint16     | The ID of the obstacle (gets set by the Alphabot) |
 
 ### BLE_CHAR_REMOVE_OBSTACLE (UUID: 6d43e0df-682b-45ef-abb7-814ecf475771)
 
-Obstacles can be removed either by Position or by ID, if the Position is set, it will be used for deletion. 
-If the Position is 0xFFFF, on x and y, the ID will be used for deletion. 
-If the Position is 0xFFFF and the ID is 0xFF all obstacles will be removed.
-The Alphabot will set all values to 0 when the deletion is finished. 
+Obstacles can be removed either by Position or by ID.
+If the characteristic is 4 bytes long, the values are interpreted as the position.
+If the characteristic is 2 bytes long, the value is interpreted as the obstacle id.
+The Alphabot will set all values to 0 when the deletion is finished.
 If there are multiple objects on the same position, all of them will be removed.
 
-| Field Name | Field Type | Notes                                                                      |
-|------------|------------|----------------------------------------------------------------------------|
-| Position X | int16      | The x coordinate in centimetres                                            |
-| Position Y | int16      | The y coordinate in centimetres                                            |
-| ID         | uint8      | The ID of the obstacle; if the value is 0xFF all obstacles will be cleared |
+
+| Field Name | Field Type | Notes                           |
+|------------|------------|---------------------------------|
+| Position X | int16      | The x coordinate in centimetres |
+| Position Y | int16      | The y coordinate in centimetres |
+
+#### OR
+
+| Field Name | Field Type | Notes                  |
+|------------|------------|------------------------|
+| ID         | uint16     | The ID of the obstacle |
 
 ### BLE_CHAR_PATH_FINDING (UUID: 8dad4c9a-1a1c-4a42-a522-ded592f4ed99)
 
