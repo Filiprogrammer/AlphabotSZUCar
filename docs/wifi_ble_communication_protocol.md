@@ -273,7 +273,15 @@ The 2nd byte changes certain logging options.
 
 ## 3.2. Sensor – Packets (BLE only)
 
-The first two bytes describe the packet types that will follow. There can be multiple sensor responses sent at a time. The following responses can be sent in one packet:
+The first two bytes describe the packet types that will follow. Then the payload of these packets will follow. There can be multiple sensor responses sent at a time. The following responses can be sent in one packet:
+
+### Example bit stream
+
+In the first byte 0b01 is sent twice, because two distance sensor packets will follow, the following bits in the first two byte are filled with 0. Byte 2 and 3 represent the payload of the first distance sensor data. Byte 4 and 5 represent the payload of the second distance sensor data.
+
+| Byte 0   | Byte 1   | Byte 2   | Byte 3   | Byte 4   | Byte 5   |
+|----------|----------|----------|----------|----------|----------|
+| 00000101 | 00000000 | 00000101 | 10000000 | 01100100 | 10000001 |
 
 ### Distance sensor response (Sensor type: 0b01)
 
