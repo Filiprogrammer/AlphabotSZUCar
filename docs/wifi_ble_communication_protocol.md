@@ -22,7 +22,7 @@ The last 3 bits (MSB) of the packet header define the protocol version. Currentl
 
 ### Distance sensor request (Packet ID: 0x02)
 
-If the degree value corresponds to no sensor, an error will be sent back (WrongPayloadError).
+If the degree value corresponds to no sensor, a "wrong payload error" will be sent.
 
 | Field Name | Field Type | Notes                            |
 |------------|------------|----------------------------------|
