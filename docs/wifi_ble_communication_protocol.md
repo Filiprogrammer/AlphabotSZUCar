@@ -23,6 +23,7 @@ The last 3 bits (MSB) of the packet header define the protocol version. Currentl
 ### Distance sensor request (Packet ID: 0x02)
 
 If the degree value corresponds to no sensor, a "wrong payload error" will be sent.
+Degree 0 represents the direction, in which the Alphabot is headed towards.
 
 | Field Name | Field Type | Notes                            |
 |------------|------------|----------------------------------|
@@ -97,6 +98,8 @@ No further data
 
 ### Distance sensor response (Packet ID: 0x01)
 
+Degree 0 represents the direction, in which the Alphabot is headed towards.
+
 | Field Name | Field Type | Notes                            |
 |------------|------------|----------------------------------|
 | Degree     | int16      | The degree of the sensor (0-359) |
@@ -118,6 +121,8 @@ No further data
 | Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
 
 ### Compass response (Packet ID: 0x04)
+
+Degree 0 represents the direction, in which the Alphabot is headed towards.
 
 | Field Name | Field Type | Notes                       |
 |------------|------------|-----------------------------|
@@ -264,6 +269,8 @@ The first two bytes describe the packet types that will follow. There can be mul
 
 ### Distance sensor response (Sensor type: 0b01)
 
+Degree 0 represents the direction, in which the Alphabot is headed towards.
+
 | Field Name | Field Type | Notes                                         |
 |------------|------------|-----------------------------------------------|
 | Degree     | uint8      | The degree of the sensor divided by 2 (0-179) |
@@ -279,6 +286,8 @@ The position will be split into 3 bytes, 12 bit per coordinate
 | Position Y | int12      | The y coordinate in centimetres |
 
 ### Compass response (Sensor type: 0b11)
+
+Degree 0 represents the direction, in which the Alphabot is headed towards.
 
 | Field Name | Field Type | Notes                       |
 |------------|------------|-----------------------------|
