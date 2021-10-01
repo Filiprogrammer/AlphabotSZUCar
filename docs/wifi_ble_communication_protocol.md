@@ -260,14 +260,14 @@ The 2nd byte changes certain logging options.
 
 The first two bytes describe the packet types that will follow. There can be multiple sensor responses sent at a time. The following responses can be sent in one packet:
 
-### Distance sensor response (Sensor type: 01b)
+### Distance sensor response (Sensor type: 0b01)
 
 | Field Name | Field Type | Notes                                    |
 |------------|------------|------------------------------------------|
 | Degree     | uint8      | The degree of the sensor divided by 2    |
 | Distance   | uint8      | The distance in centimetres divided by 2 |
 
-### Positioning response (Sensor type: 10b)
+### Positioning response (Sensor type: 0b10)
 
 The position will be split into 3 bytes, 12 bit per coordinate
 
@@ -276,7 +276,7 @@ The position will be split into 3 bytes, 12 bit per coordinate
 | Position X | int12      | The x coordinate in centimetres |
 | Position Y | int12      | The y coordinate in centimetres |
 
-### Compass response (Sensor type: 11b)
+### Compass response (Sensor type: 0b11)
 
 | Field Name | Field Type | Notes               |
 |------------|------------|---------------------|
