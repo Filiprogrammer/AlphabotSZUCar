@@ -234,14 +234,13 @@ If there are multiple objects on the same position, all of them will be removed.
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
-The BLE protocol won't reply with the characteristic that threw an error,
-it will only show the payload that has wrong content. If the original payload
-was 20 bytes long, the last byte won't be shown.
+If the original payload was 19 or 20 bytes long, the last one or two bytes won't be shown.
 
-| Field Name     | Field Type         | Notes                                          |
-|----------------|--------------------|------------------------------------------------|
-| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)  |
-| Payload        | uint8 array (0-19) | The payload of the packet that threw the error |
+| Field Name     | Field Type         | Notes                                                               |
+|----------------|--------------------|---------------------------------------------------------------------|
+| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)                       |
+| BLE CHAR ID    | uint8              | The first byte of the BLE characteristic UUID that threw the error  |
+| Payload        | uint8 array (0-18) | The payload of the packet that threw the error                      |
 
 # 3. Bit fields
 
