@@ -22,9 +22,11 @@ The last 3 bits (MSB) of the packet header define the protocol version. Currentl
 
 ### Distance sensor request (Packet ID: 0x02)
 
-| Field Name | Field Type | Notes                    |
-|------------|------------|--------------------------|
-| Degree     | int16      | The degree of the sensor |
+If the degree value corresponds to no sensor, an error will be sent back (WrongPayloadError).
+
+| Field Name | Field Type | Notes                            |
+|------------|------------|----------------------------------|
+| Degree     | int16      | The degree of the sensor (0-359) |
 
 ### Calibrate steering (Packet ID: 0x03)
 
@@ -95,10 +97,10 @@ No further data
 
 ### Distance sensor response (Packet ID: 0x01)
 
-| Field Name | Field Type | Notes                       |
-|------------|------------|-----------------------------|
-| Degree     | int16      | The degree of the sensor    |
-| Distance   | uint16     | The distance in centimetres |
+| Field Name | Field Type | Notes                            |
+|------------|------------|----------------------------------|
+| Degree     | int16      | The degree of the sensor (0-359) |
+| Distance   | uint16     | The distance in centimetres      |
 
 ### Positioning response (Packet ID: 0x02)
 
@@ -117,9 +119,9 @@ No further data
 
 ### Compass response (Packet ID: 0x04)
 
-| Field Name | Field Type | Notes               |
-|------------|------------|---------------------|
-| Degree     | int16      | The measured degree |
+| Field Name | Field Type | Notes                       |
+|------------|------------|-----------------------------|
+| Degree     | int16      | The measured degree (0-359) |
 
 ### Ping response (Packet ID: 0x05)
 
@@ -262,10 +264,10 @@ The first two bytes describe the packet types that will follow. There can be mul
 
 ### Distance sensor response (Sensor type: 0b01)
 
-| Field Name | Field Type | Notes                                    |
-|------------|------------|------------------------------------------|
-| Degree     | uint8      | The degree of the sensor divided by 2    |
-| Distance   | uint8      | The distance in centimetres divided by 2 |
+| Field Name | Field Type | Notes                                         |
+|------------|------------|-----------------------------------------------|
+| Degree     | uint8      | The degree of the sensor divided by 2 (0-179) |
+| Distance   | uint8      | The distance in centimetres divided by 2      |
 
 ### Positioning response (Sensor type: 0b10)
 
@@ -278,9 +280,9 @@ The position will be split into 3 bytes, 12 bit per coordinate
 
 ### Compass response (Sensor type: 0b11)
 
-| Field Name | Field Type | Notes               |
-|------------|------------|---------------------|
-| Degree     | int16      | The measured degree |
+| Field Name | Field Type | Notes                       |
+|------------|------------|-----------------------------|
+| Degree     | int16      | The measured degree (0-359) |
 
 ## 3.3. Path steps data structure
 
