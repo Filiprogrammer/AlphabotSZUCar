@@ -11,3 +11,4 @@ rpi/sd_image/bcm2*-rpi-*.dtb
 .idea/
 build/
 clients/AlphabotAndroidClient/local.properties
+clients/AlphabotClientLibrary/AlphabotClientLibrary/IHateMicrosoft/
