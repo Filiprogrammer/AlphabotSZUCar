@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace AlphabotClientLibrary.Shared.Models
 {
-    class Position
+    public class Position
     {
+        public short PositionX { get; private set; }
+        public short PositionY { get; private set; }
+
+        public Position(short x, short y)
+        {
+            PositionX = x;
+            PositionY = y;
+        }
     }
 }

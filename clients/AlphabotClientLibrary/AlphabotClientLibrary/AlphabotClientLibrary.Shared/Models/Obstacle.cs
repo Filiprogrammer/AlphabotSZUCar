@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace AlphabotClientLibrary.Shared.Models
 {
-    class Obstacle
+    public class Obstacle
     {
+        public byte Id { get; private set; }
+        public Position Position { get; private set; }
+        public ushort Width { get; private set; }
+        public ushort Height { get; private set; }
     }
 }

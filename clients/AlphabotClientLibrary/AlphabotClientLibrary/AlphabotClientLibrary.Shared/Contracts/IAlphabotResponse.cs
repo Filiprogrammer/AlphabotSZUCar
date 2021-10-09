@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AlphabotClientLibrary.Shared.Contracts
 {
-    interface IAlphabotResponse
+    public interface IAlphabotResponse
     {
     }
 }

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace AlphabotClientLibrary.Shared.Contracts
 {
-    interface IAlphabotRequest
+    public interface IAlphabotRequest
     {
+        public byte[] GetBytes();
     }
 }
