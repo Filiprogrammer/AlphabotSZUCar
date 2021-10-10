@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AlphabotClientLibrary.Shared.Contracts;
+using AlphabotClientLibrary.Shared.Models;
 
 namespace AlphabotClientLibrary.Shared.Requests
 {
     public class TestRequest : IAlphabotRequest
     {
+        public BleInformation GetBleInformation()
+        {
+            throw new NotImplementedException();
+        }
+
         public byte[] GetBytes()
         {
             byte[] test = new byte[2];
