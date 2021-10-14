@@ -24,11 +24,9 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public byte[] GetBytes()
         {
-            byte[] ret = new byte[1];
-           
-            ret[0] = 0x03; //Packet ID 0x03
+            byte[] packetId = { 0x03 };
 
-            return ret;
+            return packetId;
         }
     }
 }

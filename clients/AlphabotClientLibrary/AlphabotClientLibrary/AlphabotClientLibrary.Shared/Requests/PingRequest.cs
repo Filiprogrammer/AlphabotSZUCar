@@ -21,17 +21,11 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public byte[] GetBytes()
         {
-            byte[] ret;
-
-            byte[] packetId = new byte[1];
-            packetId[0] = 0x06; //Packet ID 0x06
+            byte[] packetId = { 0x06 };
 
             byte[] time = GetMillisecondsSinceEpoch();
 
-            //combine packet id and time to one array
-            ret = packetId.Concat(time).ToArray();
-
-            return ret;
+            return packetId.Concat(time).ToArray();
         }
 
         private byte[] GetMillisecondsSinceEpoch()
