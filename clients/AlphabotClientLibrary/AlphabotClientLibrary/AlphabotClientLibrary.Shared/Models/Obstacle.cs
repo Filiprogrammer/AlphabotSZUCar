@@ -32,6 +32,24 @@ namespace AlphabotClientLibrary.Shared.Models
             Id = id;
         }
 
+        public Obstacle(byte[] bytes)
+        {
+            byte[] positionBytes = new byte[4];
+            byte[] widthBytes = new byte[2];
+            byte[] heightBytes = new byte[2];
+            byte[] idBytes = new byte[2];
+
+            Array.Copy(bytes, 0, positionBytes, 0, 4);
+            Array.Copy(bytes, 4, widthBytes, 0, 2);
+            Array.Copy(bytes, 6, heightBytes, 0, 2);
+            Array.Copy(bytes, 8, idBytes, 0, 2);
+
+            Position = new Position(positionBytes);
+            Width = BitConverter.ToUInt16(widthBytes);
+            Height = BitConverter.ToUInt16(heightBytes);
+            Id = BitConverter.ToUInt16(idBytes);
+        }
+
         /// <summary>
         /// Converts the obstacle data into a byte array. If the Id was not set in the constructor, the array ends after byte[7] without the Id
         /// </summary>
@@ -64,7 +82,7 @@ namespace AlphabotClientLibrary.Shared.Models
             ret[6] = heightInBytes[1];
             ret[7] = heightInBytes[0];
 
-            if(Id != 65535)
+            if (Id != 65535)
             {
                 byte[] idInBytes = BitConverter.GetBytes(Id);
                 ret[8] = idInBytes[1];

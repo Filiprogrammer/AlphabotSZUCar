@@ -23,6 +23,23 @@ namespace AlphabotClientLibrary.Shared.Models
             PositionY = y;
         }
 
+        public Position(byte[] bytes)
+        {
+            if(bytes.Length != 4)
+            {
+                throw new ArgumentException("The array must contain of 4 elements");
+            }
+
+            byte[] posXBytes = new byte[2];
+            Array.Copy(bytes, 0, posXBytes, 0, 2);
+
+            byte[] posYBytes = new byte[2];
+            Array.Copy(bytes, 2, posYBytes, 0, 2);
+
+            PositionX = BitConverter.ToInt16(posXBytes);
+            PositionY = BitConverter.ToInt16(posYBytes);
+        }
+
         /// <summary>
         /// Converts the position in a byte array, 
         /// </summary>
