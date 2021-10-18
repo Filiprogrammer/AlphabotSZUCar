@@ -1,5 +1,7 @@
 # 1. WiFi – bit based protocol
 
+All byte sequences (int16, int64...) correspond to the "little-endian" standard.
+
 ## 1.1. Packet header
 
 The packet header consists of 1 byte. All following bytes are the payload of the packet.
