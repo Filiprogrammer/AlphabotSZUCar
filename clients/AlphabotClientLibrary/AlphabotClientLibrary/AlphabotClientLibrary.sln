@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlphabotClientLibrary.Core.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlphabotClientLibrary.Core.Ble", "AlphabotClientLibrary.Core.Ble\AlphabotClientLibrary.Core.Ble.csproj", "{67A7B57F-7C1A-44FE-BADE-E619ED2FCA66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphabotClientLibrary.Test", "AlphabotClientLibrary.Test\AlphabotClientLibrary.Test.csproj", "{A3437C37-F7AB-4117-B2F7-F75F8A5A1F2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +39,10 @@ Global
 		{AFE8B958-9C70-4E99-94BC-8C5A4644526D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFE8B958-9C70-4E99-94BC-8C5A4644526D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFE8B958-9C70-4E99-94BC-8C5A4644526D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3437C37-F7AB-4117-B2F7-F75F8A5A1F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3437C37-F7AB-4117-B2F7-F75F8A5A1F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3437C37-F7AB-4117-B2F7-F75F8A5A1F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3437C37-F7AB-4117-B2F7-F75F8A5A1F2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
