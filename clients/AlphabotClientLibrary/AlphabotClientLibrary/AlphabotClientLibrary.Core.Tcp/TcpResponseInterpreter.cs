@@ -59,8 +59,8 @@ namespace AlphabotClientLibrary.Core.Tcp
             byte[] distanceBytes = new byte[2];
             Array.Copy(DataBytes, 2, distanceBytes, 0, 2);
 
-            degree = BitConverter.ToInt16(degreeBytes);
-            distance = BitConverter.ToUInt16(distanceBytes);
+            degree = (short)(degreeBytes[0] | (degreeBytes[1] << 8));
+            distance = (ushort)(distanceBytes[0] | (distanceBytes[1] << 8));
 
             return new DistanceSensorResponse(degree, distance);
         }
@@ -81,7 +81,7 @@ namespace AlphabotClientLibrary.Core.Tcp
 
             Array.Copy(DataBytes, degreeBytes, 2);
 
-            degree = BitConverter.ToInt16(degreeBytes);
+            degree = (short)(degreeBytes[0] | (degreeBytes[1] << 8));
 
             return new CompassResponse(degree);
         }

@@ -36,8 +36,8 @@ namespace AlphabotClientLibrary.Shared.Models
             byte[] posYBytes = new byte[2];
             Array.Copy(bytes, 2, posYBytes, 0, 2);
 
-            PositionX = BitConverter.ToInt16(posXBytes);
-            PositionY = BitConverter.ToInt16(posYBytes);
+            PositionX = (short)(posXBytes[0] | (posXBytes[1] << 8));
+            PositionY = (short)(posYBytes[0] | (posYBytes[1] << 8));
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace AlphabotClientLibrary.Shared.Models
             byte[] distanceXInBytes = BitConverter.GetBytes(PositionX);
             byte[] distanceYInBytes = BitConverter.GetBytes(PositionY);
 
-            ret[0] = distanceXInBytes[1];
-            ret[1] = distanceXInBytes[0];
-            ret[2] = distanceYInBytes[1];
-            ret[3] = distanceYInBytes[0];
+            ret[0] = distanceXInBytes[0];
+            ret[1] = distanceXInBytes[1];
+            ret[2] = distanceYInBytes[0];
+            ret[3] = distanceYInBytes[1];
 
             return ret;
         }

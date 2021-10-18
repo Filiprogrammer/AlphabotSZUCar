@@ -31,8 +31,16 @@ namespace AlphabotClientLibrary.Shared.Requests
         private byte[] GetMillisecondsSinceEpoch()
         {
             long millisecondsSinceEpoch = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
-            byte[] timeInBytes = BitConverter.GetBytes(millisecondsSinceEpoch);
+            byte[] timeInBytes = {
+                (byte)millisecondsSinceEpoch,
+                (byte)(millisecondsSinceEpoch >> 8),
+                (byte)(millisecondsSinceEpoch >> 16),
+                (byte)(millisecondsSinceEpoch >> 24),
+                (byte)(millisecondsSinceEpoch >> 32),
+                (byte)(millisecondsSinceEpoch >> 40),
+                (byte)(millisecondsSinceEpoch >> 48),
+                (byte)(millisecondsSinceEpoch >> 56)
+            };
 
             return timeInBytes;
         }

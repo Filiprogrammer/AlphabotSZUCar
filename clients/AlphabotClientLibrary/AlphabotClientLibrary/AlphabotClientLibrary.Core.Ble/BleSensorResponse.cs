@@ -82,7 +82,7 @@ namespace AlphabotClientLibrary.Core.Ble
 
             Array.Copy(_bytes, index, bytes, 0, 2);
 
-            short degree = BitConverter.ToInt16(bytes);
+            short degree = (short)(bytes[0] | ((bytes[1] << 8) & 0x0F));
 
             _sensorPackets.Add(new CompassResponse(degree));
         }

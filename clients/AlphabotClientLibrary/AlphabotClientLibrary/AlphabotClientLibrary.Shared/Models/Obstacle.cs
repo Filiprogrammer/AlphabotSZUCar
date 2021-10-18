@@ -45,9 +45,9 @@ namespace AlphabotClientLibrary.Shared.Models
             Array.Copy(bytes, 8, idBytes, 0, 2);
 
             Position = new Position(positionBytes);
-            Width = BitConverter.ToUInt16(widthBytes);
-            Height = BitConverter.ToUInt16(heightBytes);
-            Id = BitConverter.ToUInt16(idBytes);
+            Width = (ushort)(widthBytes[0] | (widthBytes[1] << 8));
+            Height = (ushort)(heightBytes[0] | (heightBytes[1] << 8));
+            Id = (ushort)(idBytes[0] | (idBytes[1] << 8));
         }
 
         /// <summary>
@@ -77,16 +77,16 @@ namespace AlphabotClientLibrary.Shared.Models
             ret[1] = posData[1];
             ret[2] = posData[2];
             ret[3] = posData[3];
-            ret[4] = widthInBytes[1];
-            ret[5] = widthInBytes[0];
-            ret[6] = heightInBytes[1];
-            ret[7] = heightInBytes[0];
+            ret[4] = widthInBytes[0];
+            ret[5] = widthInBytes[1];
+            ret[6] = heightInBytes[0];
+            ret[7] = heightInBytes[1];
 
             if (Id != 65535)
             {
                 byte[] idInBytes = BitConverter.GetBytes(Id);
-                ret[8] = idInBytes[1];
-                ret[9] = idInBytes[0];
+                ret[8] = idInBytes[0];
+                ret[9] = idInBytes[1];
             }
 
             return ret;

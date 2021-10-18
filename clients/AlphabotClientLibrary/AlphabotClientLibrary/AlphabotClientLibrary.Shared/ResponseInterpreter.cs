@@ -22,7 +22,11 @@ namespace AlphabotClientLibrary.Shared
 
             Array.Copy(DataBytes, timeBytes, 8);
 
-            time = BitConverter.ToInt64(timeBytes);
+            //time = BitConverter.ToInt64(timeBytes);
+            time = timeBytes[0] | (timeBytes[1] << 8) |
+                (timeBytes[2] << 16) | (timeBytes[3] << 24) |
+                (timeBytes[4] << 32) | (timeBytes[5] << 40) |
+                (timeBytes[6] << 48) | (timeBytes[7] << 56);
 
             return new PingResponse(time);
         }
@@ -50,9 +54,28 @@ namespace AlphabotClientLibrary.Shared
             sbyte startByteX = (sbyte)DataBytes[0];
             sbyte startByteY = (sbyte)DataBytes[1];
 
-            throw new NotImplementedException();
+            if (DataBytes != null && DataBytes.Length >= 3)
+            { 
+                int len = DataBytes[2] & 0x3F;
+                List<PathFindingResponse.PathFindingStep> steps = new List<PathFindingResponse.PathFindingStep>();
 
-            return new PathFindingResponse(startByteX, startByteY, null);
+                for (int i = 0; i < len; ++i)
+                {
+                    int val = ((DataBytes[2 + (i * 3 + 6) / 8] & 0xFF) >> ((i * 3 + 6) % 8)) & 7;
+
+                    if (((i * 3 + 6) % 8) > 5)
+                        val |= ((DataBytes[3 + (i * 3 + 6) / 8] & 0xFF) << (8 - ((i * 3 + 6) % 8))) & 7;
+
+                    if (val == 4)
+                        val = 8;
+
+                    steps.Add((PathFindingResponse.PathFindingStep) val);                  
+                }
+
+                return new PathFindingResponse(startByteX, startByteY, steps);
+            }
+
+            throw new ArgumentException("The Bytes doesn't fit the Path Finding Steps protocol definition.");
         }
 
         protected ErrorResponse GetErrorResponse()

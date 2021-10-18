@@ -50,8 +50,8 @@ namespace AlphabotClientLibrary.Shared.Requests
                 bytes = new byte[2];
 
                 byte[] idInBytes = BitConverter.GetBytes(_id);
-                bytes[0] = idInBytes[1];
-                bytes[1] = idInBytes[0];
+                bytes[0] = idInBytes[0];
+                bytes[1] = idInBytes[1];
             }
             //else it will be removed by its position
             else
@@ -74,8 +74,8 @@ namespace AlphabotClientLibrary.Shared.Requests
                 ret[0] = 0x0A; //packet Id 0x0A
 
                 byte[] idInBytes = BitConverter.GetBytes(_id);
-                ret[1] = idInBytes[1];
-                ret[2] = idInBytes[0];
+                ret[1] = idInBytes[0];
+                ret[2] = idInBytes[1];
             }
             //else it will be removed by its position
             else

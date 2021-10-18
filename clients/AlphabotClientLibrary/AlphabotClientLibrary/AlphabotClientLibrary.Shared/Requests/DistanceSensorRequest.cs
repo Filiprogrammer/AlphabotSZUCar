@@ -34,8 +34,8 @@ namespace AlphabotClientLibrary.Shared.Requests
 
             ret[0] = 0x02; //Packet ID 0x02
 
-            ret[1] = shortInBytes[0];
-            ret[2] = shortInBytes[1];
+            ret[1] = shortInBytes[1];
+            ret[2] = shortInBytes[0];
 
             return ret;
         }
