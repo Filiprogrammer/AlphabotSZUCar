@@ -1,5 +1,7 @@
 # 1. WiFi – bit based protocol
 
+All byte sequences (int16, int64...) correspond to the "little-endian" standard.
+
 ## 1.1. Packet header
 
 The packet header consists of 1 byte. All following bytes are the payload of the packet.
@@ -141,11 +143,11 @@ Degree 90 is the right direction.
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
-| ID         | uint16     | The ID of the obstacle          |
 | Position X | int16      | The x coordinate in centimetres |
 | Position Y | int16      | The y coordinate in centimetres |
 | Width      | uint16     | The width in centimetres        |
 | Height     | uint16     | The height in centimetres       |
+| ID         | uint16     | The ID of the obstacle          |
 
 ### Toggle response (Packet ID: 0x07)
 
