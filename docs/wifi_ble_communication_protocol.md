@@ -141,11 +141,11 @@ Degree 90 is the right direction.
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
-| ID         | uint16     | The ID of the obstacle          |
 | Position X | int16      | The x coordinate in centimetres |
 | Position Y | int16      | The y coordinate in centimetres |
 | Width      | uint16     | The width in centimetres        |
 | Height     | uint16     | The height in centimetres       |
+| ID         | uint16     | The ID of the obstacle          |
 
 ### Toggle response (Packet ID: 0x07)
 
