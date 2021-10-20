@@ -12,6 +12,7 @@ namespace AlphabotClientLibrary.Shared.Models
         /// X coordinate in centimetres
         /// </summary>
         public short PositionX { get; private set; }
+
         /// <summary>
         /// Y coordinate in centimetres
         /// </summary>
