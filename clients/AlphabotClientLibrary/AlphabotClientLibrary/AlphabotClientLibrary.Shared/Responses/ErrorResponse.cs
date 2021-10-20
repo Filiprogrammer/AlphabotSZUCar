@@ -15,11 +15,11 @@ namespace AlphabotClientLibrary.Shared.Responses
 
         public enum ErrorType
         {
-            unknownError = 0x00,
-            unknownProtocol = 0x01,
-            notSupportedProtocol = 0x02,
-            unknownPacketId = 0x03,
-            wrongPayload = 0x04
+            UnknownError = 0x00,
+            UnknownProtocol = 0x01,
+            NotSupportedProtocol = 0x02,
+            UnknownPacketId = 0x03,
+            WrongPayload = 0x04
         }
 
         public ErrorResponse(ErrorType errorType, byte[] packet)

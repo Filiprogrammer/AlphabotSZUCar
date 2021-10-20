@@ -14,10 +14,10 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public enum CompassCalibrationType
         {
-            startAutomated = 0x01,
-            startManual = 0x02,
-            endManual = 0x03,
-            setCompassOffset = 0x04
+            StartAutomated = 0x01,
+            StartManual = 0x02,
+            EndManual = 0x03,
+            SetCompassOffset = 0x04
         }
 
         public CalibrateCompassRequest(CompassCalibrationType compassCalibrationType)
@@ -32,16 +32,16 @@ namespace AlphabotClientLibrary.Shared.Requests
 
             switch(_compassCalibrationType)
             {
-                case CompassCalibrationType.startAutomated:
+                case CompassCalibrationType.StartAutomated:
                     bytes[0] = 0x02;
                     break;
-                case CompassCalibrationType.startManual:
+                case CompassCalibrationType.StartManual:
                     bytes[0] = 0x03;
                     break;
-                case CompassCalibrationType.endManual:
+                case CompassCalibrationType.EndManual:
                     bytes[0] = 0x00;
                     break;
-                case CompassCalibrationType.setCompassOffset:
+                case CompassCalibrationType.SetCompassOffset:
                     bytes[0] = 0x04;
                     break;
             }

@@ -12,14 +12,14 @@ namespace AlphabotClientLibrary.Shared.Responses
     {
         public enum PathFindingStep
         {
-            leftUp = 0x00,
-            left = 0x01,
-            leftDown = 0x02,
-            up = 0x03,
-            rightDown = 0x04,
-            down = 0x05,
-            rightUp = 0x06,
-            right = 0x07
+            LeftUp = 0x00,
+            Left = 0x01,
+            LeftDown = 0x02,
+            Up = 0x03,
+            RightDown = 0x04,
+            Down = 0x05,
+            RightUp = 0x06,
+            Right = 0x07
         }
 
         public sbyte StartPositionX { get; private set; }
