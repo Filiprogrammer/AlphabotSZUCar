@@ -9,7 +9,7 @@ using AlphabotClientLibrary.Shared.Models;
 
 namespace AlphabotClientLibrary.Shared.Requests
 {
-    public class ToggleResponse : IAlphabotRequest
+    public class ToggleRequest : IAlphabotRequest
     {
         #region properties
         public bool DoCompassCalibration { get; set; }
@@ -28,9 +28,9 @@ namespace AlphabotClientLibrary.Shared.Requests
         public bool LogGyroscope { get; set; }
         #endregion
 
-        public ToggleResponse() { }
+        public ToggleRequest() { }
 
-        public ToggleResponse(ushort bitField)
+        public ToggleRequest(ushort bitField)
         {
             byte[] bytes = BitConverter.GetBytes(bitField);
 
