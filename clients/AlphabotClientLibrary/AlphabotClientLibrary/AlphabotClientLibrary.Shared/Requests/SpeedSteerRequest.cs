@@ -34,7 +34,7 @@ namespace AlphabotClientLibrary.Shared.Requests
         {
             byte[] ret = new byte[3];
 
-            ret[0] = 0x01; //Packet ID 0x01
+            ret[0] = 0x01; // Packet ID 0x01
 
             ret[1] = (byte) _speed;
             ret[2] = (byte) _steer;
