@@ -58,7 +58,7 @@ namespace AlphabotClientLibrary.Shared.Models
         {
             byte[] ret;
 
-            //if the id is 65535, it was not set in constructor and will not be added in array
+            // If the id is 65535, it was not set in constructor and will not be added to the array.
             if (Id == 65535)
             {
                 ret = new byte[8];
