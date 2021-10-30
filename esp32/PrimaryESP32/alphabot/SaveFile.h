@@ -15,11 +15,11 @@ private:
     void read();
 
 public:
-    int16_t getMagnetSensorCalibratedMinX();
-    int16_t getMagnetSensorCalibratedMaxX();
-    int16_t getMagnetSensorCalibratedMinY();
-    int16_t getMagnetSensorCalibratedMaxY();
-    float getCompassAngleOffset();
+    int16_t getMagnetSensorCalibratedMinX() const;
+    int16_t getMagnetSensorCalibratedMaxX() const;
+    int16_t getMagnetSensorCalibratedMinY() const;
+    int16_t getMagnetSensorCalibratedMaxY() const;
+    float getCompassAngleOffset() const;
     void setMagnetSensorCalibratedMinX(int16_t min_x);
     void setMagnetSensorCalibratedMaxX(int16_t max_x);
     void setMagnetSensorCalibratedMinY(int16_t min_y);

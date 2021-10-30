@@ -75,7 +75,7 @@ void DrivingAssistent::computeNextStep(int8_t* spd, int8_t* steer) {
     *steer = this->steer;
 }
 
-int8_t DrivingAssistent::safeSpeedForward(int8_t speed) {
+int8_t DrivingAssistent::safeSpeedForward(int8_t speed) const {
     float stoppingDistance = (speed * FULL_SPEED_ROLL) / 128.0;
 
     if (min(this->dist_front, min(this->dist_left, this->dist_right)) <= (MIN_DIST_TO_OBSTACLE + stoppingDistance)) {
@@ -93,7 +93,7 @@ int8_t DrivingAssistent::safeSpeedForward(int8_t speed) {
     return speed;
 }
 
-int8_t DrivingAssistent::safeSpeedBackward(int8_t speed) {
+int8_t DrivingAssistent::safeSpeedBackward(int8_t speed) const {
     float stoppingDistance = (-speed * FULL_SPEED_ROLL) / 128.0;
 
     if (this->dist_back <= (MIN_DIST_TO_OBSTACLE + stoppingDistance)) {

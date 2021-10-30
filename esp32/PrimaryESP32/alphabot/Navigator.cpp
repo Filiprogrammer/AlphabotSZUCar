@@ -11,7 +11,7 @@ void Navigator::setTarget(float x, float y) {
     has_target = true;
 }
 
-bool Navigator::hasTarget() {
+bool Navigator::hasTarget() const {
     return has_target;
 }
 
