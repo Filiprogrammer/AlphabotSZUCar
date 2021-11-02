@@ -43,23 +43,23 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             BitArray bitArray = new BitArray(bytes);
 
-            LogGyroscope = bitArray[0];
-            LogAccelerometer = bitArray[1];
-            LogWheelSpeed = bitArray[2];
-            LogAnchorDistances = bitArray[3];
-            LogCompassDirection = bitArray[4];
-            LogPathfinderPath = bitArray[5];
-            LogObstacleDistance = bitArray[6];
-            LogPositioning = bitArray[7];
+            LogGyroscope = bitArray[8];
+            LogAccelerometer = bitArray[9];
+            LogWheelSpeed = bitArray[10];
+            LogAnchorDistances = bitArray[11];
+            LogCompassDirection = bitArray[12];
+            LogPathfinderPath = bitArray[13];
+            LogObstacleDistance = bitArray[14];
+            LogPositioning = bitArray[15];
 
-            //bit 8 and 9 are not used
+            //bit 0 and 1 are not used
 
-            DoExploreMode = bitArray[10];
-            DoNavigationMode = bitArray[11];
-            DoCollisionAvoidance = bitArray[12];
-            DoPositioningSystem = bitArray[13];
-            DoInvite = bitArray[14];
-            DoCompassCalibration = bitArray[15];
+            DoExploreMode = bitArray[2];
+            DoNavigationMode = bitArray[3];
+            DoCollisionAvoidance = bitArray[4];
+            DoPositioningSystem = bitArray[5];
+            DoInvite = bitArray[6];
+            DoCompassCalibration = bitArray[7];
         }
     }
 }
