@@ -17,7 +17,7 @@ private:
 public:
     void setOwnPosition(float x, float y);
     void setTarget(float x, float y);
-    bool hasTarget();
+    bool hasTarget() const;
     void clearObstacles();
     void addObstacle(float x, float y, float width, float height);
     void navigateStep(float dir, std::list<Coordinate>& path);

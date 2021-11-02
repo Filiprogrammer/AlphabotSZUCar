@@ -19,13 +19,13 @@ public:
     float getRawDirection();
     void setMagnetSensorCalibratedValues(int16_t min_x, int16_t max_x, int16_t min_y, int16_t max_y);
     void setAngleOffset(float offset);
-    float getAngleOffset();
+    float getAngleOffset() const;
     void magnetSensorCalibrate();
     void beginMagnetSensorCalibration();
-    int16_t getMinX();
-    int16_t getMaxX();
-    int16_t getMinY();
-    int16_t getMaxY();
+    int16_t getMinX() const;
+    int16_t getMaxX() const;
+    int16_t getMinY() const;
+    int16_t getMaxY() const;
     float getDirection();
 
     Compass();
