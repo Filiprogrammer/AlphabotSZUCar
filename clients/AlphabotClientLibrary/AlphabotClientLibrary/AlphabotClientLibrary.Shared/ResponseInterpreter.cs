@@ -66,9 +66,6 @@ namespace AlphabotClientLibrary.Shared
                     if (((i * 3 + 6) % 8) > 5)
                         val |= ((DataBytes[3 + (i * 3 + 6) / 8] & 0xFF) << (8 - ((i * 3 + 6) % 8))) & 7;
 
-                    if (val == 4)
-                        val = 8;
-
                     steps.Add((PathFindingResponse.PathFindingStep) val);                  
                 }
 
@@ -80,11 +77,11 @@ namespace AlphabotClientLibrary.Shared
 
         protected ErrorResponse GetErrorResponse()
         {
-            byte[] packet = new byte[DataBytes.Length];
+            byte[] packet = new byte[DataBytes.Length - 1];
 
             byte errorType = DataBytes[0];
 
-            Array.Copy(DataBytes, packet, DataBytes.Length);
+            Array.Copy(DataBytes, 1, packet, 0, DataBytes.Length - 1);
 
             return new ErrorResponse((ErrorResponse.ErrorType)errorType, packet);
         }
