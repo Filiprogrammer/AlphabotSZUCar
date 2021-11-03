@@ -37,8 +37,8 @@ void TwoMotorDrive::updateMotors(int8_t x, int8_t y) {
 
     float dir = 35.0 * tan((double)x / 250.0);
 
-    speed_left -= ((double)y / 127.0) * MIN(dir, 0.0);
-    speed_right += ((double)y / 127.0) * MAX(dir, 0.0);
+    speed_left += ((double)y / 127.0) * MIN(dir, 0.0);
+    speed_right -= ((double)y / 127.0) * MAX(dir, 0.0);
 
     if (speed_left > 0)
         this->motor_left->forward();
