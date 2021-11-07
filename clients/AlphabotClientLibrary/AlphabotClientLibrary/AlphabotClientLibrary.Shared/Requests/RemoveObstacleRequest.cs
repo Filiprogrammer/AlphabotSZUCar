@@ -72,7 +72,6 @@ namespace AlphabotClientLibrary.Shared.Requests
                 ret = new byte[3];
 
                 ret[0] = 0x0A; //packet Id 0x0A
-
                 byte[] idInBytes = BitConverter.GetBytes(_id);
                 ret[1] = idInBytes[0];
                 ret[2] = idInBytes[1];
@@ -81,7 +80,6 @@ namespace AlphabotClientLibrary.Shared.Requests
             else
             {
                 byte[] packetId = { 0x0B };
-
                 byte[] positionData = _position.ToByteArray();
 
                 ret = packetId.Concat(positionData).ToArray();

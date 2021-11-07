@@ -32,7 +32,5 @@ namespace AlphabotClientLibrary.Shared.Responses
             StartPositionY = startPositionY;
             Steps = pathFindingSteps;
         }
-
-
     }
 }
