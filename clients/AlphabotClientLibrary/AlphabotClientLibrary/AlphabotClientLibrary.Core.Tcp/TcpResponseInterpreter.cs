@@ -50,17 +50,8 @@ namespace AlphabotClientLibrary.Core.Tcp
 
         private DistanceSensorResponse GetDistanceSensorResponse()
         {
-            short degree;
-            ushort distance;
-
-            byte[] degreeBytes = new byte[2];
-            Array.Copy(DataBytes, degreeBytes, 2 );
-
-            byte[] distanceBytes = new byte[2];
-            Array.Copy(DataBytes, 2, distanceBytes, 0, 2);
-
-            degree = (short)(degreeBytes[0] | (degreeBytes[1] << 8));
-            distance = (ushort)(distanceBytes[0] | (distanceBytes[1] << 8));
+            short degree = (short)(DataBytes[0] | (DataBytes[1] << 8));
+            ushort distance = (ushort)(DataBytes[2] | (DataBytes[3] << 8));
 
             return new DistanceSensorResponse(degree, distance);
         }
