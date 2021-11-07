@@ -219,17 +219,16 @@ If the characteristic is 0 bytes long, ALL obstacles will be removed.
 The Alphabot will set all values to 0 when the deletion is finished.
 If there are multiple objects on the same position, all of them will be removed.
 
+| Field Name | Field Type | Notes                  |
+|------------|------------|------------------------|
+| ID         | uint16     | The ID of the obstacle |
+
+#### OR
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
 | Position X | int16      | The x coordinate in centimetres |
 | Position Y | int16      | The y coordinate in centimetres |
-
-#### OR
-
-| Field Name | Field Type | Notes                  |
-|------------|------------|------------------------|
-| ID         | uint16     | The ID of the obstacle |
 
 ### BLE_CHAR_PATH_FINDING (UUID: 8dad4c9a-1a1c-4a42-a522-ded592f4ed99)
 
