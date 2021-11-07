@@ -31,14 +31,8 @@ namespace AlphabotClientLibrary.Shared.Models
                 throw new ArgumentException("The array must consist of 4 elements");
             }
 
-            byte[] posXBytes = new byte[2];
-            Array.Copy(bytes, 0, posXBytes, 0, 2);
-
-            byte[] posYBytes = new byte[2];
-            Array.Copy(bytes, 2, posYBytes, 0, 2);
-
-            PositionX = (short)(posXBytes[0] | (posXBytes[1] << 8));
-            PositionY = (short)(posYBytes[0] | (posYBytes[1] << 8));
+            PositionX = (short)(bytes[0] | (bytes[1] << 8));
+            PositionY = (short)(bytes[2] | (bytes[3] << 8));
         }
 
         /// <summary>
