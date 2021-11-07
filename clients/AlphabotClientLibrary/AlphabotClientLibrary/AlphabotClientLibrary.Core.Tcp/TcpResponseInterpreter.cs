@@ -76,11 +76,7 @@ namespace AlphabotClientLibrary.Core.Tcp
 
         private CompassResponse GetCompassResponse()
         {
-            byte[] degreeBytes = new byte[2];
-            short degree;
-
-            Array.Copy(DataBytes, degreeBytes, 2);
-            degree = (short)(degreeBytes[0] | (degreeBytes[1] << 8));
+            short degree = (short)(DataBytes[0] | (DataBytes[1] << 8));
             return new CompassResponse(degree);
         }
     }
