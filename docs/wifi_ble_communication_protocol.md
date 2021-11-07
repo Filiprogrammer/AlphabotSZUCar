@@ -238,6 +238,17 @@ If there are multiple objects on the same position, all of them will be removed.
 | Y-start         | int8                      | Y coordinate of the start position in decimeters               |
 | Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
 
+### BLE_CHAR_ANCHORS_LOCATION (UUID: 8a55dd30-463b-40f6-8f21-d68efcc386b2)
+
+| Field Name | Field Type | Notes                                       |
+|------------|------------|---------------------------------------------|
+| Position X | int16      | The x coordinate in centimetres of anchor 0 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 0 |
+| Position X | int16      | The x coordinate in centimetres of anchor 1 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 1 |
+| Position X | int16      | The x coordinate in centimetres of anchor 2 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 2 |
+
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
 If the original payload was 19 or 20 bytes long, the last one or two bytes won't be shown.
