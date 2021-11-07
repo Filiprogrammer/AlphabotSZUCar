@@ -24,7 +24,7 @@ namespace AlphabotClientLibrary.Shared.Responses
 
         public ErrorResponse(ErrorType errorType, byte[] packet)
         {
-            Payload = new byte[packet.Length-1];
+            Payload = new byte[packet.Length - 1];
 
             Header = packet[0];
 
