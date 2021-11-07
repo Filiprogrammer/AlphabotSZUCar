@@ -28,7 +28,6 @@ namespace AlphabotClientLibrary.Shared.Requests
         public byte[] GetBytes()
         {
             byte[] packetId = { 0x08 };
-
             byte[] positionData = _position.ToByteArray();
 
             return packetId.Concat(positionData).ToArray();
