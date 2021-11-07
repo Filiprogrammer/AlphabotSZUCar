@@ -38,13 +38,10 @@ namespace AlphabotClientLibrary.Shared.Requests
         private byte[] GetDataBytes()
         {
             byte[] ret;
-
             byte[] anchorId = { _anchorId };
-
             byte[] positionData = _position.ToByteArray();
 
             ret = anchorId.Concat(positionData).ToArray();
-
             return ret;
         }
     }
