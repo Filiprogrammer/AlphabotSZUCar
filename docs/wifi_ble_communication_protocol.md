@@ -232,21 +232,21 @@ If there are multiple objects on the same position, all of them will be removed.
 
 ### BLE_CHAR_PATH_FINDING (UUID: 8dad4c9a-1a1c-4a42-a522-ded592f4ed99)
 
-| Field Name      | Field Type                | Notes                                                       |
-|-----------------|---------------------------|-------------------------------------------------------------|
-| X-start         | int8                      | X coordinate of the start position in decimeters            |
-| Y-start         | int8                      | Y coordinate of the start position in decimeters            |
+| Field Name      | Field Type                | Notes                                                          |
+|-----------------|---------------------------|----------------------------------------------------------------|
+| X-start         | int8                      | X coordinate of the start position in decimeters               |
+| Y-start         | int8                      | Y coordinate of the start position in decimeters               |
 | Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
 If the original payload was 19 or 20 bytes long, the last one or two bytes won't be shown.
 
-| Field Name     | Field Type         | Notes                                                               |
-|----------------|--------------------|---------------------------------------------------------------------|
-| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)                       |
-| BLE CHAR ID    | uint8              | The first byte of the BLE characteristic UUID that threw the error  |
-| Payload        | uint8 array (0-18) | The payload of the packet that threw the error                      |
+| Field Name     | Field Type         | Notes                                                              |
+|----------------|--------------------|--------------------------------------------------------------------|
+| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)                      |
+| BLE CHAR ID    | uint8              | The first byte of the BLE characteristic UUID that threw the error |
+| Payload        | uint8 array (0-18) | The payload of the packet that threw the error                     |
 
 # 3. Bit fields
 
