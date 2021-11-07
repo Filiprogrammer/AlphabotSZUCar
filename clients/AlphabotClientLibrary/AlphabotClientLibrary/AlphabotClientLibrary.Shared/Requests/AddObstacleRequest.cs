@@ -27,9 +27,7 @@ namespace AlphabotClientLibrary.Shared.Requests
         public byte[] GetBytes()
         {
             byte[] packetId = { 0x09 };
-
             byte[] obstacleData = _obstacle.ToByteArray();
-
             return packetId.Concat(obstacleData).ToArray();
         }
     }

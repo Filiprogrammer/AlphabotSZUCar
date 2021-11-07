@@ -52,11 +52,8 @@ namespace AlphabotClientLibrary.Shared.Requests
         public byte[] GetBytes()
         {
             byte[] ret = new byte[2];
-
             ret[0] = 0x04; //Packet ID 0x04
-
             ret[1] = (byte) _compassCalibrationType;
-
             return ret;
         }
     }

@@ -80,9 +80,7 @@ namespace AlphabotClientLibrary.Core.Tcp
             short degree;
 
             Array.Copy(DataBytes, degreeBytes, 2);
-
             degree = (short)(degreeBytes[0] | (degreeBytes[1] << 8));
-
             return new CompassResponse(degree);
         }
     }
