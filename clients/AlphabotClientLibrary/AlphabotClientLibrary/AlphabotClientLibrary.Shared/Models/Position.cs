@@ -28,7 +28,7 @@ namespace AlphabotClientLibrary.Shared.Models
         {
             if(bytes.Length != 4)
             {
-                throw new ArgumentException("The array must contain of 4 elements");
+                throw new ArgumentException("The array must consist of 4 elements");
             }
 
             byte[] posXBytes = new byte[2];
