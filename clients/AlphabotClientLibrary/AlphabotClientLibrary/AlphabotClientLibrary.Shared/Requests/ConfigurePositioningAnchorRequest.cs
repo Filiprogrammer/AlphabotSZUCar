@@ -37,7 +37,7 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         private byte[] GetDataBytes()
         {
-            byte[] ret = new byte[5];
+            byte[] ret;
 
             byte[] anchorId = { _anchorId };
 
