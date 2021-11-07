@@ -89,25 +89,16 @@ namespace AlphabotClientLibrary.Core.Ble
 
         private void AddPositioningResponse(int index)
         {
-            byte[] bytes = new byte[3];
-
-            Array.Copy(_bytes, index, bytes, 0, 3);
-
-            short posX = (short) (bytes[0] | ((bytes[1] << 8) & 0x0F));
-
-            short posY = (short) (((bytes[1] & 0xF0) >> 4) | (bytes[2] << 4));
+            short posX = (short) (_bytes[index] | ((_bytes[index + 1] << 8) & 0x0F));
+            short posY = (short) (((_bytes[index + 1] & 0xF0) >> 4) | (_bytes[index + 2] << 4));
 
             _sensorPackets.Add(new PositioningResponse(new Shared.Models.Position(posX, posY)));
         }
 
         private void AddDistanceSensorResponse(int index)
         {
-            byte[] bytes = new byte[2];
-
-            Array.Copy(_bytes, index, bytes, 0, 2);
-
-            short degree = (short)(bytes[0] * 2);
-            ushort distance = (ushort)(bytes[1] * 2);
+            short degree = (short)(_bytes[index] * 2);
+            ushort distance = (ushort)(_bytes[index + 1] * 2);
 
             _sensorPackets.Add(new DistanceSensorResponse(degree, distance));
         }
