@@ -181,7 +181,10 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 ### BLE_CHAR_TOGGLE (UUID: fce001d4-864a-48f4-9c95-de928f1da07b)
 
-see [3.1. Toggle bit field](#31-toggle---bit-field)
+| Field Name       | Field Type      | Notes                                                       |
+|------------------|-----------------|-------------------------------------------------------------|
+| Toggle bit field | uint8 array (2) | see [3.1. Toggle bit field](#31-toggle---bit-field)         |
+| Timestamp        | int64           | The Unix epoch time in milliseconds when the packet is sent |
 
 ### BLE_CHAR_SENSOR (UUID: 4c999381-35e2-4af4-8443-ee8b9fe56ba0)
 
@@ -189,28 +192,31 @@ see [3.2. Sensor packets](#32-sensor--packets-ble-only)
 
 ### BLE_CHAR_TARGET_NAVI (UUID: f56f0a15-52ae-4ad5-bfe1-557eed983618)
 
-| Field Name | Field Type | Notes                           |
-|------------|------------|---------------------------------|
-| Position X | int16      | The x coordinate in centimetres |
-| Position Y | int16      | The y coordinate in centimetres |
+| Field Name | Field Type | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| Position X | int16      | The x coordinate in centimetres                             |
+| Position Y | int16      | The y coordinate in centimetres                             |
+| Timestamp  | int64      | The Unix epoch time in milliseconds when the packet is sent |
 
 ### BLE_CHAR_CALIBRATE (UUID: d39e8d54-8019-46c8-a977-db13871bac59)
 
-| Field Name       | Field Type  | Notes                                                                                                                                                    |
-|------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Field Name       | Field Type  | Notes                                                                                                                                                  |
+|------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Calibration Type | int8        | 0x00 for calibration finished; 0x01 for steering; 0x02 for automatic compass calibration; 0x03 for manual compass calibration; 0x04 for compass offset |
+| Timestamp        | int64       | The Unix epoch time in milliseconds when the packet is sent                                                                                            |
 
 ### BLE_CHAR_ADD_OBSTACLE (UUID: 60db37c7-afeb-4d40-bb17-a19a07d6fc95)
 
 At first position, width and height is sent by the client, the Alphabot will answer with the data and the ID.
 
-| Field Name | Field Type | Notes                                             |
-|------------|------------|---------------------------------------------------|
-| Position X | int16      | The x coordinate in centimetres                   |
-| Position Y | int16      | The y coordinate in centimetres                   |
-| Width      | uint16     | The width in centimetres                          |
-| Height     | uint16     | The height in centimetres                         |
-| ID         | uint16     | The ID of the obstacle (gets set by the Alphabot) |
+| Field Name | Field Type | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| Timestamp  | int64      | The Unix epoch time in milliseconds when the packet is sent |
+| Position X | int16      | The x coordinate in centimetres                             |
+| Position Y | int16      | The y coordinate in centimetres                             |
+| Width      | uint16     | The width in centimetres                                    |
+| Height     | uint16     | The height in centimetres                                   |
+| ID         | uint16     | The ID of the obstacle (gets set by the Alphabot)           |
 
 ### BLE_CHAR_REMOVE_OBSTACLE (UUID: 6d43e0df-682b-45ef-abb7-814ecf475771)
 
@@ -220,17 +226,18 @@ If the characteristic is 2 bytes long, the value is interpreted as the obstacle 
 The Alphabot will set all values to 0 when the deletion is finished.
 If there are multiple objects on the same position, all of them will be removed.
 
-
-| Field Name | Field Type | Notes                           |
-|------------|------------|---------------------------------|
-| Position X | int16      | The x coordinate in centimetres |
-| Position Y | int16      | The y coordinate in centimetres |
+| Field Name | Field Type | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| Timestamp  | int64      | The Unix epoch time in milliseconds when the packet is sent |
+| Position X | int16      | The x coordinate in centimetres                             |
+| Position Y | int16      | The y coordinate in centimetres                             |
 
 #### OR
 
-| Field Name | Field Type | Notes                  |
-|------------|------------|------------------------|
-| ID         | uint16     | The ID of the obstacle |
+| Field Name | Field Type | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| Timestamp  | int64      | The Unix epoch time in milliseconds when the packet is sent |
+| ID         | uint16     | The ID of the obstacle                                      |
 
 ### BLE_CHAR_PATH_FINDING (UUID: 8dad4c9a-1a1c-4a42-a522-ded592f4ed99)
 
