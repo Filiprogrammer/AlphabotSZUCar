@@ -18,15 +18,13 @@ namespace AlphabotClientLibrary.Shared
         protected PingResponse GetPingResponse()
         {
             byte[] timeBytes = new byte[8];
-            long time;
 
             Array.Copy(DataBytes, timeBytes, 8);
 
-            //time = BitConverter.ToInt64(timeBytes);
-            time = timeBytes[0] | (timeBytes[1] << 8) |
-                (timeBytes[2] << 16) | (timeBytes[3] << 24) |
-                (timeBytes[4] << 32) | (timeBytes[5] << 40) |
-                (timeBytes[6] << 48) | (timeBytes[7] << 56);
+            long time = (long)timeBytes[0] | ((long)timeBytes[1] << 8) |
+                ((long)timeBytes[2] << 16) | ((long)timeBytes[3] << 24) |
+                ((long)timeBytes[4] << 32) | ((long)timeBytes[5] << 40) |
+                ((long)timeBytes[6] << 48) | ((long)timeBytes[7] << 56);
 
             return new PingResponse(time);
         }
