@@ -181,10 +181,11 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 ### BLE_CHAR_TOGGLE (UUID: fce001d4-864a-48f4-9c95-de928f1da07b)
 
-| Field Name       | Field Type      | Notes                                                       |
-|------------------|-----------------|-------------------------------------------------------------|
-| Toggle bit field | uint8 array (2) | see [3.1. Toggle bit field](#31-toggle---bit-field)         |
-| Timestamp        | int64           | The Unix epoch time in milliseconds when the packet is sent |
+| Field Name                | Field Type | Notes                                                                     |
+|---------------------------|------------|---------------------------------------------------------------------------|
+| Settings toggle bit field | uint8      | see [3.1.1. Toggle bit field (Settings)](#311-bit-field--1-byte-settings) |
+| Logging toggle bit field  | uint8      | see [3.1.1. Toggle bit field (Logging)](#312-bit-field--2-byte-logging)   |
+| Timestamp                 | int64      | The Unix epoch time in milliseconds when the packet is sent               |
 
 ### BLE_CHAR_SENSOR (UUID: 4c999381-35e2-4af4-8443-ee8b9fe56ba0)
 
