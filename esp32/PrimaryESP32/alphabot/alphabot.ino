@@ -198,7 +198,7 @@ void onDisconnect() {
     drive_input_speed = 0;
     drive_input_steer = 0;
 
-    if (ble_handler->server->getConnectedCount() == 0) {
+    if (ble_handler->getConnectedCount() == 0) {
         connected = false;
     } else {
         uint8_t val = 1;
@@ -306,9 +306,9 @@ void dataReceived(BLEUUID charUUID, const char* data, size_t len) {
     } else if (charUUID.equals(BLEUUID(BLE_CHAR_INVITE_UUID))) {
         if (len >= 1) {
             if (data[0])
-                ble_handler->advertising->start();
+                ble_handler->startAdvertising();
             else
-                ble_handler->advertising->stop();
+                ble_handler->stopAdvertising();
         }
     } else if (charUUID.equals(BLEUUID(BLE_CHAR_PATHFINDING_OBSTACLES_UUID))) {
         if (len >= 9) {
