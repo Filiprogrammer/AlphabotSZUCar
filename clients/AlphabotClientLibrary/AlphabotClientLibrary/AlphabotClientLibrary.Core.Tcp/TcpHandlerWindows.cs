@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using AlphabotClientLibrary.Core.Handler;
 using AlphabotClientLibrary.Shared.Contracts;
 using AlphabotClientLibrary.Shared.Models;
-using AlphabotClientLibrary.Shared.Responses;
 using static AlphabotClientLibrary.Core.Handler.ResponseHandler;
 
 namespace AlphabotClientLibrary.Core.Tcp
