@@ -42,6 +42,5 @@ namespace AlphabotClientLibrary.Core.Ble
             }
             return null;
         }
-
     }
 }
