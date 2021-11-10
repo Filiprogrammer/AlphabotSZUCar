@@ -10,7 +10,7 @@ namespace AlphabotClientLibrary.Core.Ble
     public class BleSensorResponse
     {
         private byte[] _bytes;
-        private List<IAlphabotResponse> _sensorPackets;
+        private List<IAlphabotResponse> _sensorPackets = new List<IAlphabotResponse>();
 
         public BleSensorResponse(byte[] bytes)
         {
