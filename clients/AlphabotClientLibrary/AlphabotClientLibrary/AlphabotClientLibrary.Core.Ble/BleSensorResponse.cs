@@ -19,55 +19,30 @@ namespace AlphabotClientLibrary.Core.Ble
 
         public MultipleSensorResponse GetMultipleSensorResponse()
         {
-            _sensorPackets = new List<IAlphabotResponse>();
-            int bytePointer = 2;
+            int offset = 2;
 
-            BitArray bitArray1 = new BitArray(_bytes[0]);
-            BitArray bitArray2 = new BitArray(_bytes[1]);
-
-            bool[] arr1 = new bool[8];
-            bool[] arr2 = new bool[8];
-
-            bitArray1.CopyTo(arr1, 0);
-            bitArray2.CopyTo(arr2, 0);
-
-            arr1.Reverse();
-            arr2.Reverse();
-
-            bool[] sensortypeArray = new bool[16];
-
-            sensortypeArray = arr1.Concat(arr2).ToArray();
-
-            for (int bitPointer = 0; bitPointer < 16; bitPointer+=2)
+            for (int i = 0; i < 8; ++i)
             {
-                if(sensortypeArray[bitPointer])
+                int sensorTypeNum = (_bytes[i / 4] >> ((i * 2) % 8)) & 0x03;
+                MultipleSensorResponse.SensorType sensorType = (MultipleSensorResponse.SensorType)sensorTypeNum;
+
+                if (sensorType == MultipleSensorResponse.SensorType.None)
+                    break;
+
+                switch (sensorType)
                 {
-                    if(sensortypeArray[bitPointer+1])
-                    {
-                        // 11 compass response
-                        AddCompassResponse(bytePointer);
-                        bytePointer += 2;
-                    }
-                    else
-                    {
-                        // 10 positioning response
-                        AddPositioningResponse(bytePointer);
-                        bytePointer += 3;
-                    }
-                }
-                else
-                {
-                    if(sensortypeArray[bitPointer + 1])
-                    {
-                        //01 Distance sensor response
-                        AddDistanceSensorResponse(bytePointer);
-                        bytePointer += 2;
-                    }
-                    else
-                    {
-                        //00 end of sensors
+                    case MultipleSensorResponse.SensorType.DistanceSensor:
+                        AddDistanceSensorResponse(offset);
+                        offset += 2;
                         break;
-                    }
+                    case MultipleSensorResponse.SensorType.Positioning:
+                        AddPositioningResponse(offset);
+                        offset += 3;
+                        break;
+                    case MultipleSensorResponse.SensorType.Compass:
+                        AddCompassResponse(offset);
+                        offset += 2;
+                        break;
                 }
             }
 
