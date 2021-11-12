@@ -173,6 +173,8 @@ BLEHandler::BLEHandler(void (*dataReceived)(BLEUUID, const char*, size_t), void 
     charPathfindingPath->setValue("");
 
     service->start();
+    advertising->addServiceUUID(BLE_SVC_UUID);
+    advertising->setScanResponse(true);
     advertising->start();
     #ifdef DEBUG
     Serial.println("BLE Advertising started");
