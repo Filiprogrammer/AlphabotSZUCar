@@ -5,10 +5,6 @@ namespace AlphabotClientLibrary.Shared.Responses
 {
     public class ErrorResponse : IAlphabotResponse
     {
-        public ErrorType Error { get; private set; }
-        public byte Header { get; private set; }
-        public byte[] Payload { get; private set; }
-
         public enum ErrorType
         {
             UnknownError = 0x00,
@@ -17,6 +13,12 @@ namespace AlphabotClientLibrary.Shared.Responses
             UnknownPacketId = 0x03,
             WrongPayload = 0x04
         }
+
+        public ErrorType Error { get; private set; }
+
+        public byte Header { get; private set; }
+
+        public byte[] Payload { get; private set; }
 
         public ErrorResponse(ErrorType errorType, byte[] packet)
         {

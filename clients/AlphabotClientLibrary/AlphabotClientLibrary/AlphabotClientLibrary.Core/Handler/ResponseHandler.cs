@@ -7,35 +7,32 @@ namespace AlphabotClientLibrary.Core.Handler
     public class ResponseHandler
     {
         public delegate void Response(IAlphabotResponse response);
-        public List<Response> Listeners { get; private set; }
 
-        public ResponseHandler()
-        {
-            Listeners = new List<Response>();
+        private List<Response> _listeners = new List<Response>();
+
+        public IReadOnlyCollection<Response> Listeners {
+            get { return _listeners.AsReadOnly(); }
         }
 
         public void AddResponseListener(Response listener)
         {
-            Listeners.Add(listener);
+            _listeners.Add(listener);
         }
 
         public void AddResponseListener(List<Response> listeners)
         {
             foreach (Response listener in listeners)
-            {
-                Listeners.Add(listener);
-            }
+                _listeners.Add(listener);
         }
 
         public bool RemoveResponseListener(Response listener)
         {
-            return Listeners.Remove(listener);
+            return _listeners.Remove(listener);
         }
 
         public IAlphabotResponse WaitForResponse(int responseTimeout = 5000)
         {
             throw new NotImplementedException();
         }
-
     }
 }

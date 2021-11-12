@@ -6,7 +6,7 @@ namespace AlphabotClientLibrary.Shared.Requests
 {
     public class CalibrateCompassRequest : IAlphabotRequest
     {
-        CompassCalibrationType _compassCalibrationType;
+        private CompassCalibrationType _compassCalibrationType;
 
         public enum CompassCalibrationType
         {
@@ -23,7 +23,6 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public BleInformation GetBleInformation()
         {
-            Guid uuid = new Guid("d39e8d54-8019-46c8-a977-db13871bac59");
             byte[] bytes = new byte[1];
 
             switch(_compassCalibrationType)
@@ -42,14 +41,14 @@ namespace AlphabotClientLibrary.Shared.Requests
                     break;
             }
 
-            return new BleInformation(uuid, bytes);
+            return new BleInformation(BleUuids.CALIBRATE, bytes);
         }
 
         public byte[] GetBytes()
         {
             byte[] ret = new byte[2];
-            ret[0] = 0x04; //Packet ID 0x04
-            ret[1] = (byte) _compassCalibrationType;
+            ret[0] = 0x04; // Packet ID 0x04
+            ret[1] = (byte)_compassCalibrationType;
             return ret;
         }
     }

@@ -18,11 +18,13 @@ namespace AlphabotClientLibrary.Shared.Responses
             Right = 0x07
         }
 
-        public sbyte StartPositionX { get; private set; }
-        public sbyte StartPositionY { get; private set; }
-        public List<PathFindingStep> Steps { get; private set; }
+        public sbyte StartPositionX { get; }
 
-        public PathFindingResponse(sbyte startPositionX, sbyte startPositionY, List<PathFindingStep> pathFindingSteps)
+        public sbyte StartPositionY { get; }
+
+        public IReadOnlyCollection<PathFindingStep> Steps { get; }
+
+        public PathFindingResponse(sbyte startPositionX, sbyte startPositionY, IReadOnlyCollection<PathFindingStep> pathFindingSteps)
         {
             StartPositionX = startPositionX;
             StartPositionY = startPositionY;

@@ -14,11 +14,15 @@ namespace AlphabotClientLibrary.Shared.Responses
             Compass
         }
 
-        public List<IAlphabotResponse> SensorResponses { get; private set; }
+        private List<IAlphabotResponse> _sensorResponses = new List<IAlphabotResponse>();
+
+        public IReadOnlyCollection<IAlphabotResponse> SensorResponses {
+            get { return _sensorResponses; }
+        }
 
         public MultipleSensorResponse(List<IAlphabotResponse> sensorResponses)
         {
-            SensorResponses = sensorResponses;
+            _sensorResponses = sensorResponses;
         }
     }
 }

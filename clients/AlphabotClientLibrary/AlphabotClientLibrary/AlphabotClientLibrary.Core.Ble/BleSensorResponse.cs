@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AlphabotClientLibrary.Shared.Contracts;
 using AlphabotClientLibrary.Shared.Responses;
 
@@ -51,12 +49,7 @@ namespace AlphabotClientLibrary.Core.Ble
 
         private void AddCompassResponse(int index)
         {
-            byte[] bytes = new byte[2];
-
-            Array.Copy(_bytes, index, bytes, 0, 2);
-
-            short degree = (short)(bytes[0] | ((bytes[1] << 8) & 0x0F));
-
+            short degree = (short)(_bytes[0] | ((_bytes[1] << 8) & 0x0F));
             _sensorPackets.Add(new CompassResponse(degree));
         }
 
@@ -75,6 +68,5 @@ namespace AlphabotClientLibrary.Core.Ble
 
             _sensorPackets.Add(new DistanceSensorResponse(degree, distance));
         }
-
     }
 }

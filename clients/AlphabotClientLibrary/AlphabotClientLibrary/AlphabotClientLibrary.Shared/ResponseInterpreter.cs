@@ -14,14 +14,7 @@ namespace AlphabotClientLibrary.Shared
 
         protected PingResponse GetPingResponse()
         {
-            byte[] timeBytes = new byte[8];
-
-            Array.Copy(DataBytes, timeBytes, 8);
-
-            long time = (long)timeBytes[0] | ((long)timeBytes[1] << 8) |
-                ((long)timeBytes[2] << 16) | ((long)timeBytes[3] << 24) |
-                ((long)timeBytes[4] << 32) | ((long)timeBytes[5] << 40) |
-                ((long)timeBytes[6] << 48) | ((long)timeBytes[7] << 56);
+            long time = BitConverter.ToInt64(DataBytes);
 
             return new PingResponse(time);
         }
@@ -29,7 +22,6 @@ namespace AlphabotClientLibrary.Shared
         protected ToggleResponse GetToggleResponse()
         {
             byte[] toggleBytes = new byte[2];
-
             Array.Copy(DataBytes, toggleBytes, 2);
 
             return new ToggleResponse(toggleBytes);
@@ -38,7 +30,6 @@ namespace AlphabotClientLibrary.Shared
         protected NewObstacleRegisteredResponse GetNewObstacleRegisteredResponse()
         {
             byte[] obstacleBytes = new byte[10];
-
             Array.Copy(DataBytes, obstacleBytes, 10);
 
             return new NewObstacleRegisteredResponse(new Obstacle(obstacleBytes));
@@ -67,18 +58,16 @@ namespace AlphabotClientLibrary.Shared
                 return new PathFindingResponse(startByteX, startByteY, steps);
             }
 
-            throw new ArgumentException("The Bytes doesn't fit the Path Finding Steps protocol definition.");
+            throw new ArgumentException("The bytes do not fit in the Path Finding Steps protocol definition.");
         }
 
         protected ErrorResponse GetErrorResponse()
         {
             byte[] packet = new byte[DataBytes.Length - 1];
-
-            byte errorType = DataBytes[0];
-
+            ErrorResponse.ErrorType errorType = (ErrorResponse.ErrorType)DataBytes[0];
             Array.Copy(DataBytes, 1, packet, 0, DataBytes.Length - 1);
 
-            return new ErrorResponse((ErrorResponse.ErrorType)errorType, packet);
+            return new ErrorResponse(errorType, packet);
         }
     }
 }

@@ -13,9 +13,7 @@ namespace AlphabotClientLibrary.Core.Tcp
         public TcpResponseInterpreter(byte[] bytes)
         {
             _headerByte = bytes[0];
-
             DataBytes = new byte[bytes.Length - 1];
-
             Array.Copy(bytes, 1, DataBytes, 0, bytes.Length-1);
         }
 
@@ -55,7 +53,6 @@ namespace AlphabotClientLibrary.Core.Tcp
         private PositioningResponse GetPositioningResponse()
         {
             byte[] positioningBytes = new byte[4];
-              
             Array.Copy(DataBytes, positioningBytes, 4);
 
             return new PositioningResponse(new Position(positioningBytes));

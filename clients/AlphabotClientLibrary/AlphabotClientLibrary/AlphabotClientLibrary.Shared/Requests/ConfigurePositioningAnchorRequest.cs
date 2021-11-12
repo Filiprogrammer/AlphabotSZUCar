@@ -7,8 +7,8 @@ namespace AlphabotClientLibrary.Shared.Requests
 {
     public class ConfigurePositioningAnchorRequest : IAlphabotRequest
     {
-        byte _anchorId;
-        Position _position;
+        private byte _anchorId;
+        private Position _position;
 
         public ConfigurePositioningAnchorRequest(byte anchorId, Position position)
         {
@@ -25,8 +25,7 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public byte[] GetBytes()
         {
-            byte[] packetId = { 0x07 }; //packet id 0x07
-
+            byte[] packetId = { 0x07 }; // Packet ID 0x07
             byte[] data = GetDataBytes();
 
             return packetId.Concat(data).ToArray();

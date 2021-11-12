@@ -7,13 +7,9 @@ namespace AlphabotClientLibrary.Shared.Requests
 {
     public class PingRequest : IAlphabotRequest
     {
-        public PingRequest() { }
         public BleInformation GetBleInformation()
         {
-            Guid uuid = new Guid("117ad3a5-b257-4465-abd4-7dc12a4cf77d");
-            byte[] bytes = GetMillisecondsSinceEpoch();
-
-            return new BleInformation(uuid, bytes);
+            return new BleInformation(BleUuids.PINGCLIENT, GetMillisecondsSinceEpoch());
         }
 
         public byte[] GetBytes()
@@ -27,16 +23,7 @@ namespace AlphabotClientLibrary.Shared.Requests
         private byte[] GetMillisecondsSinceEpoch()
         {
             long millisecondsSinceEpoch = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            byte[] timeInBytes = {
-                (byte)millisecondsSinceEpoch,
-                (byte)(millisecondsSinceEpoch >> 8),
-                (byte)(millisecondsSinceEpoch >> 16),
-                (byte)(millisecondsSinceEpoch >> 24),
-                (byte)(millisecondsSinceEpoch >> 32),
-                (byte)(millisecondsSinceEpoch >> 40),
-                (byte)(millisecondsSinceEpoch >> 48),
-                (byte)(millisecondsSinceEpoch >> 56)
-            };
+            byte[] timeInBytes = BitConverter.GetBytes(millisecondsSinceEpoch);
 
             return timeInBytes;
         }

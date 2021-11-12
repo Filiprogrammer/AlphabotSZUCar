@@ -12,18 +12,18 @@ namespace AlphabotClientLibrary.Core.Tcp
     public class TcpHandlerWindows : ConnectionHandler
     {
         private TcpClient _tcpClient;
+
         public TcpHandlerWindows(ResponseHandler responseHandler) : base(responseHandler) { }
 
         public TcpHandlerWindows() : base (new ResponseHandler()) { }
+
         public override bool Connect(IConnectionData connectionData)
         {
             if (!(connectionData is WiFiConnectionData))
-            {
                 throw new ArgumentException("connectionData must be of the type WiFiConnectionData");
-            }
 
-            base._connectionData = connectionData;
-            WiFiConnectionData wiFiConnectionData = base._connectionData as WiFiConnectionData;
+            _connectionData = connectionData;
+            WiFiConnectionData wiFiConnectionData = _connectionData as WiFiConnectionData;
 
             _tcpClient = new TcpClient();
             _tcpClient.Connect(wiFiConnectionData.IPEndPoint);
@@ -41,9 +41,7 @@ namespace AlphabotClientLibrary.Core.Tcp
         public override bool SendAction(IAlphabotRequest request)
         {
             if (_tcpClient == null || !_tcpClient.Connected || request == null)
-            {
                 return false;
-            }
 
             _tcpClient.GetStream().Write(request.GetBytes());
 
@@ -55,17 +53,12 @@ namespace AlphabotClientLibrary.Core.Tcp
             while (true)
             {
                 byte[] data = new byte[1024];
-
                 _tcpClient.GetStream().Read(data, 0, 1024);
-
                 IAlphabotResponse alphabotResponse = new TcpResponseInterpreter(data).GetResponse();
+                IReadOnlyCollection<Response> responses = ResponseHandler.Listeners;
 
-                List<Response> responses = base.ResponseHandler.Listeners;
-                
                 foreach (Response response in responses)
-                {
                     response(alphabotResponse);
-                }
             }
         }
         

@@ -6,9 +6,9 @@ namespace AlphabotClientLibrary.Core
 {
     public abstract class ConnectionHandler
     {
-        public ResponseHandler ResponseHandler { get; private set; }
-
         protected IConnectionData _connectionData;
+
+        public ResponseHandler ResponseHandler { get; private set; }
 
         public ConnectionHandler(ResponseHandler responseHandler)
         {

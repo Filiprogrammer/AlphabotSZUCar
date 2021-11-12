@@ -6,6 +6,7 @@ namespace AlphabotClientLibrary.Shared.Responses
     public class PingResponse : IAlphabotResponse
     {
         public long Time { get; private set; }
+
         public PingResponse(long time)
         {
             Time = time;

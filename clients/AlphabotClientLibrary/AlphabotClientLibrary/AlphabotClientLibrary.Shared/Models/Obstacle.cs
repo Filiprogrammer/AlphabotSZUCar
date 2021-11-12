@@ -8,8 +8,11 @@ namespace AlphabotClientLibrary.Shared.Models
         /// returns 65535 if the Id is not set in constructor
         /// </summary>
         public ushort Id { get; private set; }
+
         public Position Position { get; private set; }
+
         public ushort Width { get; private set; }
+
         public ushort Height { get; private set; }
 
         public Obstacle(Position position, ushort width, ushort height)
@@ -56,13 +59,9 @@ namespace AlphabotClientLibrary.Shared.Models
 
             // If the id is 65535, it was not set in constructor and will not be added to the array.
             if (Id == 65535)
-            {
                 ret = new byte[8];
-            }
             else
-            {
                 ret = new byte[10];
-            }
 
             byte[] posData = Position.ToByteArray();
 

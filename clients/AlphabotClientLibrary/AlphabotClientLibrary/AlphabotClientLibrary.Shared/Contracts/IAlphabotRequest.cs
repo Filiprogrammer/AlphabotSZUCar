@@ -5,8 +5,8 @@ namespace AlphabotClientLibrary.Shared.Contracts
 {
     public interface IAlphabotRequest
     {
-        public byte[] GetBytes();
+        byte[] GetBytes();
 
-        public BleInformation GetBleInformation();
+        BleInformation GetBleInformation();
     }
 }

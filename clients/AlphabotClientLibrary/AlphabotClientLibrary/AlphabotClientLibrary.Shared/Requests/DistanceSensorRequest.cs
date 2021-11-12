@@ -6,14 +6,12 @@ namespace AlphabotClientLibrary.Shared.Requests
 {
     public class DistanceSensorRequest : IAlphabotRequest
     {
-        short _degree;
+        private short _degree;
 
         public DistanceSensorRequest(short degree)
         {
             if(degree < 0 || degree > 359)
-            {
-                throw new ArgumentOutOfRangeException("Degree must be between 0 and 359");
-            }
+                throw new ArgumentOutOfRangeException("Degree is outside the range of 0 and 359");
 
             _degree = degree;
         }
@@ -26,12 +24,9 @@ namespace AlphabotClientLibrary.Shared.Requests
         public byte[] GetBytes()
         {
             byte[] ret = new byte[3];
-            byte[] shortInBytes = BitConverter.GetBytes(_degree);
-
-            ret[0] = 0x02; //Packet ID 0x02
-
-            ret[1] = shortInBytes[0];
-            ret[2] = shortInBytes[1];
+            ret[0] = 0x02; // Packet ID 0x02
+            ret[1] = (byte)_degree;
+            ret[2] = (byte)(_degree >> 8);
 
             return ret;
         }

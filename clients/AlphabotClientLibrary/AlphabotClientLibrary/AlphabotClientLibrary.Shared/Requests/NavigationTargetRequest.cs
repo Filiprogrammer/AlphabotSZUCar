@@ -7,7 +7,7 @@ namespace AlphabotClientLibrary.Shared.Requests
 {
     public class NavigationTargetRequest : IAlphabotRequest
     {
-        Position _position;
+        private Position _position;
 
         public NavigationTargetRequest(Position position)
         {
@@ -16,10 +16,7 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public BleInformation GetBleInformation()
         {
-            Guid uuid = new Guid("f56f0a15-52ae-4ad5-bfe1-557eed983618");
-            byte[] bytes = _position.ToByteArray();
-
-            return new BleInformation(uuid, bytes);
+            return new BleInformation(BleUuids.NAVIGATION_TARGET, _position.ToByteArray());
         }
 
         public byte[] GetBytes()

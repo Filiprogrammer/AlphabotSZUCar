@@ -6,8 +6,6 @@ namespace AlphabotClientLibrary.Shared.Requests
 {
     public class RemoveAllObstaclesRequest : IAlphabotRequest
     {
-        public RemoveAllObstaclesRequest() { }
-
         public BleInformation GetBleInformation()
         {
             //Not added in documentaion?
