@@ -238,7 +238,7 @@ If there are multiple objects on the same position, all of them will be removed.
 | Y-start         | int8                      | Y coordinate of the start position in decimeters               |
 | Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
 
-### BLE_CHAR_ANCHORS_LOCATION (UUID: 8a55dd30-463b-40f6-8f21-d68efcc386b2)
+### BLE_CHAR_ANCHOR_LOCATIONS (UUID: 8a55dd30-463b-40f6-8f21-d68efcc386b2)
 
 | Field Name | Field Type | Notes                                       |
 |------------|------------|---------------------------------------------|
