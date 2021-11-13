@@ -1,5 +1,7 @@
 # 1. WiFi – bit based protocol
 
+All byte sequences (int16, int64...) correspond to the "little-endian" standard.
+
 ## 1.1. Packet header
 
 The packet header consists of 1 byte. All following bytes are the payload of the packet.
@@ -141,11 +143,11 @@ Degree 90 is the right direction.
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
-| ID         | uint16     | The ID of the obstacle          |
 | Position X | int16      | The x coordinate in centimetres |
 | Position Y | int16      | The y coordinate in centimetres |
 | Width      | uint16     | The width in centimetres        |
 | Height     | uint16     | The height in centimetres       |
+| ID         | uint16     | The ID of the obstacle          |
 
 ### Toggle response (Packet ID: 0x07)
 
@@ -215,49 +217,38 @@ At first position, width and height is sent by the client, the Alphabot will ans
 Obstacles can be removed either by Position or by ID.
 If the characteristic is 4 bytes long, the values are interpreted as the position.
 If the characteristic is 2 bytes long, the value is interpreted as the obstacle id.
-If the characteristic is 0 bytes long, ALL obstacles will be removed.
-The Alphabot will set all values to 0 when the deletion is finished.
+The Alphabot will send one byte with content 0x00 when the deletion is finished in every case.
 If there are multiple objects on the same position, all of them will be removed.
 
-| Field Name | Field Type | Notes                  |
-|------------|------------|------------------------|
-| ID         | uint16     | The ID of the obstacle |
-
-#### OR
 
 | Field Name | Field Type | Notes                           |
 |------------|------------|---------------------------------|
 | Position X | int16      | The x coordinate in centimetres |
 | Position Y | int16      | The y coordinate in centimetres |
 
+#### OR
+
+| Field Name | Field Type | Notes                  |
+|------------|------------|------------------------|
+| ID         | uint16     | The ID of the obstacle |
+
 ### BLE_CHAR_PATH_FINDING (UUID: 8dad4c9a-1a1c-4a42-a522-ded592f4ed99)
 
-| Field Name      | Field Type                | Notes                                                          |
-|-----------------|---------------------------|----------------------------------------------------------------|
-| X-start         | int8                      | X coordinate of the start position in decimeters               |
-| Y-start         | int8                      | Y coordinate of the start position in decimeters               |
+| Field Name      | Field Type                | Notes                                                       |
+|-----------------|---------------------------|-------------------------------------------------------------|
+| X-start         | int8                      | X coordinate of the start position in decimeters            |
+| Y-start         | int8                      | Y coordinate of the start position in decimeters            |
 | Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
-
-### BLE_CHAR_ANCHORS_LOCATION (UUID: 8a55dd30-463b-40f6-8f21-d68efcc386b2)
-
-| Field Name | Field Type | Notes                                       |
-|------------|------------|---------------------------------------------|
-| Position X | int16      | The x coordinate in centimetres of anchor 0 |
-| Position Y | int16      | The y coordinate in centimetres of anchor 0 |
-| Position X | int16      | The x coordinate in centimetres of anchor 1 |
-| Position Y | int16      | The y coordinate in centimetres of anchor 1 |
-| Position X | int16      | The x coordinate in centimetres of anchor 2 |
-| Position Y | int16      | The y coordinate in centimetres of anchor 2 |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
 If the original payload was 19 or 20 bytes long, the last one or two bytes won't be shown.
 
-| Field Name     | Field Type         | Notes                                                              |
-|----------------|--------------------|--------------------------------------------------------------------|
-| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)                      |
-| BLE CHAR ID    | uint8              | The first byte of the BLE characteristic UUID that threw the error |
-| Payload        | uint8 array (0-18) | The payload of the packet that threw the error                     |
+| Field Name     | Field Type         | Notes                                                               |
+|----------------|--------------------|---------------------------------------------------------------------|
+| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)                       |
+| BLE CHAR ID    | uint8              | The first byte of the BLE characteristic UUID that threw the error  |
+| Payload        | uint8 array (0-18) | The payload of the packet that threw the error                      |
 
 # 3. Bit fields
 
