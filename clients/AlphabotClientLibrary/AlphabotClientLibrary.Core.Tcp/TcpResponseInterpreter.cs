@@ -23,8 +23,6 @@ namespace AlphabotClientLibrary.Core.Tcp
             {
                 case 0x01:
                     return GetDistanceSensorResponse();
-                case 0x02:
-                    return GetPositioningResponse();
                 case 0x03:
                     return GetPathFindingResponse();
                 case 0x04:
@@ -48,14 +46,6 @@ namespace AlphabotClientLibrary.Core.Tcp
             ushort distance = (ushort)(DataBytes[2] | (DataBytes[3] << 8));
 
             return new DistanceSensorResponse(degree, distance);
-        }
-
-        private PositioningResponse GetPositioningResponse()
-        {
-            byte[] positioningBytes = new byte[4];
-            Array.Copy(DataBytes, positioningBytes, 4);
-
-            return new PositioningResponse(new Position(positioningBytes));
         }
 
         private CompassResponse GetCompassResponse()
