@@ -206,7 +206,7 @@ At first position, width and height is sent by the client, the Alphabot will ans
 
 Obstacles can be removed either by ID or by position.
 If the characteristic is 0 bytes long, ALL obstacles will be removed.
-If the characteristic is 2 bytes long, the value is interpreted as the obstacle id.
+If the characteristic is 2 bytes long, the value is interpreted as the obstacle ID.
 If the characteristic is 4 bytes long, the values are interpreted as the position.
 The Alphabot will send one byte with content 0x00 when the deletion is finished in every case.
 If there are multiple objects on the same position, all of them will be removed.
