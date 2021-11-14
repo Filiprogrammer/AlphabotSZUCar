@@ -22,16 +22,6 @@ The last 3 bits (MSB) of the packet header define the protocol version. Currentl
 | Speed      | int8       | The desired speed (negative values indicate backward driving, positive values indicate forward driving)          |
 | Steer      | int8       | The desired steering direction (negative values indicate left steering, positive values indicate right steering) |
 
-### Distance sensor request (Packet ID: 0x02)
-
-If the degree value corresponds to no sensor, a "wrong payload error" will be sent.
-Degree 0 represents the direction, in which the Alphabot is headed towards.
-Degree 90 is the right direction.
-
-| Field Name | Field Type | Notes                            |
-|------------|------------|----------------------------------|
-| Degree     | int16      | The degree of the sensor (0-359) |
-
 ### Calibrate steering (Packet ID: 0x03)
 
 No further data
