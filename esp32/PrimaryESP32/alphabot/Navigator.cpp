@@ -77,7 +77,7 @@ void Navigator::navigateStep(float dir, std::list<Coordinate>& path) {
         #endif
 
         int relative_dir = ((int)(next_dir - (((int)dir + 720) % 360) + 540) % 360) - 180;
-        int8_t speed = -65;
+        int8_t speed = 65;
 
         // If car would have to turn more than 90 degrees, drive backwards instead
         if (abs(relative_dir) > 90) {
