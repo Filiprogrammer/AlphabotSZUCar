@@ -379,5 +379,5 @@ The following example shows a possible bit stream of the path finding data. In t
 | 0x00          | unknown error                     |
 | 0x01          | unknown protocol                  |
 | 0x02          | known but not supported protocol  |
-| 0x03          | unknown packet id                 |
+| 0x03          | unknown packet ID                 |
 | 0x04          | wrong payload                     |
