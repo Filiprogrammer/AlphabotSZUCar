@@ -7,7 +7,7 @@ namespace AlphabotClientLibrary.Shared.Responses
     public class NewObstacleRegisteredResponse : IAlphabotResponse
     {
         public Obstacle Obstacle { get; private set; }
-        
+
         public NewObstacleRegisteredResponse(Obstacle obstacle)
         {
             Obstacle = obstacle;

@@ -61,7 +61,7 @@ namespace AlphabotClientLibrary.Core.Tcp
                     response(alphabotResponse);
             }
         }
-        
+
         private void StartReadingThread()
         {
             Thread thread = new Thread(ReadData);
