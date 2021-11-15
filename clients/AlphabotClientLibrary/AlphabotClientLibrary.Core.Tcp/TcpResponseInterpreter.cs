@@ -13,7 +13,7 @@ namespace AlphabotClientLibrary.Core.Tcp
         {
             _headerByte = bytes[0];
             DataBytes = new byte[bytes.Length - 1];
-            Array.Copy(bytes, 1, DataBytes, 0, bytes.Length-1);
+            Array.Copy(bytes, 1, DataBytes, 0, bytes.Length - 1);
         }
 
         public override IAlphabotResponse GetResponse()
