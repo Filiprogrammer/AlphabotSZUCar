@@ -15,7 +15,7 @@ namespace AlphabotClientLibrary.Core.Tcp
 
         public TcpHandlerWindows(ResponseHandler responseHandler) : base(responseHandler) { }
 
-        public TcpHandlerWindows() : base (new ResponseHandler()) { }
+        public TcpHandlerWindows() : base(new ResponseHandler()) { }
 
         public override bool Connect(IConnectionData connectionData)
         {
