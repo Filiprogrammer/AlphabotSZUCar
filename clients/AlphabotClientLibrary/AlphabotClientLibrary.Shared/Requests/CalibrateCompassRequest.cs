@@ -25,7 +25,7 @@ namespace AlphabotClientLibrary.Shared.Requests
         {
             byte[] bytes = new byte[1];
 
-            switch(_compassCalibrationType)
+            switch (_compassCalibrationType)
             {
                 case CompassCalibrationType.StartAutomated:
                     bytes[0] = 0x02;
