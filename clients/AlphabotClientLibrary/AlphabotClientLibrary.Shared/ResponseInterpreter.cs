@@ -41,7 +41,7 @@ namespace AlphabotClientLibrary.Shared
             sbyte startByteY = (sbyte)DataBytes[1];
 
             if (DataBytes != null && DataBytes.Length >= 3)
-            { 
+            {
                 int len = DataBytes[2] & 0x3F;
                 List<PathFindingResponse.PathFindingStep> steps = new List<PathFindingResponse.PathFindingStep>();
 
