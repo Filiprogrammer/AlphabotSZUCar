@@ -188,7 +188,7 @@ see [3.2. Sensor packets](#32-sensor--packets-ble-only)
 
 | Field Name       | Field Type  | Notes                                                                                                                                                                            |
 |------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Calibration Type | int8        | 0x00 for steering; 0x01 for automatic compass calibration; 0x02 for starting manual compass calibration;  0x03 for stopping manual compass calibration;  0x04 for compass offset |
+| Calibration Type | int8        | 0x00 to calibrate steering; 0x01 for automatic compass calibration; 0x02 to start manual compass calibration; 0x03 to end manual compass calibration; 0x04 to set compass offset |
 
 ### BLE_CHAR_ADD_OBSTACLE (UUID: 60db37c7-afeb-4d40-bb17-a19a07d6fc95)
 
