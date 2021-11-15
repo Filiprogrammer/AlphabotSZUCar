@@ -52,7 +52,7 @@ namespace AlphabotClientLibrary.Shared
                     if (((i * 3 + 6) % 8) > 5)
                         val |= ((DataBytes[3 + (i * 3 + 6) / 8] & 0xFF) << (8 - ((i * 3 + 6) % 8))) & 7;
 
-                    steps.Add((PathFindingResponse.PathFindingStep) val);                  
+                    steps.Add((PathFindingResponse.PathFindingStep)val);
                 }
 
                 return new PathFindingResponse(startByteX, startByteY, steps);
