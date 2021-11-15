@@ -22,7 +22,7 @@ namespace AlphabotClientLibrary.Shared.Models
 
         public Position(byte[] bytes)
         {
-            if(bytes.Length != 4)
+            if (bytes.Length != 4)
                 throw new ArgumentException("The array must consist of 4 elements");
 
             PositionX = (short)(bytes[0] | (bytes[1] << 8));
