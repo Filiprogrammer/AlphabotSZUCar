@@ -16,7 +16,11 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public BleInformation GetBleInformation()
         {
-            return new BleInformation(BleUuids.NAVIGATION_TARGET, _position.ToByteArray());
+            byte[] posBytes = _position.ToByteArray();
+            byte[] timestamp = GetMillisecondsSinceEpoch();
+            byte[] data = posBytes.Concat(timestamp).ToArray();
+
+            return new BleInformation(BleUuids.NAVIGATION_TARGET, data);
         }
 
         public byte[] GetBytes()
@@ -25,6 +29,13 @@ namespace AlphabotClientLibrary.Shared.Requests
             byte[] positionData = _position.ToByteArray();
 
             return packetId.Concat(positionData).ToArray();
+        }
+        private byte[] GetMillisecondsSinceEpoch()
+        {
+            long millisecondsSinceEpoch = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            byte[] timeInBytes = BitConverter.GetBytes(millisecondsSinceEpoch);
+
+            return timeInBytes;
         }
     }
 }

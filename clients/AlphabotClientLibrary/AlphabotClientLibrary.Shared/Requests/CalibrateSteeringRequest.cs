@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AlphabotClientLibrary.Shared.Contracts;
 using AlphabotClientLibrary.Shared.Models;
 
@@ -10,8 +11,10 @@ namespace AlphabotClientLibrary.Shared.Requests
         {
             byte[] bytes = new byte[1];
             bytes[0] = 0x00; // Start steering calibration
+            byte[] time = GetMillisecondsSinceEpoch();
+            byte[] data = bytes.Concat(time).ToArray();
 
-            return new BleInformation(BleUuids.CALIBRATE, bytes);
+            return new BleInformation(BleUuids.CALIBRATE, data);
         }
 
         public byte[] GetBytes()
@@ -19,6 +22,14 @@ namespace AlphabotClientLibrary.Shared.Requests
             byte[] packetId = { 0x03 };
 
             return packetId;
+        }
+
+        private byte[] GetMillisecondsSinceEpoch()
+        {
+            long millisecondsSinceEpoch = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            byte[] timeInBytes = BitConverter.GetBytes(millisecondsSinceEpoch);
+
+            return timeInBytes;
         }
     }
 }
