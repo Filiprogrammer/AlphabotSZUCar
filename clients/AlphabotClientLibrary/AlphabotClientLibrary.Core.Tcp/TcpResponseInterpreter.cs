@@ -1,7 +1,6 @@
 ﻿using System;
 using AlphabotClientLibrary.Shared;
 using AlphabotClientLibrary.Shared.Contracts;
-using AlphabotClientLibrary.Shared.Models;
 using AlphabotClientLibrary.Shared.Responses;
 
 namespace AlphabotClientLibrary.Core.Tcp
