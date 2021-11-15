@@ -22,16 +22,6 @@ The last 3 bits (MSB) of the packet header define the protocol version. Currentl
 | Speed      | int8       | The desired speed (negative values indicate backward driving, positive values indicate forward driving)          |
 | Steer      | int8       | The desired steering direction (negative values indicate left steering, positive values indicate right steering) |
 
-### Distance sensor request (Packet ID: 0x02)
-
-If the degree value corresponds to no sensor, a "wrong payload error" will be sent.
-Degree 0 represents the direction, in which the Alphabot is headed towards.
-Degree 90 is the right direction.
-
-| Field Name | Field Type | Notes                            |
-|------------|------------|----------------------------------|
-| Degree     | int16      | The degree of the sensor (0-359) |
-
 ### Calibrate steering (Packet ID: 0x03)
 
 No further data
@@ -201,10 +191,10 @@ see [3.2. Sensor packets](#32-sensor--packets-ble-only)
 
 ### BLE_CHAR_CALIBRATE (UUID: d39e8d54-8019-46c8-a977-db13871bac59)
 
-| Field Name       | Field Type  | Notes                                                                                                                                                  |
-|------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Calibration Type | int8        | 0x00 for calibration finished; 0x01 for steering; 0x02 for automatic compass calibration; 0x03 for manual compass calibration; 0x04 for compass offset |
-| Timestamp        | int64       | The Unix epoch time in milliseconds when the packet is sent                                                                                            |
+| Field Name       | Field Type  | Notes                                                                                                                                                                            |
+|------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Calibration Type | int8        | 0x00 to calibrate steering; 0x01 for automatic compass calibration; 0x02 to start manual compass calibration; 0x03 to end manual compass calibration; 0x04 to set compass offset |
+| Timestamp        | int64       | The Unix epoch time in milliseconds when the packet is sent                                                                                                                      |
 
 ### BLE_CHAR_ADD_OBSTACLE (UUID: 60db37c7-afeb-4d40-bb17-a19a07d6fc95)
 
@@ -221,11 +211,19 @@ At first position, width and height is sent by the client, the Alphabot will ans
 
 ### BLE_CHAR_REMOVE_OBSTACLE (UUID: 6d43e0df-682b-45ef-abb7-814ecf475771)
 
-Obstacles can be removed either by Position or by ID.
-If the characteristic is 4 bytes long, the values are interpreted as the position.
-If the characteristic is 2 bytes long, the value is interpreted as the obstacle id.
-The Alphabot will set all values to 0 when the deletion is finished.
+Obstacles can be removed either by ID or by position.
+If the characteristic is 0 bytes long, ALL obstacles will be removed.
+If the characteristic is 10 bytes long, the value is interpreted as the obstacle ID.
+If the characteristic is 12 bytes long, the values are interpreted as the position.
+The Alphabot will send one byte with content 0x00 when the deletion is finished in every case.
 If there are multiple objects on the same position, all of them will be removed.
+
+| Field Name | Field Type | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| Timestamp  | int64      | The Unix epoch time in milliseconds when the packet is sent |
+| ID         | uint16     | The ID of the obstacle                                      |
+
+#### OR
 
 | Field Name | Field Type | Notes                                                       |
 |------------|------------|-------------------------------------------------------------|
@@ -233,30 +231,34 @@ If there are multiple objects on the same position, all of them will be removed.
 | Position X | int16      | The x coordinate in centimetres                             |
 | Position Y | int16      | The y coordinate in centimetres                             |
 
-#### OR
-
-| Field Name | Field Type | Notes                                                       |
-|------------|------------|-------------------------------------------------------------|
-| Timestamp  | int64      | The Unix epoch time in milliseconds when the packet is sent |
-| ID         | uint16     | The ID of the obstacle                                      |
-
 ### BLE_CHAR_PATH_FINDING (UUID: 8dad4c9a-1a1c-4a42-a522-ded592f4ed99)
 
-| Field Name      | Field Type                | Notes                                                       |
-|-----------------|---------------------------|-------------------------------------------------------------|
-| X-start         | int8                      | X coordinate of the start position in decimeters            |
-| Y-start         | int8                      | Y coordinate of the start position in decimeters            |
+| Field Name      | Field Type                | Notes                                                          |
+|-----------------|---------------------------|----------------------------------------------------------------|
+| X-start         | int8                      | X coordinate of the start position in decimeters               |
+| Y-start         | int8                      | Y coordinate of the start position in decimeters               |
 | Path steps data | Path steps data structure | see [Path steps data structure](#33-Path-steps-data-structure) |
+
+### BLE_CHAR_ANCHOR_LOCATIONS (UUID: 8a55dd30-463b-40f6-8f21-d68efcc386b2)
+
+| Field Name | Field Type | Notes                                       |
+|------------|------------|---------------------------------------------|
+| Position X | int16      | The x coordinate in centimetres of anchor 0 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 0 |
+| Position X | int16      | The x coordinate in centimetres of anchor 1 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 1 |
+| Position X | int16      | The x coordinate in centimetres of anchor 2 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 2 |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
 If the original payload was 19 or 20 bytes long, the last one or two bytes won't be shown.
 
-| Field Name     | Field Type         | Notes                                                               |
-|----------------|--------------------|---------------------------------------------------------------------|
-| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)                       |
-| BLE CHAR ID    | uint8              | The first byte of the BLE characteristic UUID that threw the error  |
-| Payload        | uint8 array (0-18) | The payload of the packet that threw the error                      |
+| Field Name     | Field Type         | Notes                                                              |
+|----------------|--------------------|--------------------------------------------------------------------|
+| Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)                      |
+| BLE CHAR ID    | uint8              | The first byte of the BLE characteristic UUID that threw the error |
+| Payload        | uint8 array (0-18) | The payload of the packet that threw the error                     |
 
 # 3. Bit fields
 
@@ -386,5 +388,5 @@ The following example shows a possible bit stream of the path finding data. In t
 | 0x00          | unknown error                     |
 | 0x01          | unknown protocol                  |
 | 0x02          | known but not supported protocol  |
-| 0x03          | unknown packet id                 |
+| 0x03          | unknown packet ID                 |
 | 0x04          | wrong payload                     |
