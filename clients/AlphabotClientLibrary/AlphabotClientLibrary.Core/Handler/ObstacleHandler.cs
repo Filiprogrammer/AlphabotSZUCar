@@ -21,6 +21,5 @@ namespace AlphabotClientLibrary.Core.Handler
         {
             return _obstacles.Remove(obstacle);
         }
-
     }
 }
