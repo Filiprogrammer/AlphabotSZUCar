@@ -9,7 +9,7 @@ namespace AlphabotClientLibrary.Shared.Requests
         public BleInformation GetBleInformation()
         {
             byte[] bytes = new byte[1];
-            bytes[0] = 0x01; // Start steering calibration
+            bytes[0] = 0x00; // Start steering calibration
 
             return new BleInformation(BleUuids.CALIBRATE, bytes);
         }
