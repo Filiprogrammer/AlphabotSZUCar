@@ -2,23 +2,23 @@
 #include "FS.h"
 #include "SPIFFS.h"
 
-int16_t SaveFile::getMagnetSensorCalibratedMinX() {
+int16_t SaveFile::getMagnetSensorCalibratedMinX() const {
     return magnetSensorCalibratedMinX;
 }
 
-int16_t SaveFile::getMagnetSensorCalibratedMaxX() {
+int16_t SaveFile::getMagnetSensorCalibratedMaxX() const {
     return magnetSensorCalibratedMaxX;
 }
 
-int16_t SaveFile::getMagnetSensorCalibratedMinY() {
+int16_t SaveFile::getMagnetSensorCalibratedMinY() const {
     return magnetSensorCalibratedMinY;
 }
 
-int16_t SaveFile::getMagnetSensorCalibratedMaxY() {
+int16_t SaveFile::getMagnetSensorCalibratedMaxY() const {
     return magnetSensorCalibratedMaxY;
 }
 
-float SaveFile::getCompassAngleOffset() {
+float SaveFile::getCompassAngleOffset() const {
     return compassAngleOffset;
 }
 

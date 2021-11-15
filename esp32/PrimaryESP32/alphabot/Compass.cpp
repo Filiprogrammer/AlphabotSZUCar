@@ -29,7 +29,7 @@ void Compass::setAngleOffset(float offset) {
     angle_offset = offset;
 }
 
-float Compass::getAngleOffset() {
+float Compass::getAngleOffset() const {
     return angle_offset;
 }
 
@@ -55,19 +55,19 @@ void Compass::beginMagnetSensorCalibration() {
     min_max_set = false;
 }
 
-int16_t Compass::getMinX() {
+int16_t Compass::getMinX() const {
     return min_x;
 }
 
-int16_t Compass::getMaxX() {
+int16_t Compass::getMaxX() const {
     return max_x;
 }
 
-int16_t Compass::getMinY() {
+int16_t Compass::getMinY() const {
     return min_y;
 }
 
-int16_t Compass::getMaxY() {
+int16_t Compass::getMaxY() const {
     return max_y;
 }
 

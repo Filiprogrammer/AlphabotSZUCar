@@ -116,27 +116,27 @@ void PositioningSystem::calculatePosition(float anc1_dist, float anc2_dist, floa
     (*y) = anc1_y + ((sq(anc1_dist) - sq(anc3_dist) + sq(i) + sq(j)) / (2 * j)) - ((i / j) * (*x));
 }
 
-float PositioningSystem::getAnc1X() {
+float PositioningSystem::getAnc1X() const {
     return anc1_x;
 }
 
-float PositioningSystem::getAnc1Y() {
+float PositioningSystem::getAnc1Y() const {
     return anc1_y;
 }
 
-float PositioningSystem::getAnc2X() {
+float PositioningSystem::getAnc2X() const {
     return anc2_x;
 }
 
-float PositioningSystem::getAnc2Y() {
+float PositioningSystem::getAnc2Y() const {
     return anc2_y;
 }
 
-float PositioningSystem::getAnc3X() {
+float PositioningSystem::getAnc3X() const {
     return anc3_x;
 }
 
-float PositioningSystem::getAnc3Y() {
+float PositioningSystem::getAnc3Y() const {
     return anc3_y;
 }
 

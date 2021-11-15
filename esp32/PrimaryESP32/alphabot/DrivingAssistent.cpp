@@ -1,30 +1,30 @@
 #include "DrivingAssistent.h"
 
 void DrivingAssistent::updateDistances(uint16_t front, uint16_t left, uint16_t right, uint16_t back) {
-    this->dist_front = front;
-    this->dist_left = left;
-    this->dist_right = right;
-    this->dist_back = back;
+    dist_front = front;
+    dist_left = left;
+    dist_right = right;
+    dist_back = back;
 }
 
 void DrivingAssistent::updateDistanceFront(uint16_t front) {
-    this->dist_front = front;
+    dist_front = front;
 }
 
 void DrivingAssistent::updateDistanceLeft(uint16_t left) {
-    this->dist_left = left;
+    dist_left = left;
 }
 
 void DrivingAssistent::updateDistanceRight(uint16_t right) {
-    this->dist_right = right;
+    dist_right = right;
 }
 
 void DrivingAssistent::updateDistanceBack(uint16_t back) {
-    this->dist_back = back;
+    dist_back = back;
 }
 
 void DrivingAssistent::updateSpeedAndSteer(int8_t spd, int8_t steer) {
-    this->speed = spd;
+    speed = spd;
     this->steer = steer;
 }
 
@@ -75,7 +75,7 @@ void DrivingAssistent::computeNextStep(int8_t* spd, int8_t* steer) {
     *steer = this->steer;
 }
 
-int8_t DrivingAssistent::safeSpeedForward(int8_t speed) {
+int8_t DrivingAssistent::safeSpeedForward(int8_t speed) const {
     float stoppingDistance = (speed * FULL_SPEED_ROLL) / 128.0;
 
     if (min(this->dist_front, min(this->dist_left, this->dist_right)) <= (MIN_DIST_TO_OBSTACLE + stoppingDistance)) {
@@ -93,7 +93,7 @@ int8_t DrivingAssistent::safeSpeedForward(int8_t speed) {
     return speed;
 }
 
-int8_t DrivingAssistent::safeSpeedBackward(int8_t speed) {
+int8_t DrivingAssistent::safeSpeedBackward(int8_t speed) const {
     float stoppingDistance = (-speed * FULL_SPEED_ROLL) / 128.0;
 
     if (this->dist_back <= (MIN_DIST_TO_OBSTACLE + stoppingDistance)) {

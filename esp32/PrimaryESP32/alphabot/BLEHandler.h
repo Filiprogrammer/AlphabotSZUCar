@@ -8,12 +8,11 @@
 
 class BLEHandler : public BLEServerCallbacks {
 private:
-    void (*disconnected)();
-    void (*connected)();
+    BLEServer* server;
     BLEService* service;
+    BLEAdvertising* advertising;
 
 public:
-    BLEServer* server;
     BLECharacteristic* charClientPing;
     BLECharacteristic* charUpdateMotors;
     BLECharacteristic* charCollDetect;
@@ -25,10 +24,10 @@ public:
     BLECharacteristic* charPathfindingObstacles;
     BLECharacteristic* charPathfindingTarget;
     BLECharacteristic* charPathfindingPath;
-    BLEAdvertising* advertising;
 
-    void onConnect(BLEServer* pServer);
-    void onDisconnect(BLEServer* pServer);
+    void startAdvertising();
+    void stopAdvertising();
+    uint32_t getConnectedCount();
 
     BLEHandler(void (*dataReceived)(BLEUUID, const char*, size_t), void (*disconnected)(), void (*connected)());
     ~BLEHandler();

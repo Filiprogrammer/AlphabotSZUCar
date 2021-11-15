@@ -22,8 +22,8 @@ public:
     void rightBackward();
     void steer(int16_t dir);
     void updateMotors(int8_t x, int8_t y);
-    int8_t getSpeed();
-    int8_t getSteerDirection();
+    int8_t getSpeed() const;
+    int8_t getSteerDirection() const;
 
     TwoMotorDrive(Motor* motor_left, Motor* motor_right, StepperMotor* motor_steer);
 };

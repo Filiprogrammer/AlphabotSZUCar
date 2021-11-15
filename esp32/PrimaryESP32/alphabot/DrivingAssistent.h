@@ -24,8 +24,8 @@ public:
     void updateDistanceBack(uint16_t back);
     void updateSpeedAndSteer(int8_t spd, int8_t steer);
     void computeNextStep(int8_t* spd, int8_t* steer);
-    int8_t safeSpeedForward(int8_t speed);
-    int8_t safeSpeedBackward(int8_t speed);
+    int8_t safeSpeedForward(int8_t speed) const;
+    int8_t safeSpeedBackward(int8_t speed) const;
 
     DrivingAssistent();
 };
