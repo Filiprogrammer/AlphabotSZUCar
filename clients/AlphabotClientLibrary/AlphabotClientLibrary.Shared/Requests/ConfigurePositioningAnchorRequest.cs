@@ -12,15 +12,43 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public ConfigurePositioningAnchorRequest(byte anchorId, Position position)
         {
+            if(anchorId < 0 || anchorId > 2)
+            {
+                throw new ArgumentException("AnchorID must be between 0 and 2");
+            }
+
             _anchorId = anchorId;
             _position = position;
         }
 
         public BleInformation GetBleInformation()
         {
-            //aktuell keine Ble Implementation/Dokumentation?
+            byte[] bytes = new byte[12];
+            byte[] posBytes = _position.ToByteArray();
 
-            throw new NotImplementedException();
+            switch (_anchorId)
+            {
+                case 0:
+                    bytes[0] = posBytes[0];
+                    bytes[1] = posBytes[1];
+                    bytes[2] = posBytes[2];
+                    bytes[3] = posBytes[3];
+                    break;
+                case 1:
+                    bytes[4] = posBytes[0];
+                    bytes[5] = posBytes[1];
+                    bytes[6] = posBytes[2];
+                    bytes[7] = posBytes[3];
+                    break;
+                case 2:
+                    bytes[8] = posBytes[0];
+                    bytes[9] = posBytes[1];
+                    bytes[10] = posBytes[2];
+                    bytes[11] = posBytes[3];
+                    break;
+            }
+
+            return new BleInformation(BleUuids.ANCHOR_LOCATIONS, bytes);
         }
 
         public byte[] GetBytes()
