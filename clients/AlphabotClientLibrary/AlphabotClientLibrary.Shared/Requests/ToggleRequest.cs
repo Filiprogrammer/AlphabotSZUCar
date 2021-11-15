@@ -77,7 +77,7 @@ namespace AlphabotClientLibrary.Shared.Requests
             return ret;
         }
 
-        private byte[] ConvertTogglesToBytes() 
+        private byte[] ConvertTogglesToBytes()
         {
             BitArray bitArray = new BitArray(16);
 
