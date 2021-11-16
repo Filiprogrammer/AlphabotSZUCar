@@ -241,14 +241,15 @@ If there are multiple objects on the same position, all of them will be removed.
 
 ### BLE_CHAR_ANCHOR_LOCATIONS (UUID: 8a55dd30-463b-40f6-8f21-d68efcc386b2)
 
-| Field Name | Field Type | Notes                                       |
-|------------|------------|---------------------------------------------|
-| Position X | int16      | The x coordinate in centimetres of anchor 0 |
-| Position Y | int16      | The y coordinate in centimetres of anchor 0 |
-| Position X | int16      | The x coordinate in centimetres of anchor 1 |
-| Position Y | int16      | The y coordinate in centimetres of anchor 1 |
-| Position X | int16      | The x coordinate in centimetres of anchor 2 |
-| Position Y | int16      | The y coordinate in centimetres of anchor 2 |
+| Field Name | Field Type | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| Timestamp  | int64      | The Unix epoch time in milliseconds when the packet is sent |
+| Position X | int16      | The x coordinate in centimetres of anchor 0                 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 0                 |
+| Position X | int16      | The x coordinate in centimetres of anchor 1                 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 1                 |
+| Position X | int16      | The x coordinate in centimetres of anchor 2                 |
+| Position Y | int16      | The y coordinate in centimetres of anchor 2                 |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
