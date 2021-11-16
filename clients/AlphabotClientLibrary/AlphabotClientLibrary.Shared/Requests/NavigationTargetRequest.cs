@@ -30,6 +30,7 @@ namespace AlphabotClientLibrary.Shared.Requests
 
             return packetId.Concat(positionData).ToArray();
         }
+
         private byte[] GetMillisecondsSinceEpoch()
         {
             long millisecondsSinceEpoch = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
