@@ -22,6 +22,8 @@ namespace AlphabotClientLibrary.Shared
 
         public static readonly Guid PATH_FINDING_PATH = new Guid("8dad4c9a-1a1c-4a42-a522-ded592f4ed99");
 
+        public static readonly Guid ANCHOR_LOCATIONS = new Guid("8a55dd30-463b-40f6-8f21-d68efcc386b2");
+
         public static readonly Guid ERROR = new Guid("dc458f08-ea3e-4fe1-adb3-25c840be081a");
     }
 }

@@ -25,21 +25,7 @@ namespace AlphabotClientLibrary.Shared.Requests
         {
             byte[] bytes = new byte[1];
 
-            switch (_compassCalibrationType)
-            {
-                case CompassCalibrationType.StartAutomated:
-                    bytes[0] = 0x02;
-                    break;
-                case CompassCalibrationType.StartManual:
-                    bytes[0] = 0x03;
-                    break;
-                case CompassCalibrationType.EndManual:
-                    bytes[0] = 0x00;
-                    break;
-                case CompassCalibrationType.SetCompassOffset:
-                    bytes[0] = 0x04;
-                    break;
-            }
+            bytes[0] = (byte)_compassCalibrationType;
 
             return new BleInformation(BleUuids.CALIBRATE, bytes);
         }

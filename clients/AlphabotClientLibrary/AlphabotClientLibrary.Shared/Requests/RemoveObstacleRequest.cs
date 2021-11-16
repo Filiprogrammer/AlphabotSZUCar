@@ -38,14 +38,15 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public BleInformation GetBleInformation()
         {
+            byte[] timebytes = GetMillisecondsSinceEpoch();
             byte[] bytes;
 
             // If position is null, the obstacle will be removed by its id.
             if (_position == null)
-                bytes = BitConverter.GetBytes(_id);
+                bytes = timebytes.Concat(BitConverter.GetBytes(_id)).ToArray();
             // Else it will be removed by its position.
             else
-                bytes = _position.ToByteArray();
+                bytes = timebytes.Concat(_position.ToByteArray()).ToArray();
 
             return new BleInformation(BleUuids.REMOVE_OBSTACLE, bytes);
         }
@@ -72,6 +73,14 @@ namespace AlphabotClientLibrary.Shared.Requests
             }
 
             return ret;
+        }
+
+        private byte[] GetMillisecondsSinceEpoch()
+        {
+            long millisecondsSinceEpoch = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            byte[] timeInBytes = BitConverter.GetBytes(millisecondsSinceEpoch);
+
+            return timeInBytes;
         }
     }
 }

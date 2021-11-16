@@ -12,15 +12,43 @@ namespace AlphabotClientLibrary.Shared.Requests
 
         public ConfigurePositioningAnchorRequest(byte anchorId, Position position)
         {
+            if (anchorId < 0 || anchorId > 2)
+                throw new ArgumentException("AnchorID must be between 0 and 2");
+
             _anchorId = anchorId;
             _position = position;
         }
 
         public BleInformation GetBleInformation()
         {
-            //aktuell keine Ble Implementation/Dokumentation?
+            byte[] timeBytes = GetMillisecondsSinceEpoch();
+            byte[] posBytes = _position.ToByteArray();
+            byte[] bytes = new byte[20];
+            Array.Copy(timeBytes, bytes, 8);
 
-            throw new NotImplementedException();
+            switch (_anchorId)
+            {
+                case 0:
+                    bytes[8] = posBytes[0];
+                    bytes[9] = posBytes[1];
+                    bytes[10] = posBytes[2];
+                    bytes[11] = posBytes[3];
+                    break;
+                case 1:
+                    bytes[12] = posBytes[0];
+                    bytes[13] = posBytes[1];
+                    bytes[14] = posBytes[2];
+                    bytes[15] = posBytes[3];
+                    break;
+                case 2:
+                    bytes[16] = posBytes[0];
+                    bytes[17] = posBytes[1];
+                    bytes[18] = posBytes[2];
+                    bytes[19] = posBytes[3];
+                    break;
+            }
+
+            return new BleInformation(BleUuids.ANCHOR_LOCATIONS, bytes);
         }
 
         public byte[] GetBytes()
@@ -37,6 +65,14 @@ namespace AlphabotClientLibrary.Shared.Requests
             byte[] positionData = _position.ToByteArray();
 
             return anchorId.Concat(positionData).ToArray();
+        }
+
+        private byte[] GetMillisecondsSinceEpoch()
+        {
+            long millisecondsSinceEpoch = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            byte[] timeInBytes = BitConverter.GetBytes(millisecondsSinceEpoch);
+
+            return timeInBytes;
         }
     }
 }

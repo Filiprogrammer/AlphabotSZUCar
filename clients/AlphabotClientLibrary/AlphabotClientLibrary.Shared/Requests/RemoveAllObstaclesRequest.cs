@@ -8,8 +8,9 @@ namespace AlphabotClientLibrary.Shared.Requests
     {
         public BleInformation GetBleInformation()
         {
-            //Not added in documentaion?
-            throw new NotImplementedException();
+            byte[] bytes = new byte[0];
+
+            return new BleInformation(BleUuids.REMOVE_OBSTACLE, bytes);
         }
 
         public byte[] GetBytes()
