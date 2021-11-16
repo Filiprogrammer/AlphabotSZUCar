@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlphabotClientLibrary.Core"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlphabotClientLibrary.Core.Tcp", "AlphabotClientLibrary.Core.Tcp\AlphabotClientLibrary.Core.Tcp.csproj", "{182A9A8C-8D44-4389-B035-35067D283A7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphabotClientLibrary.Example.WinForms", "AlphabotClientLibrary.Example.WinForms\AlphabotClientLibrary.Example.WinForms.csproj", "{F8C0F713-9D86-4DCF-8972-BF62C09279E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
