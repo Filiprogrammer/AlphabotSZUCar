@@ -53,7 +53,6 @@ namespace AlphabotClientLibrary.Core.Tcp
         private PositioningResponse GetPositioningResponse()
         {
             byte[] positioningBytes = new byte[4];
-
             Array.Copy(DataBytes, positioningBytes, 4);
 
             return new PositioningResponse(new Position(positioningBytes));
