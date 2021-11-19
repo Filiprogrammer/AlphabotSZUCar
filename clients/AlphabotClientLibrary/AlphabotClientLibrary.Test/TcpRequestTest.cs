@@ -50,9 +50,7 @@ namespace AlphabotClientLibrary.Test
         public void TestNavigationTargetRequest()
         {
             Position pos = new Position(10, 20);
-
             NavigationTargetRequest request = new NavigationTargetRequest(pos);
-
             byte[] expectedBytes = { 0x08, 0x0A, 0x00, 0x14, 0x00 };
 
             Assert.Equal(expectedBytes, request.GetBytes());
