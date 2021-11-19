@@ -40,7 +40,6 @@ namespace AlphabotClientLibrary.Test
         {
             Position pos = new Position(-40, 390);
             ConfigurePositioningAnchorRequest request = new ConfigurePositioningAnchorRequest(1, pos);
-
             byte[] expectedBytes = { 0x07, 0x01, 0xD8, 0xFF, 0x86, 0x01 };
 
             Assert.Equal(expectedBytes, request.GetBytes());
