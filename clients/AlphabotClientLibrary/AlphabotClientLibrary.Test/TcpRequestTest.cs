@@ -79,19 +79,21 @@ namespace AlphabotClientLibrary.Test
         }
 
         [Fact]
-        public void TestRemoveObstacleRequest()
+        public void TestRemoveObstacleByIdRequest()
         {
             RemoveObstacleRequest requestRemoveById = new RemoveObstacleRequest(257);
             byte[] expectedBytesRemoveById = { 0x0A, 0x01, 0x01 };
 
-            //Test remove by ID
             Assert.Equal(expectedBytesRemoveById, requestRemoveById.GetBytes());
-            
+        }
+
+        [Fact]
+        public void TestRemoveObstacleByPositionRequest()
+        {
             Position pos = new Position(255, 2);
             RemoveObstacleRequest requestRemoveByPos = new RemoveObstacleRequest(pos);
             byte[] expectedBytesRemoveByPos = { 0x0B, 0xFF, 0x00, 0x02, 0x00 };
 
-            //Test remove by position
             Assert.Equal(expectedBytesRemoveByPos, requestRemoveByPos.GetBytes());
         }
 
