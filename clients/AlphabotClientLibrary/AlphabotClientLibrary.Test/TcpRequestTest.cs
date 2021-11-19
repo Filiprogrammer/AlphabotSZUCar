@@ -21,7 +21,6 @@ namespace AlphabotClientLibrary.Test
         public void TestCalibrateCompassRequest()
         {
             CalibrateCompassRequest request = new CalibrateCompassRequest(CalibrateCompassRequest.CompassCalibrationType.StartManual);
-
             byte[] expectedBytes = { 0x04, 0x02 };
 
             Assert.Equal(expectedBytes, request.GetBytes());
