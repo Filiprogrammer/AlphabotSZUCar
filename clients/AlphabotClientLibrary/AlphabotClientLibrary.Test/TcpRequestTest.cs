@@ -60,14 +60,11 @@ namespace AlphabotClientLibrary.Test
         public void TestPingRequest()
         {
             PingRequest request = new PingRequest();
-
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
             byte[] requestArr = new byte[8];
 
             Array.Copy(request.GetBytes(), 1, requestArr, 0, 8);
             long requestTime = BitConverter.ToInt64(requestArr);
-
             long difference = requestTime - currentTime;
 
             Assert.True(difference >= 0 && difference < 1000, "The time difference was greater than 1000ms");
