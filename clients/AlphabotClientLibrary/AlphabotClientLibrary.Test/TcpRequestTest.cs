@@ -30,7 +30,6 @@ namespace AlphabotClientLibrary.Test
         public void TestCalibrateSteeringRequest()
         {
             CalibrateSteeringRequest request = new CalibrateSteeringRequest();
-
             byte[] expectedBytes = { 0x03 };
 
             Assert.Equal(expectedBytes, request.GetBytes());
