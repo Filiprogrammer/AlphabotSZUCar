@@ -79,7 +79,6 @@ namespace AlphabotClientLibrary.Test
         public void TestRemoveAllObstaclesRequest()
         {
             RemoveAllObstaclesRequest request = new RemoveAllObstaclesRequest();
-
             byte[] expectedBytes = { 0x0C };
 
             Assert.Equal(expectedBytes, request.GetBytes());
