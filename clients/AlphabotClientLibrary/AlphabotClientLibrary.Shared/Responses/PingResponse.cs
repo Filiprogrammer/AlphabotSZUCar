@@ -7,9 +7,12 @@ namespace AlphabotClientLibrary.Shared.Responses
     {
         public long Time { get; private set; }
 
+        public int Latency { get; private set; }
+
         public PingResponse(long time)
         {
             Time = time;
+            Latency = (int)(Time - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
         }
 
         public AlphabotResponseType GetResponseType()
