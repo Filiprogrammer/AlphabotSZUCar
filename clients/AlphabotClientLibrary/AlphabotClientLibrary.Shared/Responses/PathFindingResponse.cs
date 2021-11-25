@@ -30,5 +30,10 @@ namespace AlphabotClientLibrary.Shared.Responses
             StartPositionY = startPositionY;
             Steps = pathFindingSteps;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.PathFinding;
+        }
     }
 }

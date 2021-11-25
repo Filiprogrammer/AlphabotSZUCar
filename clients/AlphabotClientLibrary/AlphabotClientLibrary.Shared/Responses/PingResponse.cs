@@ -11,5 +11,10 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             Time = time;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.Ping;
+        }
     }
 }

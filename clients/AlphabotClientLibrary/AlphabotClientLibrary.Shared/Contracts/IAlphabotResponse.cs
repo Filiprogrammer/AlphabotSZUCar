@@ -17,5 +17,6 @@ namespace AlphabotClientLibrary.Shared.Contracts
 
     public interface IAlphabotResponse
     {
+        AlphabotResponseType GetResponseType();
     }
 }
