@@ -534,3 +534,16 @@ jobs:
         with:
           name: esp32_secondary_firmware.bin
           path: esp32/SecondaryESP32/.pio/build/esp32dev/firmware.bin
+  test_client_library:
+    runs-on: ubuntu-latest
+    name: Test Client Library
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.403'
+      - name: Test AlphabotClientLibrary
+        run: |
+          cd clients/AlphabotClientLibrary
+          dotnet test
