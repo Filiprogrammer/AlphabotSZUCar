@@ -39,43 +39,43 @@ namespace AlphabotClientLibrary.Example.WinForms
         {
             _connectionHandler = new TcpHandlerWindows();
 
-            IPAddress ip = IPAddress.Parse(tbx_ip.Text);
-            ushort port = Convert.ToUInt16(tbx_port.Text);
+            IPAddress ip = IPAddress.Parse(tbxIp.Text);
+            ushort port = Convert.ToUInt16(tbxPort.Text);
 
             if (_connectionHandler.Connect(new WiFiConnectionData(ip, port)))
             {
-                cbx_connected.Checked = true;
-                btn_disconnect.Enabled = true;
-                btn_connect.Enabled = false;
-                tbar_steer.Enabled = true;
-                num_speed.Enabled = true;
+                cbxConnected.Checked = true;
+                btnDisconnect.Enabled = true;
+                btnConnect.Enabled = false;
+                tbarSteer.Enabled = true;
+                numSpeed.Enabled = true;
             }
             else
             {
-                cbx_connected.Checked = false;
-                btn_connect.Enabled = true;
+                cbxConnected.Checked = false;
+                btnConnect.Enabled = true;
             }
         }
 
         private void btn_disconnect_Click(object sender, EventArgs e)
         {
             _connectionHandler.Disconnect();
-            cbx_connected.Checked = false;
-            btn_disconnect.Enabled = false;
-            btn_connect.Enabled = true;
-            tbar_steer.Enabled = false;
-            num_speed.Enabled = false;
+            cbxConnected.Checked = false;
+            btnDisconnect.Enabled = false;
+            btnConnect.Enabled = true;
+            tbarSteer.Enabled = false;
+            numSpeed.Enabled = false;
         }
 
         private void tbar_steer_Scroll(object sender, EventArgs e)
         {
-            _steer = (sbyte)tbar_steer.Value;
-            lbl_steer.Text = "Lenkung: " + _steer;
+            _steer = (sbyte)tbarSteer.Value;
+            lblSteer.Text = "Lenkung: " + _steer;
         }
 
         private void num_speed_ValueChanged(object sender, EventArgs e)
         {
-            _speed = (sbyte)num_speed.Value;
+            _speed = (sbyte)numSpeed.Value;
 
             IAlphabotRequest request = new SpeedSteerRequest(_steer, _speed);
 
