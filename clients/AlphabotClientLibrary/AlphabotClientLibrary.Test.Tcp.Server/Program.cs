@@ -47,13 +47,12 @@ namespace AlphabotClientLibrary.Test.Tcp.Server
                     byte[] send = { 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, msg[7], msg[6], sendIdBytes[0], sendIdBytes[1] };
 
                     ns.Write(send, 0, send.Length);
-                    string sentBytes = "";
+                    StringBuilder sentBytes = new StringBuilder("[CONNECTION]: Sent the following bytes:");
 
-                    foreach (var item in send)
-                    {
-                        sentBytes += (int)item + " -";
-                    }
-                    Console.WriteLine("[CONNECTION]: Sent following bytes: " + sentBytes);
+                    foreach (var sentByte in send)
+                        sentBytes.AppendFormat(" 0x{0,2:X2},", sentByte);
+
+                    Console.WriteLine(sentBytes.ToString());
                 }
             }
         }
