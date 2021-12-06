@@ -113,7 +113,7 @@ namespace AlphabotClientLibrary.Example.WinForms
             this.btnDisconnect.TabIndex = 6;
             this.btnDisconnect.Text = "Disconnect";
             this.btnDisconnect.UseVisualStyleBackColor = true;
-            this.btnDisconnect.Click += new System.EventHandler(this.btn_disconnect_Click);
+            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
             // 
             // tbarSteer
             // 
