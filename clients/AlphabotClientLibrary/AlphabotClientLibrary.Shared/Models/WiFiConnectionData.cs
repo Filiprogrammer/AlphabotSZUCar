@@ -23,9 +23,7 @@ namespace AlphabotClientLibrary.Shared.Models
             IPAddress[] addresses = Dns.GetHostAddresses(address);
 
             if(addresses.Length < 1)
-            {
                 throw new WebException("The address resolver could not resolve the host name.", WebExceptionStatus.NameResolutionFailure);
-            }
 
             IPEndPoint = new IPEndPoint(addresses[0], port);
         }
