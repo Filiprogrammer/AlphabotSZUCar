@@ -24,7 +24,7 @@ namespace AlphabotClientLibrary.Test.Tcp.Client
             ch.Connect(new WiFiConnectionData(IPAddress.Loopback, 9000));
             Console.WriteLine("[CLIENT]: Connected to server");
 
-            Console.Write("[CONNECTION]: To send a AddObstacleRequest, put in the height of the obstacle you want: ");
+            Console.Write("[CONNECTION]: To send an AddObstacleRequest, enter the height of the obstacle you want: ");
             string input = Console.ReadLine();
             ushort height = Convert.ToUInt16(input);
 
