@@ -60,7 +60,7 @@ namespace AlphabotClientLibrary.Example.WinForms
             numSpeed.Enabled = false;
         }
 
-        private void tbar_steer_Scroll(object sender, EventArgs e)
+        private void tbarSteer_Scroll(object sender, EventArgs e)
         {
             _steer = (sbyte)tbarSteer.Value;
             lblSteer.Text = "Lenkung: " + _steer;
