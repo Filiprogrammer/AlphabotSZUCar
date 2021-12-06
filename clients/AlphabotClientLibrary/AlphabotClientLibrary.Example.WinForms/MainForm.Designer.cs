@@ -150,7 +150,7 @@ namespace AlphabotClientLibrary.Example.WinForms
             this.numSpeed.Name = "numSpeed";
             this.numSpeed.Size = new System.Drawing.Size(197, 31);
             this.numSpeed.TabIndex = 8;
-            this.numSpeed.ValueChanged += new System.EventHandler(this.num_speed_ValueChanged);
+            this.numSpeed.ValueChanged += new System.EventHandler(this.numSpeed_ValueChanged);
             // 
             // lblLeft
             // 
