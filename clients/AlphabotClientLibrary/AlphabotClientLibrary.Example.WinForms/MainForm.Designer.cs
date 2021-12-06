@@ -126,7 +126,7 @@ namespace AlphabotClientLibrary.Example.WinForms
             this.tbarSteer.Size = new System.Drawing.Size(316, 69);
             this.tbarSteer.SmallChange = 5;
             this.tbarSteer.TabIndex = 7;
-            this.tbarSteer.Scroll += new System.EventHandler(this.tbar_steer_Scroll);
+            this.tbarSteer.Scroll += new System.EventHandler(this.tbarSteer_Scroll);
             // 
             // numSpeed
             // 
