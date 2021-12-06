@@ -67,7 +67,6 @@ namespace AlphabotClientLibrary.Example.WinForms
             // 
             // tbxIp
             // 
-            this.tbxIp.AccessibleDescription = "tbx_ip";
             this.tbxIp.Location = new System.Drawing.Point(108, 51);
             this.tbxIp.Name = "tbxIp";
             this.tbxIp.Size = new System.Drawing.Size(150, 31);
