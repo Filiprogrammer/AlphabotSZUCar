@@ -35,7 +35,7 @@ namespace AlphabotClientLibrary.Test.Tcp.Server
 
                     Console.WriteLine(receivedBytes.ToString());
 
-                    Console.Write("[CONNECTION]: Put in the id you want to respond: ");
+                    Console.Write("[CONNECTION]: Enter the id you want to respond: ");
 
                     string sendId = Console.ReadLine();
 
