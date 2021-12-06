@@ -199,7 +199,6 @@ namespace AlphabotClientLibrary.Example.WinForms
             // 
             // MainForm
             // 
-            this.AccessibleDescription = "tbx_ip";
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
