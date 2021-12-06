@@ -28,14 +28,12 @@ namespace AlphabotClientLibrary.Test.Tcp.Server
                 {
                     byte[] msg = new byte[10];
                     ns.Read(msg, 0, msg.Length);
-                    string receivedBytes = "";
+                    StringBuilder receivedBytes = new StringBuilder("[CONNECTION]: Received the following bytes:");
 
-                    foreach (var item in msg)
-                    {
-                        receivedBytes += (int)item + " -";
-                    }
+                    foreach (var receivedByte in msg)
+                        sentBytes.AppendFormat(" 0x{0,2:X2},", receivedByte);
 
-                    Console.WriteLine("[CONNECTION]: Received following bytes: " + receivedBytes);
+                    Console.WriteLine(receivedBytes.ToString());
 
                     Console.Write("[CONNECTION]: Put in the id you want to respond: ");
 
