@@ -66,7 +66,7 @@ namespace AlphabotClientLibrary.Example.WinForms
             lblSteer.Text = "Lenkung: " + _steer;
         }
 
-        private void num_speed_ValueChanged(object sender, EventArgs e)
+        private void numSpeed_ValueChanged(object sender, EventArgs e)
         {
             _speed = (sbyte)numSpeed.Value;
 
