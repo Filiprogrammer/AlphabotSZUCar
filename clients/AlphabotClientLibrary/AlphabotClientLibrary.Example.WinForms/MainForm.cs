@@ -28,7 +28,7 @@ namespace AlphabotClientLibrary.Example.WinForms
             thread.Start();
         }
 
-        private void btn_connect_Click(object sender, EventArgs e)
+        private void btnConnect_Click(object sender, EventArgs e)
         {
             _connectionHandler = new TcpHandlerWindows();
 
