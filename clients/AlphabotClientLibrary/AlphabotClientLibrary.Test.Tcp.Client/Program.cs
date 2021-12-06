@@ -1,11 +1,11 @@
-﻿using AlphabotClientLibrary.Core;
+using System;
+using System.Net;
+using AlphabotClientLibrary.Core;
 using AlphabotClientLibrary.Core.Tcp;
 using AlphabotClientLibrary.Shared.Contracts;
 using AlphabotClientLibrary.Shared.Models;
 using AlphabotClientLibrary.Shared.Requests;
 using AlphabotClientLibrary.Shared.Responses;
-using System;
-using System.Net;
 
 namespace AlphabotClientLibrary.Test.Tcp.Client
 {
