@@ -59,7 +59,6 @@ namespace AlphabotClientLibrary.Example.WinForms
             // 
             // tbxPort
             // 
-            this.tbxPort.AccessibleDescription = "tbx_port";
             this.tbxPort.Location = new System.Drawing.Point(108, 119);
             this.tbxPort.Name = "tbxPort";
             this.tbxPort.Size = new System.Drawing.Size(150, 31);
