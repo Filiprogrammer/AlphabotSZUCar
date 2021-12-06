@@ -78,7 +78,6 @@ namespace AlphabotClientLibrary.Example.WinForms
             _speed = (sbyte)numSpeed.Value;
 
             IAlphabotRequest request = new SpeedSteerRequest(_steer, _speed);
-
             _connectionHandler.SendAction(request);
         }
 
