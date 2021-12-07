@@ -100,7 +100,7 @@ namespace AlphabotClientLibrary.Test
         [Fact]
         public void TestSpeedSteerRequest()
         {
-            SpeedSteerRequest request = new SpeedSteerRequest(50, -1);
+            SpeedSteerRequest request = new SpeedSteerRequest(-1, 50);
             byte[] expectedBytes = { 0x01, 0xFF, 0x32 };
 
             Assert.Equal(expectedBytes, request.GetBytes());

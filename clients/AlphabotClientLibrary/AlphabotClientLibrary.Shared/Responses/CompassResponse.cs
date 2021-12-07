@@ -11,5 +11,10 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             Degree = degree;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.Compass;
+        }
     }
 }

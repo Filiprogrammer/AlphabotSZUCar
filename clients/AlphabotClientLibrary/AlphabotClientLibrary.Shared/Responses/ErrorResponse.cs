@@ -27,5 +27,10 @@ namespace AlphabotClientLibrary.Shared.Responses
             Array.Copy(packet, 1, Payload, 0, packet.Length - 1);
             Error = errorType;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.Error;
+        }
     }
 }
