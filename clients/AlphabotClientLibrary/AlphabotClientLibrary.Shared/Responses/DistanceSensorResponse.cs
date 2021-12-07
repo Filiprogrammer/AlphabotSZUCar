@@ -14,5 +14,10 @@ namespace AlphabotClientLibrary.Shared.Responses
             Degree = degree;
             Distance = distance;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.DistanceSensor;
+        }
     }
 }

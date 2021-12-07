@@ -12,5 +12,10 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             Obstacle = obstacle;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.NewObstacle;
+        }
     }
 }

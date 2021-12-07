@@ -9,5 +9,10 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             return "TestResponse.cs";
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

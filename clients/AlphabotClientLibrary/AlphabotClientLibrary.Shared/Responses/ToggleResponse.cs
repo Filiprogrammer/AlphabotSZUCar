@@ -68,5 +68,10 @@ namespace AlphabotClientLibrary.Shared.Responses
             LogObstacleDistance = bitArray[14];
             LogPositioning = bitArray[15];
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.Toggle;
+        }
     }
 }

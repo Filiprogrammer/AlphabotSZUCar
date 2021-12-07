@@ -6,13 +6,13 @@ namespace AlphabotClientLibrary.Shared.Requests
 {
     public class SpeedSteerRequest : IAlphabotRequest
     {
-        private sbyte _steer;
         private sbyte _speed;
+        private sbyte _steer;
 
-        public SpeedSteerRequest(sbyte steer, sbyte speed)
+        public SpeedSteerRequest(sbyte speed, sbyte steer)
         {
-            _steer = steer;
             _speed = speed;
+            _steer = steer;
         }
 
         public BleInformation GetBleInformation()

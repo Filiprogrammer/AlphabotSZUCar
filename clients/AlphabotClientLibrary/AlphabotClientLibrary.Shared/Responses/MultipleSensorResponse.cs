@@ -24,5 +24,10 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             _sensorResponses = sensorResponses;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.MultipleSensor;
+        }
     }
 }
