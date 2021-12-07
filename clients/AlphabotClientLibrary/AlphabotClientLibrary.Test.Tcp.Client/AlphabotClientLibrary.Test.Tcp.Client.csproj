@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AlphabotClientLibrary.Core.Tcp\AlphabotClientLibrary.Core.Tcp.csproj" />
+    <ProjectReference Include="..\AlphabotClientLibrary.Core\AlphabotClientLibrary.Core.csproj" />
+    <ProjectReference Include="..\AlphabotClientLibrary.Shared\AlphabotClientLibrary.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
