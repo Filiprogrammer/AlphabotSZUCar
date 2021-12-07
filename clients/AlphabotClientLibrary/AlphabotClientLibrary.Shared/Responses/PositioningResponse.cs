@@ -12,5 +12,10 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             Position = position;
         }
+
+        public AlphabotResponseType GetResponseType()
+        {
+            return AlphabotResponseType.Positioning;
+        }
     }
 }
