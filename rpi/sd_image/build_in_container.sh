@@ -251,7 +251,7 @@ install -m 644 -o root -g root /root/build-debian/rootfs/etc/systemd/system/alph
 ln -s /etc/systemd/system/alphabot-dotnet.service $RASPI_DEBIAN_ROOT/etc/systemd/system/basic.target.requires/alphabot-dotnet.service
 
 # Setup kernel command line.
-echo "console=ttyS1,115200 console=tty1 loglevel=8 root=LABEL=RASPIROOT rw elevator=deadline fsck.repair=yes memtest=1 net.ifnames=0 rootwait" > $RASPI_DEBIAN_ROOT/boot/firmware/cmdline.txt
+echo "console=serial0,115200 console=tty1 loglevel=8 root=LABEL=RASPIROOT rw elevator=deadline fsck.repair=yes memtest=1 net.ifnames=0 rootwait" > $RASPI_DEBIAN_ROOT/boot/firmware/cmdline.txt
 
 # Clear files that will be auto-generated upon first boot.
 rm $RASPI_DEBIAN_ROOT/etc/resolv.conf
