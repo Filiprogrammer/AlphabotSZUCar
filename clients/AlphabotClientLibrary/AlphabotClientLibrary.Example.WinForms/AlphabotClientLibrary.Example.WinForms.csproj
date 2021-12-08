@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AlphabotClientLibrary.Core.Tcp\AlphabotClientLibrary.Core.Tcp.csproj" />
+    <ProjectReference Include="..\AlphabotClientLibrary.Core\AlphabotClientLibrary.Core.csproj" />
+  </ItemGroup>
+
+</Project>
