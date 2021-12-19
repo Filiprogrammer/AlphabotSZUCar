@@ -68,6 +68,28 @@ namespace Alphabot.Net.Shared
             var sr = new StreamReader(GetStream());
             return sr.ReadLine();
         }
+        public byte[] ReceiveBytes()
+        {
+            byte[] msg = new byte[this._prefs.ServiceSettings.SocketBufferSize];
+            try
+            {
+                int size = this._clientSocket.Receive(msg);
+                if (size == 0)
+                {
+                    throw new TcpConnectionLostException("0 Bytes received: Tcp connection lost");
+                }
+                this._serviceLogger.Log(LogLevel.Debug, "Shared.SocketReader.ReceiveText", string.Format("bytes received: {0}", size));
+            }
+            catch (SocketException sx)
+            {
+                this._serviceLogger.Log(LogLevel.Information, "Shared.SocketWriter.ReceiveText", "SocketException: " + sx.Message);
+            }
+            catch (ObjectDisposedException ox)
+            {
+                this._serviceLogger.Log(LogLevel.Information, "Shared.SocketWriter.ReceiveText", "ObjectDisposedException: " + ox.Message);
+            }
+            return msg;
+        }
 
         /// <summary>
         /// closes the remote host connection and releases all managed and unmanaged resources associated with the Socket.

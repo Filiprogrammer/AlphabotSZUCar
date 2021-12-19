@@ -51,6 +51,25 @@ namespace Alphabot.Net.Shared
                 _serviceLogger.Log(LogLevel.Information, "Shared.SocketWriter.SendText", "ObjectDisposedException: " + ox.Message);
             }
         }
+
+        /// <summary>
+        /// This method sends bytes
+        /// </summary>
+        public void SendBytes(byte[] bytes)
+        {
+            try
+            {
+                _clientSocket.Send(bytes);
+            }
+            catch (SocketException sx)
+            {
+                _serviceLogger.Log(LogLevel.Information, "Shared.SocketWriter.SendBytes", "SocketException: " + sx.Message);
+            }
+            catch (ObjectDisposedException ox)
+            {
+                _serviceLogger.Log(LogLevel.Information, "Shared.SocketWriter.SendBytes", "ObjectDisposedException: " + ox.Message);
+            }
+        }
         /// <summary>
         /// Sends a text message to a connected socket - including Environment.NewLine as seperator
         /// </summary>
