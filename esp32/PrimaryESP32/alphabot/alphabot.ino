@@ -12,6 +12,7 @@
 #include "Compass.h"
 #include "SaveFile.h"
 #include "Navigator.h"
+//#include "MotionTracker.h"
 
 TwoMotorDrive* two_motor_drive = NULL;
 DistanceMeter* distance_meter = NULL;
@@ -19,6 +20,7 @@ StepperMotor* stepper_motor = NULL;
 DrivingAssistent* driving_assistent = NULL;
 PositioningSystem* positioning_system = NULL;
 Compass* compass = NULL;
+//MotionTracker* motion_tracker = NULL;
 SaveFile* save_file = NULL;
 Navigator* navigator = NULL;
 
@@ -58,6 +60,7 @@ void setup() {
     ble_handler = new BLEHandler(&dataReceived, &onDisconnect, &onConnect);
     positioning_system = new PositioningSystem(DW1000_ANCHOR_1_SHORT_ADDRESS, DW1000_ANCHOR_2_SHORT_ADDRESS, DW1000_ANCHOR_3_SHORT_ADDRESS);
     compass = new Compass();
+    //motion_tracker = new MotionTracker();
     save_file = new SaveFile();
     compass->setMagnetSensorCalibratedValues(
         save_file->getMagnetSensorCalibratedMinX(),
@@ -69,6 +72,42 @@ void setup() {
 }
 
 void loop() {
+    /*if (motion_tracker->isInitialized()) {
+        motion_tracker->fetchOrientationData();*/
+        /*Serial.printf("quat_w: % 8.3f, quat_x: % 8.3f, quat_y: % 8.3f, quat_z: % 8.3f, accuracy: % 8.3f, roll: % 8.3f, pitch: % 8.3f, yaw: % 8.3f\n",
+                      motion_tracker->getQuatW(),
+                      motion_tracker->getQuatX(),
+                      motion_tracker->getQuatY(),
+                      motion_tracker->getQuatZ(),
+                      motion_tracker->getAccuracy(),
+                      motion_tracker->getRoll(),
+                      motion_tracker->getPitch(),
+                      motion_tracker->getYaw());*/
+        /*Serial.print("quat_w: ");
+        Serial.print(motion_tracker->getQuatW(), 3);
+        Serial.print(", quat_x: ");
+        Serial.print(motion_tracker->getQuatX(), 3);
+        Serial.print(", quat_y: ");
+        Serial.print(motion_tracker->getQuatY(), 3);
+        Serial.print(", quat_z: ");
+        Serial.print(motion_tracker->getQuatZ(), 3);
+        Serial.print(", accuracy: ");
+        Serial.print(motion_tracker->getAccuracy());
+        Serial.print(", roll: ");
+        Serial.print(motion_tracker->getRoll(), 3);
+        Serial.print(", pitch: ");
+        Serial.print(motion_tracker->getPitch(), 3);
+        Serial.print(", yaw: ");
+        Serial.println(motion_tracker->getYaw(), 3);*/
+
+        //motion_tracker->fetchRawData();
+        //Serial.printf("Scaled. Acc (mg) [ % 8.3f, % 8.3f, % 8.3f ], ", motion_tracker->getAccX(), motion_tracker->getAccY(), motion_tracker->getAccZ());
+        //Serial.printf("Gyr (DPS) [ % 8.3f, % 8.3f, % 8.3f ]\n", motion_tracker->getGyrX(), motion_tracker->getGyrY(), motion_tracker->getGyrZ());
+
+        //Serial.printf("Scaled. Acc (mg) [ % 8.2f, % 8.2f, % 8.2f ], ", motion_tracker->accX(), motion_tracker->accY(), motion_tracker->accZ());
+        //Serial.printf("Gyr (DPS) [ % 8.2f, % 8.2f, % 8.2f ], ", motion_tracker->gyrX(), motion_tracker->gyrY(), motion_tracker->gyrZ());
+    //}
+
     if (!connected) {
         delay(100);
         return;

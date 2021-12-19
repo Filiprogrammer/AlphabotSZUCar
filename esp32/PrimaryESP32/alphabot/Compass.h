@@ -2,11 +2,13 @@
 #define COMPASS_H
 
 #include <Arduino.h>
-#include <MechaQMC5883.h>
+//#include <MechaQMC5883.h>
+#include "MotionTracker.h"
 
 class Compass {
 private:
-    MechaQMC5883 magnet_sensor;
+    //MechaQMC5883 magnet_sensor;
+    MotionTracker* motion_tracker;
     int16_t min_x = -1000.0;
     int16_t max_x = 1000.0;
     int16_t min_y = -1000.0;
