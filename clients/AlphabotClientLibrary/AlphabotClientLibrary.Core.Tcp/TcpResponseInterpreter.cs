@@ -38,8 +38,8 @@ namespace AlphabotClientLibrary.Core.Tcp
                 case 0x08:
                     return GetErrorResponse();
             }
-
-            throw new Exception("Received packet id is not valid");
+            return new TestResponse();
+            //throw new Exception("Received packet id is not valid");
         }
 
         private DistanceSensorResponse GetDistanceSensorResponse()
