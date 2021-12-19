@@ -53,7 +53,15 @@ namespace AlphabotClientLibrary.Core.Tcp
             while (true)
             {
                 byte[] data = new byte[1024];
-                _tcpClient.GetStream().Read(data, 0, 1024);
+                try
+                {
+                    _tcpClient.GetStream().Read(data, 0, 1024);
+                }
+                catch (Exception e)
+                {
+                    _tcpClient.Close();
+                    return;
+                }
                 IAlphabotResponse alphabotResponse = new TcpResponseInterpreter(data).GetResponse();
                 IReadOnlyCollection<Response> responses = ResponseHandler.Listeners;
 
