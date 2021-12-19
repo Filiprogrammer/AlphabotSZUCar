@@ -1,29 +1,28 @@
+using System;
+
 namespace Alphabot.Net.Remote.Commands
 {
     class ActionSetCollisionPrevention : AlphabotAction
     {
-        public ActionSetCollisionPrevention(string request) : base(request)
+        public ActionSetCollisionPrevention(bool preventCollision) : base()
         {
+            Args = new int[1];
+            Args[0] = Convert.ToInt32(preventCollision);
         }
 
         public override void Perform()
         {
-            string result = "ok - collision prevention set to ";
             if (Args.Length >= 1)
             {
-                if (Args[0].ToLower().Contains("on"))
+                if (Args[0] == 1)
                 {
-                    _car.StartCollisionPrevention();
-                    result += "on";
+                    //  _car.StartCollisionPrevention();
                 }
-                if (Args[0].ToLower().Contains("off"))
+                if (Args[0] == 0)
                 {
-                    _car.StopCollisionPrevention();
-                    result += "off";
+                    // _car.StopCollisionPrevention();
                 }
             }
-            ActionResult = result;
-
         }
     }
 }

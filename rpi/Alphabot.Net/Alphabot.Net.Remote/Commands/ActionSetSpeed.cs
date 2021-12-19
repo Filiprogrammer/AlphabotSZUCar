@@ -5,21 +5,33 @@ namespace Alphabot.Net.Remote.Commands
 {
     class ActionSetSpeed : AlphabotAction
     {
-        public ActionSetSpeed(string request) : base(request)
+        public ActionSetSpeed(int speed) : base()
         {
+            Args = new int[1];
+            Args[0] = speed;
         }
 
         public override void Perform()
         {
-   
-            int speed = 0;
-            if (_parser.GetArgs().Length >= 1)
-            {
-                int.TryParse(Args[0], out speed);
-            }
+            int speed = Args[0];
+
             _logger.Log(LogLevel.Debug, "AlphabotAction", $"setspeed to:  {speed}");
-            _car.SetSpeed(speed);
-            ActionResult = "ok";
+
+            if (speed > 0)
+            {
+                _car.SetSpeed(speed);
+                _car.MoveForward();
+            }
+            else if (speed < 0)
+            {
+                _car.SetSpeed(-speed);
+                _car.MoveBackward();
+            }
+            else
+            {
+                _car.SetSpeed(0);
+                _car.Stop();
+            }
         }
     }
 }

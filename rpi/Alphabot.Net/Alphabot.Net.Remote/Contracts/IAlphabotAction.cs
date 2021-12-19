@@ -2,9 +2,7 @@ namespace Alphabot.Net.Remote.Contracts
 {
     public interface IAlphabotAction
     {
-        string Command { get; }
-        string[] Args { get;}
-        string ActionResult { get; }
+        int[] Args { get; set; }
         void Perform();
     }
 }
