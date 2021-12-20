@@ -16,7 +16,8 @@ namespace AlphabotClientLibrary.Shared.Contracts
         AnchorDistances,
         WheelSpeed,
         Gyroscope,
-        Accelerometer
+        Accelerometer,
+        Magnetometer
     }
 
     public interface IAlphabotResponse

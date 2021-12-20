@@ -44,10 +44,18 @@ namespace AlphabotClientLibrary.Core.Tcp
                 case 0x0B:
                     return GetAccelerometerResponse();
                 case 0x0C:
+                    return GetMagnetometerResponse();
+                case 0x0D:
                     return GetErrorResponse();
             }
 
             throw new Exception("Received packet id is not valid");
+        }
+
+        private IAlphabotResponse GetMagnetometerResponse()
+        {
+            float[] axes = GetXYZAxes();
+            return new MagnetometerResponse(axes[0], axes[1], axes[2]);
         }
 
         private AccelerometerResponse GetAccelerometerResponse()
