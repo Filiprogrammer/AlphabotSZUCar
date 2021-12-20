@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AlphabotClientLibrary.Core\AlphabotClientLibrary.Core.csproj" />
-    <ProjectReference Include="..\AlphabotClientLibrary.Shared\AlphabotClientLibrary.Shared.csproj" />
   </ItemGroup>
 
 </Project>
