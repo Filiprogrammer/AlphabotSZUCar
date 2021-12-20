@@ -112,9 +112,9 @@ namespace AlphabotClientLibrary.Test
             ToggleRequest request = new ToggleRequest(0);
             request.DoExploreMode = true;
             request.LogPositioning = true;
-            request.LogGyroscope = true;
+            request.LogIMU = true;
 
-            byte[] expectedBytes = { 0x05, 0x04, 0x81 };
+            byte[] expectedBytes = { 0x05, 0x04, 0x82 };
 
             Assert.Equal(expectedBytes, request.GetBytes());
         }

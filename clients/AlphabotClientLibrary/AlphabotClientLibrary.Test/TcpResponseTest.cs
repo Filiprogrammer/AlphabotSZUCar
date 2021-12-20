@@ -83,7 +83,7 @@ namespace AlphabotClientLibrary.Test
         [Fact]
         public void TestErrorResponse()
         {
-            byte[] bytes = { 0x0C, 0x03, 0x0E, 0x01, 0x02, 0x03, 0x04, 0x05 };
+            byte[] bytes = { 0x0D, 0x03, 0x0E, 0x01, 0x02, 0x03, 0x04, 0x05 };
             ErrorResponse.ErrorType expectedErrorType = ErrorResponse.ErrorType.UnknownPacketId;
             byte expectedHeader = 14;
             byte[] expectedPayload = { 0x01, 0x02, 0x03, 0x04, 0x05 };
