@@ -122,6 +122,30 @@ namespace AlphabotClientLibrary.Test
         }
 
         [Fact]
+        public void TestMagnetometerResponse()
+        {
+            float expectedX = 3582958295.0f;
+            float expectedY = -232.232f;
+            float expectedZ = 0.012345f;
+            byte[] xBytes = BitConverter.GetBytes(expectedX);
+            byte[] yBytes = BitConverter.GetBytes(expectedY);
+            byte[] zBytes = BitConverter.GetBytes(expectedZ);
+
+            byte[] packetHeader = { 0x0C };
+            byte[] responseBytes;
+
+            responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
+
+            IAlphabotResponse response = new TcpResponseInterpreter(responseBytes).GetResponse();
+            Assert.True(response is MagnetometerResponse, "Response was of the wrong type");
+
+            MagnetometerResponse magnetometerResponse = response as MagnetometerResponse;
+            Assert.Equal(expectedX, magnetometerResponse.XAxis);
+            Assert.Equal(expectedY, magnetometerResponse.YAxis);
+            Assert.Equal(expectedZ, magnetometerResponse.ZAxis);
+        }
+
+        [Fact]
         public void TestNewObstacleRegisteredResponse()
         {
             byte[] bytes = { 0x06, 0x10, 0x10, 0x08, 0x08, 0x0A, 0x00, 0x14, 0x00, 0x05, 0x00 };
