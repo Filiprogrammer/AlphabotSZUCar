@@ -12,6 +12,47 @@ namespace AlphabotClientLibrary.Test
     public class TcpResponseTest
     {
         [Fact]
+        public void TestAccelerometerResponse()
+        {
+            float expectedX = 7883.99f;
+            float expectedY = -2428426.234f;
+            float expectedZ = 0.00000002f;
+            byte[] xBytes = BitConverter.GetBytes(expectedX);
+            byte[] yBytes = BitConverter.GetBytes(expectedY);
+            byte[] zBytes = BitConverter.GetBytes(expectedZ);
+
+            byte[] packetHeader = { 0x0B };
+            byte[] responseBytes;
+
+            responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
+
+            IAlphabotResponse response = new TcpResponseInterpreter(responseBytes).GetResponse();
+            Assert.True(response is AccelerometerResponse, "Response was of the wrong type");
+
+            AccelerometerResponse accelerometerResponse = response as AccelerometerResponse;
+            Assert.Equal(expectedX, accelerometerResponse.XAxis);
+            Assert.Equal(expectedY, accelerometerResponse.YAxis);
+            Assert.Equal(expectedZ, accelerometerResponse.ZAxis);
+        }
+
+        [Fact]
+        public void TestAnchorDistancesResponse()
+        {
+            byte[] bytes = { 0x08, 0x6F, 0x00, 0xAE, 0x08, 0x35, 0x82 };
+            ushort expectedDistance0 = 111;
+            ushort expectedDistance1 = 2222;
+            ushort expectedDistance2 = 33333;
+
+            IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
+            Assert.True(response is AnchorDistancesResponse, "Response was of the wrong type");
+
+            AnchorDistancesResponse anchorDistanceResponse = response as AnchorDistancesResponse;
+            Assert.Equal(expectedDistance0, anchorDistanceResponse.DistanceAnchor0);
+            Assert.Equal(expectedDistance1, anchorDistanceResponse.DistanceAnchor1);
+            Assert.Equal(expectedDistance2, anchorDistanceResponse.DistanceAnchor2);
+        }
+
+        [Fact]
         public void TestCompassResponse()
         {
             byte[] bytes = { 0x04, 0x64, 0x00 };
@@ -54,6 +95,30 @@ namespace AlphabotClientLibrary.Test
             Assert.Equal(expectedErrorType, errorResponse.Error);
             Assert.Equal(expectedHeader, errorResponse.Header);
             Assert.Equal(expectedPayload, errorResponse.Payload);
+        }
+
+        [Fact]
+        public void TestGyroscopeResponse()
+        {
+            float expectedX = 1400524.8004f;
+            float expectedY = 400.0f;
+            float expectedZ = -0.0102052f;
+            byte[] xBytes = BitConverter.GetBytes(expectedX);
+            byte[] yBytes = BitConverter.GetBytes(expectedY);
+            byte[] zBytes = BitConverter.GetBytes(expectedZ);
+
+            byte[] packetHeader = { 0x0A };
+            byte[] responseBytes;
+
+            responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
+
+            IAlphabotResponse response = new TcpResponseInterpreter(responseBytes).GetResponse();
+            Assert.True(response is GyroscopeResponse, "Response was of the wrong type");
+
+            GyroscopeResponse gyroscopeResponse = response as GyroscopeResponse;
+            Assert.Equal(expectedX, gyroscopeResponse.XAxis);
+            Assert.Equal(expectedY, gyroscopeResponse.YAxis);
+            Assert.Equal(expectedZ, gyroscopeResponse.ZAxis);
         }
 
         [Fact]
@@ -151,6 +216,19 @@ namespace AlphabotClientLibrary.Test
             Assert.True(toggleResponse.DoPositioningSystem);
             Assert.True(toggleResponse.LogPathfinderPath);
             Assert.True(toggleResponse.LogCompassDirection);
+        }
+
+        [Fact]
+        public void TestWheelSpeedResponse()
+        {
+            byte[] bytes = { 0x09, 0x68 };
+            int expectedSpeed = 104;
+
+            IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
+            Assert.True(response is WheelSpeedResponse, "Response was of the wrong type");
+
+            WheelSpeedResponse wheelSpeedResponse = response as WheelSpeedResponse;
+            Assert.Equal(expectedSpeed, wheelSpeedResponse.Speed);
         }
     }
 }
