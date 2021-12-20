@@ -146,7 +146,38 @@ the Alphabot changes a setting by itself.
 
 see [3.1. Toggle bit field](#31-toggle---bit-field)
 
-### Error message (Packet ID: 0x08)
+### Anchor distance response (Packet ID: 0x08)
+
+| Field Name | Field Type | Notes                                   |
+|------------|------------|-----------------------------------------|
+| Distance   | uint16     | The distance to anchor 0 in centimeters |
+| Distance   | uint16     | The distance to anchor 1 in centimeters |
+| Distance   | uint16     | The distance to anchor 2 in centimeters |
+
+### Wheel speed response (Packet ID: 0x09)
+
+| Field Name | Field Type | Notes                          |
+|------------|------------|--------------------------------|
+| Speed      | int8       | The speed of the wheels in m/s |
+
+### Gyroscope response (Packet ID: 0x0A)
+
+| Field Name | Field Type | Notes                            |
+|------------|------------|----------------------------------|
+| X-axis     | float      | The speed of the x-axis in rad/s |
+| Y-axis     | float      | The speed of the y-axis in rad/s |
+| Z-axis     | float      | The speed of the z-axis in rad/s |
+
+### Accelerometer response (Packet ID: 0x0B)
+
+| Field Name | Field Type | Notes                                  |
+|------------|------------|----------------------------------------|
+| X-axis     | float      | The acceleration of the x-axis in m/s² |
+| Y-axis     | float      | The acceleration of the y-axis in m/s² |
+| Z-axis     | float      | The acceleration of the z-axis in m/s² |
+
+
+### Error message (Packet ID: 0x0C)
 
 | Field Name     | Field Type         | Notes                                          |
 |----------------|--------------------|------------------------------------------------|
@@ -250,6 +281,24 @@ If there are multiple objects on the same position, all of them will be removed.
 | Position Y | int16      | The y coordinate in centimetres of anchor 1                 |
 | Position X | int16      | The x coordinate in centimetres of anchor 2                 |
 | Position Y | int16      | The y coordinate in centimetres of anchor 2                 |
+
+### BLE_CHAR_ANCHORS_DISTANCES_WHEEL_SPEED (UUID: 254492a2-9324-469b-b1e2-4d4590972c35)
+
+| Field Name | Field Type | Notes                                   |
+|------------|------------|-----------------------------------------|
+| Distance   | uint16     | The distance to anchor 0 in centimetres |
+| Distance   | uint16     | The distance to anchor 1 in centimetres |
+| Distance   | uint16     | The distance to anchor 2 in centimetres |
+| Speed      | int8       | The speed of the wheels in m/s          |
+
+### BLE_CHAR_GYRO_ACCELEROMETER (UUID:93758afa-ce6f-4670-9562-ce92bda84d49)
+
+| Field Name | Field Type | Notes                                                                                                |
+|------------|------------|------------------------------------------------------------------------------------------------------|
+| Type       | int8       | Indicates whether the packet is a gyroscope-package (value 0), or an accelerometer-package (value 1) |
+| x-Axis     | float      | The value of the x-Axis                                                                              |
+| y-Axis     | float      | The value of the y-Axis                                                                              |
+| z-Axis     | float      | The value of the z-Axis                                                                              |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
