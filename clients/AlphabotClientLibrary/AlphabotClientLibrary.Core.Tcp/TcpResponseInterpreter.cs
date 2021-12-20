@@ -54,20 +54,20 @@ namespace AlphabotClientLibrary.Core.Tcp
 
         private IAlphabotResponse GetMagnetometerResponse()
         {
-            float[] axes = GetXYZAxes();
-            return new MagnetometerResponse(axes[0], axes[1], axes[2]);
+            short[] axes = GetXYZAxes();
+            return new MagnetometerResponse(axes[0] / 10f, axes[1] / 10f, axes[2] / 10f);
         }
 
         private AccelerometerResponse GetAccelerometerResponse()
         {
-            float[] axes = GetXYZAxes();
-            return new AccelerometerResponse(axes[0], axes[1], axes[2]);
+            short[] axes = GetXYZAxes();
+            return new AccelerometerResponse(axes[0] / 1000f, axes[1] / 1000f, axes[2] / 1000f);
         }
 
         private GyroscopeResponse GetGyroscopeResponse()
         {
-            float[] axes = GetXYZAxes();
-            return new GyroscopeResponse(axes[0], axes[1], axes[2]);
+            short[] axes = GetXYZAxes();
+            return new GyroscopeResponse(axes[0] / 10f, axes[1] / 10f, axes[2] / 10f);
         }
 
         private WheelSpeedResponse GetWheelSpeedResponse()
@@ -107,19 +107,13 @@ namespace AlphabotClientLibrary.Core.Tcp
             return new CompassResponse(degree);
         }
 
-        private float[] GetXYZAxes()
+        private short[] GetXYZAxes()
         {
-            byte[] xAxisBytes = new byte[4];
-            byte[] yAxisBytes = new byte[4];
-            byte[] zAxisBytes = new byte[4];
-            Array.Copy(DataBytes, 0, xAxisBytes, 0, 4);
-            Array.Copy(DataBytes, 4, yAxisBytes, 0, 4);
-            Array.Copy(DataBytes, 8, zAxisBytes, 0, 4);
-            float xAxis = BitConverter.ToSingle(xAxisBytes, 0);
-            float yAxis = BitConverter.ToSingle(yAxisBytes, 0);
-            float zAxis = BitConverter.ToSingle(zAxisBytes, 0);
+            short xAxis = (short)(DataBytes[0] | (DataBytes[1] << 8));
+            short yAxis = (short)(DataBytes[2] | (DataBytes[3] << 8));
+            short zAxis = (short)(DataBytes[4] | (DataBytes[5] << 8));
 
-            return new float[] { xAxis, yAxis, zAxis };
+            return new short[] { xAxis, yAxis, zAxis };
         }
     }
 }

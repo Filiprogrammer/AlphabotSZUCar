@@ -14,12 +14,12 @@ namespace AlphabotClientLibrary.Test
         [Fact]
         public void TestAccelerometerResponse()
         {
-            float expectedX = 7883.99f;
-            float expectedY = -2428426.234f;
-            float expectedZ = 0.00000002f;
-            byte[] xBytes = BitConverter.GetBytes(expectedX);
-            byte[] yBytes = BitConverter.GetBytes(expectedY);
-            byte[] zBytes = BitConverter.GetBytes(expectedZ);
+            float expectedX = 5.035351242f;
+            float expectedY = -6.0001f;
+            float expectedZ = 13.4f;
+            byte[] xBytes = BitConverter.GetBytes(Convert.ToInt16(expectedX * 1000));
+            byte[] yBytes = BitConverter.GetBytes(Convert.ToInt16(expectedY * 1000));
+            byte[] zBytes = BitConverter.GetBytes(Convert.ToInt16(expectedZ * 1000));
 
             byte[] packetHeader = { 0x0B };
             byte[] responseBytes;
@@ -30,9 +30,9 @@ namespace AlphabotClientLibrary.Test
             Assert.True(response is AccelerometerResponse, "Response was of the wrong type");
 
             AccelerometerResponse accelerometerResponse = response as AccelerometerResponse;
-            Assert.Equal(expectedX, accelerometerResponse.XAxis);
-            Assert.Equal(expectedY, accelerometerResponse.YAxis);
-            Assert.Equal(expectedZ, accelerometerResponse.ZAxis);
+            Assert.InRange(accelerometerResponse.XAxis, expectedX - 0.1, expectedX + 0.1);
+            Assert.InRange(accelerometerResponse.YAxis, expectedY - 0.1, expectedY + 0.1);
+            Assert.InRange(accelerometerResponse.ZAxis, expectedZ - 0.1, expectedZ + 0.1);
         }
 
         [Fact]
@@ -100,12 +100,12 @@ namespace AlphabotClientLibrary.Test
         [Fact]
         public void TestGyroscopeResponse()
         {
-            float expectedX = 1400524.8004f;
-            float expectedY = 400.0f;
-            float expectedZ = -0.0102052f;
-            byte[] xBytes = BitConverter.GetBytes(expectedX);
-            byte[] yBytes = BitConverter.GetBytes(expectedY);
-            byte[] zBytes = BitConverter.GetBytes(expectedZ);
+            float expectedX = -24.298f;
+            float expectedY = -8.0001f;
+            float expectedZ = 1113.75f;
+            byte[] xBytes = BitConverter.GetBytes(Convert.ToInt16(expectedX * 10));
+            byte[] yBytes = BitConverter.GetBytes(Convert.ToInt16(expectedY * 10));
+            byte[] zBytes = BitConverter.GetBytes(Convert.ToInt16(expectedZ * 10));
 
             byte[] packetHeader = { 0x0A };
             byte[] responseBytes;
@@ -116,20 +116,20 @@ namespace AlphabotClientLibrary.Test
             Assert.True(response is GyroscopeResponse, "Response was of the wrong type");
 
             GyroscopeResponse gyroscopeResponse = response as GyroscopeResponse;
-            Assert.Equal(expectedX, gyroscopeResponse.XAxis);
-            Assert.Equal(expectedY, gyroscopeResponse.YAxis);
-            Assert.Equal(expectedZ, gyroscopeResponse.ZAxis);
+            Assert.InRange(gyroscopeResponse.XAxis, expectedX - 0.1, expectedX + 0.1);
+            Assert.InRange(gyroscopeResponse.YAxis, expectedY - 0.1, expectedY + 0.1);
+            Assert.InRange(gyroscopeResponse.ZAxis, expectedZ - 0.1, expectedZ + 0.1);
         }
 
         [Fact]
         public void TestMagnetometerResponse()
         {
-            float expectedX = 3582958295.0f;
-            float expectedY = -232.232f;
-            float expectedZ = 0.012345f;
-            byte[] xBytes = BitConverter.GetBytes(expectedX);
-            byte[] yBytes = BitConverter.GetBytes(expectedY);
-            byte[] zBytes = BitConverter.GetBytes(expectedZ);
+            float expectedX = 340.09f;
+            float expectedY = -81.1f;
+            float expectedZ = 78.751f;
+            byte[] xBytes = BitConverter.GetBytes(Convert.ToInt16(expectedX * 10));
+            byte[] yBytes = BitConverter.GetBytes(Convert.ToInt16(expectedY * 10));
+            byte[] zBytes = BitConverter.GetBytes(Convert.ToInt16(expectedZ * 10));
 
             byte[] packetHeader = { 0x0C };
             byte[] responseBytes;
@@ -140,9 +140,9 @@ namespace AlphabotClientLibrary.Test
             Assert.True(response is MagnetometerResponse, "Response was of the wrong type");
 
             MagnetometerResponse magnetometerResponse = response as MagnetometerResponse;
-            Assert.Equal(expectedX, magnetometerResponse.XAxis);
-            Assert.Equal(expectedY, magnetometerResponse.YAxis);
-            Assert.Equal(expectedZ, magnetometerResponse.ZAxis);
+            Assert.InRange(magnetometerResponse.XAxis, expectedX - 0.1, expectedX + 0.1);
+            Assert.InRange(magnetometerResponse.YAxis, expectedY - 0.1, expectedY + 0.1);
+            Assert.InRange(magnetometerResponse.ZAxis, expectedZ - 0.1, expectedZ + 0.1);
         }
 
         [Fact]

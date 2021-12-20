@@ -162,27 +162,27 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 ### Gyroscope response (Packet ID: 0x0A)
 
-| Field Name | Field Type | Notes                            |
-|------------|------------|----------------------------------|
-| X-axis     | float      | The speed of the x-axis in rad/s |
-| Y-axis     | float      | The speed of the y-axis in rad/s |
-| Z-axis     | float      | The speed of the z-axis in rad/s |
+| Field Name | Field Type | Notes                                    |
+|------------|------------|------------------------------------------|
+| X-axis     | int16      | The speed of the x-axis in degree/s * 10 |
+| Y-axis     | int16      | The speed of the y-axis in degree/s * 10 |
+| Z-axis     | int16      | The speed of the z-axis in degree/s * 10 |
 
 ### Accelerometer response (Packet ID: 0x0B)
 
-| Field Name | Field Type | Notes                                  |
-|------------|------------|----------------------------------------|
-| X-axis     | float      | The acceleration of the x-axis in m/s² |
-| Y-axis     | float      | The acceleration of the y-axis in m/s² |
-| Z-axis     | float      | The acceleration of the z-axis in m/s² |
+| Field Name | Field Type | Notes                                         |
+|------------|------------|-----------------------------------------------|
+| X-axis     | int16      | The acceleration of the x-axis in m/s² * 1000 |
+| Y-axis     | int16      | The acceleration of the y-axis in m/s² * 1000 |
+| Z-axis     | int16      | The acceleration of the z-axis in m/s² * 1000 |
 
 ### Magnetometer response (Packet ID: 0x0C)
 
-| Field Name | Field Type | Notes                               |
-|------------|------------|-------------------------------------|
-| X-axis     | float      | The acceleration of the x-axis in T |
-| Y-axis     | float      | The acceleration of the y-axis in T |
-| Z-axis     | float      | The acceleration of the z-axis in T |
+| Field Name | Field Type | Notes                                              |
+|------------|------------|----------------------------------------------------|
+| X-axis     | int16      | The magnetic flux density of the x-axis in µT * 10 |
+| Y-axis     | int16      | The magnetic flux density of the y-axis in µT * 10 |
+| Z-axis     | int16      | The magnetic flux density of the z-axis in µT * 10 |
 
 ### Error message (Packet ID: 0x0D)
 
@@ -303,9 +303,9 @@ If there are multiple objects on the same position, all of them will be removed.
 | Field Name | Field Type | Notes                                                                                                                                   |
 |------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | Type       | int8       | Indicates whether the packet is a gyroscope-package (value 0), an accelerometer-package (value 1), or an magnetometer-package (value 2) |
-| x-Axis     | float      | The value of the x-Axis                                                                                                                 |
-| y-Axis     | float      | The value of the y-Axis                                                                                                                 |
-| z-Axis     | float      | The value of the z-Axis                                                                                                                 |
+| x-Axis     | int16      | The value of the x-Axis                                                                                                                 |
+| y-Axis     | int16      | The value of the y-Axis                                                                                                                 |
+| z-Axis     | int16      | The value of the z-Axis                                                                                                                 |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
