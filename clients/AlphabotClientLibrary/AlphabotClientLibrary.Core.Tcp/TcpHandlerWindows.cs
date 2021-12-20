@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using AlphabotClientLibrary.Core.Handler;
@@ -57,7 +58,7 @@ namespace AlphabotClientLibrary.Core.Tcp
                 {
                     _tcpClient.GetStream().Read(data, 0, 1024);
                 }
-                catch (Exception e)
+                catch (IOException)
                 {
                     _tcpClient.Close();
                     return;
