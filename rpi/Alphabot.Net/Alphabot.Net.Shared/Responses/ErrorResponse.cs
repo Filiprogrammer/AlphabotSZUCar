@@ -32,7 +32,7 @@ namespace Alphabot.Net.Shared.Responses
         public byte[] GetBytes()
         {
             byte[] ret;
-            byte[] firstThreeBytes = { 0x0C, (byte)Error, Header };
+            byte[] firstThreeBytes = { 0x0D, (byte)Error, Header };
 
             ret = firstThreeBytes.Concat(Payload).ToArray();
             return ret;

@@ -31,9 +31,7 @@ namespace Alphabot.Net.Shared.Requests
 
         public bool LogWheelSpeed { get; set; }
 
-        public bool LogAccelerometer { get; set; }
-
-        public bool LogGyroscope { get; set; }
+        public bool LogIMU { get; set; }
         #endregion
 
         public ToggleRequest(ushort bitField)
@@ -51,7 +49,7 @@ namespace Alphabot.Net.Shared.Requests
         {
             BitArray bitArray = new BitArray(bytes);
 
-            //bit 0 and 1 are not used
+            // Bits 0 and 1 are not used.
             DoExploreMode = bitArray[2];
             DoNavigationMode = bitArray[3];
             DoCollisionAvoidance = bitArray[4];
@@ -59,8 +57,8 @@ namespace Alphabot.Net.Shared.Requests
             DoInvite = bitArray[6];
             DoCompassCalibration = bitArray[7];
 
-            LogGyroscope = bitArray[8];
-            LogAccelerometer = bitArray[9];
+            // Bit 8 is not used
+            LogIMU = bitArray[9];
             LogWheelSpeed = bitArray[10];
             LogAnchorDistances = bitArray[11];
             LogCompassDirection = bitArray[12];
@@ -93,8 +91,8 @@ namespace Alphabot.Net.Shared.Requests
             bitArray[6] = DoInvite;
             bitArray[7] = DoCompassCalibration;
 
-            bitArray[8] = LogGyroscope;
-            bitArray[9] = LogAccelerometer;
+            // Bit 8 is not used.
+            bitArray[9] = LogIMU;
             bitArray[10] = LogWheelSpeed;
             bitArray[11] = LogAnchorDistances;
             bitArray[12] = LogCompassDirection;
