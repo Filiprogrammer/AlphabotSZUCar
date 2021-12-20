@@ -176,8 +176,15 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 | Y-axis     | float      | The acceleration of the y-axis in m/s² |
 | Z-axis     | float      | The acceleration of the z-axis in m/s² |
 
+### Magnetometer response (Packet ID: 0x0C)
 
-### Error message (Packet ID: 0x0C)
+| Field Name | Field Type | Notes                               |
+|------------|------------|-------------------------------------|
+| X-axis     | float      | The acceleration of the x-axis in T |
+| Y-axis     | float      | The acceleration of the y-axis in T |
+| Z-axis     | float      | The acceleration of the z-axis in T |
+
+### Error message (Packet ID: 0x0D)
 
 | Field Name     | Field Type         | Notes                                          |
 |----------------|--------------------|------------------------------------------------|
@@ -291,14 +298,14 @@ If there are multiple objects on the same position, all of them will be removed.
 | Distance   | uint16     | The distance to anchor 2 in centimetres |
 | Speed      | int8       | The speed of the wheels in m/s          |
 
-### BLE_CHAR_GYRO_ACCELEROMETER (UUID:93758afa-ce6f-4670-9562-ce92bda84d49)
+### BLE_CHAR_IMU (UUID:93758afa-ce6f-4670-9562-ce92bda84d49)
 
-| Field Name | Field Type | Notes                                                                                                |
-|------------|------------|------------------------------------------------------------------------------------------------------|
-| Type       | int8       | Indicates whether the packet is a gyroscope-package (value 0), or an accelerometer-package (value 1) |
-| x-Axis     | float      | The value of the x-Axis                                                                              |
-| y-Axis     | float      | The value of the y-Axis                                                                              |
-| z-Axis     | float      | The value of the z-Axis                                                                              |
+| Field Name | Field Type | Notes                                                                                                                                   |
+|------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| Type       | int8       | Indicates whether the packet is a gyroscope-package (value 0), an accelerometer-package (value 1), or an magnetometer-package (value 2) |
+| x-Axis     | float      | The value of the x-Axis                                                                                                                 |
+| y-Axis     | float      | The value of the y-Axis                                                                                                                 |
+| z-Axis     | float      | The value of the z-Axis                                                                                                                 |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
@@ -329,9 +336,9 @@ The 2nd byte changes certain logging options.
 
 ### 3.1.2. Bit field – 2. Byte (Logging)
 
-| Bit 7 (MSB) | Bit 6             | Bit 5           | Bit 4             | Bit 3            | Bit 2       | Bit 1         | Bit 0 (LSB) |
-|-------------|-------------------|-----------------|-------------------|------------------|-------------|---------------|-------------|
-| Positioning | Obstacle distance | Pathfinder path | Compass direction | Anchor distances | Wheel speed | Accelerometer | Gyroscope   |
+| Bit 7 (MSB) | Bit 6             | Bit 5           | Bit 4             | Bit 3            | Bit 2       | Bit 1                     | Bit 0 (LSB) |
+|-------------|-------------------|-----------------|-------------------|------------------|-------------|---------------------------|-------------|
+| Positioning | Obstacle distance | Pathfinder path | Compass direction | Anchor distances | Wheel speed | Inertial Measurement Unit | not used    |
 
 ## 3.2. Sensor – Packets (BLE only)
 
