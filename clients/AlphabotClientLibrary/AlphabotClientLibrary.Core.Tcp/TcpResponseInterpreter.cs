@@ -21,6 +21,9 @@ namespace AlphabotClientLibrary.Core.Tcp
         {
             switch (_headerByte)
             {
+                case 0x00:
+                    // 0x00 gets sent, when a connection ends
+                    return null;
                 case 0x01:
                     return GetDistanceSensorResponse();
                 case 0x02:
@@ -38,8 +41,8 @@ namespace AlphabotClientLibrary.Core.Tcp
                 case 0x08:
                     return GetErrorResponse();
             }
-            return new TestResponse();
-            //throw new Exception("Received packet id is not valid");
+
+            throw new Exception("Received packet id is not valid");
         }
 
         private DistanceSensorResponse GetDistanceSensorResponse()
