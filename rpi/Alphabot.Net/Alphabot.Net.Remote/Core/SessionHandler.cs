@@ -66,12 +66,19 @@ namespace Alphabot.Net.Remote.Core
                     _serviceLogger.Log(LogLevel.Information, "SessionHandler:HandleSingleSession",
                         $"waiting for request: {_clientSocket.RemoteEndPoint}");
 
-                    alphabotRequest = new BitProtocolParser(this._socketReader.ReceiveBytes()).GetRequest();
+                    alphabotRequest = new BitProtocolParser(this._socketReader.ReceiveBytes(), SendResponseEvent).GetRequest();
 
-                    _serviceLogger.Log(LogLevel.Information, "SessionHandler:HandleSingleSession",
+                    if (alphabotRequest != null)
+                    {
+                        _serviceLogger.Log(LogLevel.Information, "SessionHandler:HandleSingleSession",
                         $"request received: {alphabotRequest.ToString()}");
-
-                    new ActionExecutor(alphabotRequest, SendResponseEvent).Perform();
+                        new ActionExecutor(alphabotRequest, SendResponseEvent).Perform();
+                    }
+                    else
+                    {
+                        _serviceLogger.Log(LogLevel.Warning, "SessionHandler:HandleSingleSession",
+                       $"request was null, this could be because of an error");
+                    }
                 }
                 catch (SocketException sx)
                 {
@@ -120,6 +127,11 @@ namespace Alphabot.Net.Remote.Core
                     return;
                 }
                 _lastSentPositioningTime = DateTime.Now;
+            }
+            else if (response is ErrorResponse)
+            {
+                _serviceLogger.Log(LogLevel.Warning, "SessionHandler:SendResponseEvent",
+                        $"The following error happened, details were sent to client: {(response as ErrorResponse).Error.ToString()}");
             }
 
             _serviceLogger.Log(LogLevel.Information, "SessionHandler:SendResponseEvent",

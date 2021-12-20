@@ -2,26 +2,40 @@
 using Alphabot.Net.Shared;
 using Alphabot.Net.Shared.Contracts;
 using Alphabot.Net.Shared.Requests;
+using Alphabot.Net.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Alphabot.Net.Car.Devices.PositioningSystem;
 
 namespace Alphabot.Net.Remote.Core
 {
     public class BitProtocolParser
     {
         byte[] _bytes;
+        ResponseSender _responseSender;
 
-        public BitProtocolParser(byte[] bytes)
+        public BitProtocolParser(byte[] bytes, ResponseSender responseSender)
         {
             _bytes = bytes;
+            _responseSender = responseSender;
         }
 
         public IAlphabotRequest GetRequest()
         {
-            switch (_bytes[0])
+            byte protocolVersion = (byte)(_bytes[0] >> 5);
+            byte packetId = (byte)(_bytes[0] & 31);
+
+            // current protocol version is 0
+            if (protocolVersion != 0)
+            {
+                _responseSender(new ErrorResponse(ErrorResponse.ErrorType.UnknownProtocol, _bytes));
+                return null;
+            }
+
+            switch (packetId)
             {
                 case 0x01:
                     return GetSpeedAndSteerRequest();
@@ -34,6 +48,7 @@ namespace Alphabot.Net.Remote.Core
                 case 0x07:
                     return GetConfigurePositioningAnchorRequest();
             }
+            _responseSender(new ErrorResponse(ErrorResponse.ErrorType.UnknownPacketId, _bytes));
             return null;
         }
 
@@ -50,6 +65,12 @@ namespace Alphabot.Net.Remote.Core
             byte anchorId = _bytes[1];
             byte[] positionBytes = new byte[4];
             Array.Copy(_bytes, 2, positionBytes, 0, 4);
+
+            if (anchorId > 2)
+            {
+                _responseSender(new ErrorResponse(ErrorResponse.ErrorType.WrongPayload, _bytes));
+                return null;
+            }
 
             return new ConfigurePositioningAnchorRequest(anchorId, new Position(positionBytes));
         }
