@@ -44,7 +44,8 @@ namespace AlphabotClientLibrary.Core.Tcp
             if (_tcpClient == null || !_tcpClient.Connected || request == null)
                 return false;
 
-            _tcpClient.GetStream().Write(request.GetBytes(), 0, request.GetBytes().Length);
+            byte[] requestBytes = request.GetBytes();
+            _tcpClient.GetStream().Write(requestBytes, 0, requestBytes.Length);
 
             return true;
         }
