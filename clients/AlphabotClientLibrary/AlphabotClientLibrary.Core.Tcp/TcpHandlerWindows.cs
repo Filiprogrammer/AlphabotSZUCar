@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using AlphabotClientLibrary.Core.Handler;
@@ -43,7 +44,8 @@ namespace AlphabotClientLibrary.Core.Tcp
             if (_tcpClient == null || !_tcpClient.Connected || request == null)
                 return false;
 
-            _tcpClient.GetStream().Write(request.GetBytes());
+            byte[] requestBytes = request.GetBytes();
+            _tcpClient.GetStream().Write(requestBytes, 0, requestBytes.Length);
 
             return true;
         }
@@ -53,7 +55,15 @@ namespace AlphabotClientLibrary.Core.Tcp
             while (true)
             {
                 byte[] data = new byte[1024];
-                _tcpClient.GetStream().Read(data, 0, 1024);
+                try
+                {
+                    _tcpClient.GetStream().Read(data, 0, 1024);
+                }
+                catch (IOException)
+                {
+                    _tcpClient.Close();
+                    return;
+                }
                 IAlphabotResponse alphabotResponse = new TcpResponseInterpreter(data).GetResponse();
                 IReadOnlyCollection<Response> responses = ResponseHandler.Listeners;
 
