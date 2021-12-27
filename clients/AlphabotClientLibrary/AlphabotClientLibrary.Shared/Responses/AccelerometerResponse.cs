@@ -7,7 +7,7 @@ namespace AlphabotClientLibrary.Shared.Responses
     public class AccelerometerResponse : IAlphabotResponse
     {
         /// <summary>
-        /// The acceleration in m/s²
+        /// The acceleration in m/s^2
         /// </summary>
         public float XAxis { get; private set; }
         /// <summary>
