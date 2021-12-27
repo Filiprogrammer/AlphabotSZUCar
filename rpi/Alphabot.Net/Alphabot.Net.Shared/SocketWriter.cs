@@ -10,11 +10,11 @@ namespace Alphabot.Net.Shared
     /// <summary>
     /// This class sends messages and encodes them to bytes.
     /// </summary>
-    public class SocketWriter:ISocketWriter
+    public class SocketWriter : ISocketWriter
     {
         private readonly Socket _clientSocket;
         private readonly IServiceLogger _serviceLogger = ServiceLogger.GetInstance().Current;
-        
+
         private NetworkStream _networkStream;
         public SocketWriter(Socket clientSocket)
         {
@@ -36,20 +36,8 @@ namespace Alphabot.Net.Shared
         /// <param name="message"></param>
         public void SendText(string message)
         {
-
             byte[] messageBuffer = Encoding.ASCII.GetBytes(message);
-            try
-            {
-                _clientSocket.Send(messageBuffer);
-            }
-            catch (SocketException sx)
-            {
-                _serviceLogger.Log(LogLevel.Information, "Shared.SocketWriter.SendText", "SocketException: " + sx.Message);
-            }
-            catch (ObjectDisposedException ox)
-            {
-                _serviceLogger.Log(LogLevel.Information, "Shared.SocketWriter.SendText", "ObjectDisposedException: " + ox.Message);
-            }
+            SendBytes(messageBuffer);
         }
 
         /// <summary>
@@ -76,7 +64,7 @@ namespace Alphabot.Net.Shared
         /// <param name="message"></param>
         public void WriteLine(string message)
         {
-            
+
             var sw = new StreamWriter(GetStream());
             sw.WriteLine(message);
         }
