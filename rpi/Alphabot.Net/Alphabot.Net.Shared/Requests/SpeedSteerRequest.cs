@@ -7,6 +7,7 @@ namespace Alphabot.Net.Shared.Requests
     {
         public sbyte _steer;
         public sbyte _speed;
+
         public SpeedSteerRequest(sbyte steer, sbyte speed)
         {
             _steer = steer;
