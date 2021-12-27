@@ -15,6 +15,7 @@ namespace AlphabotClientLibrary.Shared.Responses
         /// The magnetic flux density in µT
         /// </summary>
         public float YAxis { get; private set; }
+
         /// <summary>
         /// The magnetic flux density in µT
         /// </summary>
