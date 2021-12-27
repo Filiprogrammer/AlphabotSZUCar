@@ -7,7 +7,7 @@ namespace AlphabotClientLibrary.Shared.Responses
     public class GyroscopeResponse : IAlphabotResponse
     {
         /// <summary>
-        /// The speed in degree per second
+        /// The speed in degrees per second
         /// </summary>
 
         public float XAxis { get; private set; }
