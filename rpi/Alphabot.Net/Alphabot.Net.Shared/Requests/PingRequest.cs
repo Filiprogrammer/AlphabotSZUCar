@@ -16,7 +16,10 @@ namespace Alphabot.Net.Shared.Requests
 
         public byte[] GetBytes()
         {
-            return new byte[0];
+            byte[] ret = new byte[9];
+            ret[0] = 0x06;
+            Array.Copy(_dataBytes, 0, ret, 1, 8);
+            return ret;
         }
 
         public PingResponse GetPingResponse()
