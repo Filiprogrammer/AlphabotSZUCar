@@ -174,7 +174,6 @@ namespace Alphabot.Net.Remote.Core
             {
                 SessionClosed(this, EventArgs.Empty);
             }
-
         }
         #endregion
 
