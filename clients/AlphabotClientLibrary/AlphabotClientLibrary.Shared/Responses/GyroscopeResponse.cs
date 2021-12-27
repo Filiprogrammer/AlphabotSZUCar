@@ -17,7 +17,7 @@ namespace AlphabotClientLibrary.Shared.Responses
 
         public float YAxis { get; private set; }
         /// <summary>
-        /// The speed in degree per second
+        /// The speed in degrees per second
         /// </summary>
         public float ZAxis { get; private set; }
 
