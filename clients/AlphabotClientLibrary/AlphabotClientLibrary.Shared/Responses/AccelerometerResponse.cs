@@ -15,7 +15,7 @@ namespace AlphabotClientLibrary.Shared.Responses
         /// </summary>
         public float YAxis { get; private set; }
         /// <summary>
-        /// The acceleration in m/s²
+        /// The acceleration in m/s^2
         /// </summary>
         public float ZAxis { get; private set; }
 
