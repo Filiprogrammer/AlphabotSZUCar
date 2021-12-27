@@ -166,8 +166,8 @@ namespace Alphabot.Net.Remote.Core
 
         #endregion
         #region events 
-
         public event EventHandler SessionClosed;
+
         protected virtual void OnSessionClosed()
         {
             if (SessionClosed != null)
