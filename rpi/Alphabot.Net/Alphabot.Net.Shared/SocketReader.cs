@@ -68,6 +68,7 @@ namespace Alphabot.Net.Shared
             var sr = new StreamReader(GetStream());
             return sr.ReadLine();
         }
+
         public byte[] ReceiveBytes()
         {
             byte[] msg = new byte[this._prefs.ServiceSettings.SocketBufferSize];
