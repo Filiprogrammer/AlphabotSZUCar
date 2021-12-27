@@ -7,7 +7,7 @@ namespace AlphabotClientLibrary.Shared.Responses
     public class MagnetometerResponse : IAlphabotResponse
     {
         /// <summary>
-        /// The magnetic flux density in µT
+        /// The magnetic flux density in Microtesla
         /// </summary>
         public float XAxis { get; private set; }
 
