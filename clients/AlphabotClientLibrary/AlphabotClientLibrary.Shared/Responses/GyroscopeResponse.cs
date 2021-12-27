@@ -9,6 +9,7 @@ namespace AlphabotClientLibrary.Shared.Responses
         /// <summary>
         /// The speed in degree per second
         /// </summary>
+
         public float XAxis { get; private set; }
         /// <summary>
         /// The speed in degree per second
