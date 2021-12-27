@@ -17,7 +17,7 @@ namespace AlphabotClientLibrary.Shared.Responses
         public float YAxis { get; private set; }
 
         /// <summary>
-        /// The magnetic flux density in µT
+        /// The magnetic flux density in Microtesla
         /// </summary>
         public float ZAxis { get; private set; }
 
