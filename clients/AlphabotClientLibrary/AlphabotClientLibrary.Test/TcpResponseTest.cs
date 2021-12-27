@@ -140,13 +140,12 @@ namespace AlphabotClientLibrary.Test
         [Fact]
         public void TestToggleResponse()
         {
-            byte[] bytes = { 0x07, 0xE0, 0x30 };
+            byte[] bytes = { 0x07, 0xC0, 0x30 };
 
             IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
             Assert.True(response is ToggleResponse, "Response was of the wrong type");
 
             ToggleResponse toggleResponse = response as ToggleResponse;
-            Assert.True(toggleResponse.DoCompassCalibration);
             Assert.True(toggleResponse.DoInvite);
             Assert.True(toggleResponse.DoPositioningSystem);
             Assert.True(toggleResponse.LogPathfinderPath);
