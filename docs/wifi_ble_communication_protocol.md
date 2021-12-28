@@ -298,7 +298,7 @@ If there are multiple objects on the same position, all of them will be removed.
 | Distance   | uint16     | The distance to anchor 2 in centimetres |
 | Speed      | int8       | The speed of the wheels in m/s          |
 
-### BLE_CHAR_IMU (UUID:93758afa-ce6f-4670-9562-ce92bda84d49)
+### BLE_CHAR_IMU (UUID: 93758afa-ce6f-4670-9562-ce92bda84d49)
 
 | Field Name | Field Type | Notes                                                                                                                                   |
 |------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
