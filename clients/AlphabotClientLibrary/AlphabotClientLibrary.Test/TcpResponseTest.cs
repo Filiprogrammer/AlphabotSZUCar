@@ -28,9 +28,9 @@ namespace AlphabotClientLibrary.Test
             Assert.True(response is AccelerometerResponse, "Response was of the wrong type");
 
             AccelerometerResponse accelerometerResponse = response as AccelerometerResponse;
-            Assert.InRange(accelerometerResponse.XAxis, expectedX - 0.1, expectedX + 0.1);
-            Assert.InRange(accelerometerResponse.YAxis, expectedY - 0.1, expectedY + 0.1);
-            Assert.InRange(accelerometerResponse.ZAxis, expectedZ - 0.1, expectedZ + 0.1);
+            Assert.InRange(accelerometerResponse.XAxis, expectedX - 0.001, expectedX + 0.001);
+            Assert.InRange(accelerometerResponse.YAxis, expectedY - 0.001, expectedY + 0.001);
+            Assert.InRange(accelerometerResponse.ZAxis, expectedZ - 0.001, expectedZ + 0.001);
         }
 
         [Fact]
