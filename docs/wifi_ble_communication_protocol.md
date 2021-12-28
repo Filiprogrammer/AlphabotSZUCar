@@ -289,14 +289,13 @@ If there are multiple objects on the same position, all of them will be removed.
 | Position X | int16      | The x coordinate in centimetres of anchor 2                 |
 | Position Y | int16      | The y coordinate in centimetres of anchor 2                 |
 
-### BLE_CHAR_ANCHORS_DISTANCES_WHEEL_SPEED (UUID: 254492a2-9324-469b-b1e2-4d4590972c35)
+### BLE_CHAR_ANCHORS_DISTANCES (UUID: 254492a2-9324-469b-b1e2-4d4590972c35)
 
 | Field Name | Field Type | Notes                                   |
 |------------|------------|-----------------------------------------|
 | Distance   | uint16     | The distance to anchor 0 in centimetres |
 | Distance   | uint16     | The distance to anchor 1 in centimetres |
 | Distance   | uint16     | The distance to anchor 2 in centimetres |
-| Speed      | int8       | The speed of the wheels in m/s          |
 
 ### BLE_CHAR_IMU (UUID: 93758afa-ce6f-4670-9562-ce92bda84d49)
 
@@ -306,6 +305,12 @@ If there are multiple objects on the same position, all of them will be removed.
 | x-Axis     | int16      | The value of the x-Axis                                                                                                                 |
 | y-Axis     | int16      | The value of the y-Axis                                                                                                                 |
 | z-Axis     | int16      | The value of the z-Axis                                                                                                                 |
+
+### BLE_CHAR_WHEEL_SPEED (UUID: 8efafa16-15de-461f-bde1-493261201e2b)
+
+| Field Name | Field Type | Notes                          |
+|------------|------------|--------------------------------|
+| Speed      | int8       | The speed of the wheels in m/s |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
