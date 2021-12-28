@@ -180,9 +180,9 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 | Field Name | Field Type | Notes                                              |
 |------------|------------|----------------------------------------------------|
-| X-axis     | int16      | The magnetic flux density of the x-axis in µT * 10 |
-| Y-axis     | int16      | The magnetic flux density of the y-axis in µT * 10 |
-| Z-axis     | int16      | The magnetic flux density of the z-axis in µT * 10 |
+| X-axis     | int16      | The magnetic flux density of the x-axis in &#xB5;T * 10 |
+| Y-axis     | int16      | The magnetic flux density of the y-axis in &#xB5;T * 10 |
+| Z-axis     | int16      | The magnetic flux density of the z-axis in &#xB5;T * 10 |
 
 ### Error message (Packet ID: 0x0D)
 
