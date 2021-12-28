@@ -172,9 +172,9 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 | Field Name | Field Type | Notes                                         |
 |------------|------------|-----------------------------------------------|
-| X-axis     | int16      | The acceleration of the x-axis in m/s² * 1000 |
-| Y-axis     | int16      | The acceleration of the y-axis in m/s² * 1000 |
-| Z-axis     | int16      | The acceleration of the z-axis in m/s² * 1000 |
+| X-axis     | int16      | The acceleration of the x-axis in m/s&#xB2; * 1000 |
+| Y-axis     | int16      | The acceleration of the y-axis in m/s&#xB2; * 1000 |
+| Z-axis     | int16      | The acceleration of the z-axis in m/s&#xB2; * 1000 |
 
 ### Magnetometer response (Packet ID: 0x0C)
 
