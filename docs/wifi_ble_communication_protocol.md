@@ -170,16 +170,16 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 ### Accelerometer response (Packet ID: 0x0B)
 
-| Field Name | Field Type | Notes                                         |
-|------------|------------|-----------------------------------------------|
+| Field Name | Field Type | Notes                                              |
+|------------|------------|----------------------------------------------------|
 | X-axis     | int16      | The acceleration of the x-axis in m/s&#xB2; * 1000 |
 | Y-axis     | int16      | The acceleration of the y-axis in m/s&#xB2; * 1000 |
 | Z-axis     | int16      | The acceleration of the z-axis in m/s&#xB2; * 1000 |
 
 ### Magnetometer response (Packet ID: 0x0C)
 
-| Field Name | Field Type | Notes                                              |
-|------------|------------|----------------------------------------------------|
+| Field Name | Field Type | Notes                                                   |
+|------------|------------|---------------------------------------------------------|
 | X-axis     | int16      | The magnetic flux density of the x-axis in &#xB5;T * 10 |
 | Y-axis     | int16      | The magnetic flux density of the y-axis in &#xB5;T * 10 |
 | Z-axis     | int16      | The magnetic flux density of the z-axis in &#xB5;T * 10 |
