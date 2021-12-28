@@ -106,9 +106,7 @@ namespace AlphabotClientLibrary.Test
             byte[] zBytes = BitConverter.GetBytes(Convert.ToInt16(expectedZ * 10));
 
             byte[] packetHeader = { 0x0A };
-            byte[] responseBytes;
-
-            responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
+            byte[] responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
 
             IAlphabotResponse response = new TcpResponseInterpreter(responseBytes).GetResponse();
             Assert.True(response is GyroscopeResponse, "Response was of the wrong type");
