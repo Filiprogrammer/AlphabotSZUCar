@@ -1,6 +1,5 @@
 ﻿using System;
 using AlphabotClientLibrary.Shared.Contracts;
-using AlphabotClientLibrary.Shared.Models;
 
 namespace AlphabotClientLibrary.Shared.Responses
 {
