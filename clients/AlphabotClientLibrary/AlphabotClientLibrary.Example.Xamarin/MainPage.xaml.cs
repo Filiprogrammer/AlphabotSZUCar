@@ -5,12 +5,7 @@ using AlphabotClientLibrary.Shared.Models;
 using AlphabotClientLibrary.Shared.Requests;
 using AlphabotClientLibrary.Shared.Responses;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -22,6 +17,15 @@ namespace AlphabotClientLibrary.Example.Xamarin
 
         bool isConnected;
 
+        private GyroControl gyro;
+        private double deviceWidth;
+        private double deviceHeight;
+        private StackOrientation deviceOrientation;
+
+        DateTime _lastSteerMoveTime;
+        int curSpeed = 0;
+        int curSteer = 0;
+
         public MainPage()
         {
             InitializeComponent();
@@ -29,6 +33,11 @@ namespace AlphabotClientLibrary.Example.Xamarin
             ch = new TcpHandlerWindows();
 
             ch.ResponseHandler.AddResponseListener(ReceiveEvent);
+
+            gyro = new GyroControl();
+
+            gyro.ChangeDirectionLandscape += Gyro_ChangeDirectionLandscape;
+            gyro.ChangeDirectionPortrait += Gyro_ChangeDirectionPortrait;
         }
 
         private void HandlePingRequests()
@@ -100,6 +109,19 @@ namespace AlphabotClientLibrary.Example.Xamarin
             CheckBoxTriggered();
         }
 
+        private void CheckBox_GyroCheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if (cbxGyro.IsEnabled)
+            {
+                if (!gyro.ToggleGyroscope())
+                {
+                    DisplayAlert("Information", "This device does not support gyroscope features.", "Ok");
+                    cbxGyro.IsChecked = false;
+                    cbxGyro.IsEnabled = false;
+                }
+            }
+        }
+
         private void CheckBoxTriggered()
         {
             ToggleRequest toggleRequest = new ToggleRequest(0);
@@ -120,9 +142,7 @@ namespace AlphabotClientLibrary.Example.Xamarin
             ch.SendAction(new CalibrateSteeringRequest());
         }
 
-        int curSpeed = 0;
-        int curSteer = 0;
-        private void Button_Clicked_4(object sender, EventArgs e)
+        private void Button_AddSpeedClicked(object sender, EventArgs e)
         {
             curSpeed += 3;
 
@@ -130,7 +150,7 @@ namespace AlphabotClientLibrary.Example.Xamarin
             ch.SendAction(new SpeedSteerRequest(Convert.ToSByte(curSpeed), Convert.ToSByte(curSteer)));
         }
 
-        private void Button_Clicked_5(object sender, EventArgs e)
+        private void Button_RemoveSpeedClicked(object sender, EventArgs e)
         {
             curSpeed -= 3;
 
@@ -138,7 +158,7 @@ namespace AlphabotClientLibrary.Example.Xamarin
             ch.SendAction(new SpeedSteerRequest(Convert.ToSByte(curSpeed), Convert.ToSByte(curSteer)));
         }
 
-        private void Button_Clicked_6(object sender, EventArgs e)
+        private void Button_SteerLeftClicked(object sender, EventArgs e)
         {
             curSteer -= 10;
 
@@ -146,18 +166,12 @@ namespace AlphabotClientLibrary.Example.Xamarin
             ch.SendAction(new SpeedSteerRequest(Convert.ToSByte(curSpeed), Convert.ToSByte(curSteer)));
         }
 
-        private void Button_Clicked_7(object sender, EventArgs e)
+        private void Button_SteerRightClicked(object sender, EventArgs e)
         {
             curSteer += 10;
 
             lblSpeedSteer.Text = "speed: " + curSpeed + ", steer: " + curSteer;
             ch.SendAction(new SpeedSteerRequest(Convert.ToSByte(curSpeed), Convert.ToSByte(curSteer)));
-        }
-
-        private void Button_Clicked_8(object sender, EventArgs e)
-        {
-            lblPing.Text = "Ping request started...";
-            ch.SendAction(new PingRequest());
         }
 
         private void Button_Disconnect_Clicked(object sender, EventArgs e)
@@ -178,8 +192,10 @@ namespace AlphabotClientLibrary.Example.Xamarin
             btnDisconnect.IsVisible = areMainButtonsVisible;
             lblDoPos.IsVisible = areMainButtonsVisible;
             lblLogPos.IsVisible = areMainButtonsVisible;
+            lblGyro.IsVisible = areMainButtonsVisible;
             cbxDoPositioningsys.IsVisible = areMainButtonsVisible;
             cbxLogPositioningsys.IsVisible = areMainButtonsVisible;
+            cbxGyro.IsVisible = areMainButtonsVisible;
             lblXpos.IsVisible = areMainButtonsVisible;
             lblYpos.IsVisible = areMainButtonsVisible;
             btnCalibrate.IsVisible = areMainButtonsVisible;
@@ -193,11 +209,91 @@ namespace AlphabotClientLibrary.Example.Xamarin
             entAncX.IsVisible = isConfigurePositioningAnchorsVisible;
             entAncY.IsVisible = isConfigurePositioningAnchorsVisible;
 
+            lblSpeedSteer.IsVisible = areMainButtonsVisible;
+            btnAddSpeed.IsVisible = areMainButtonsVisible;
+            btnRemoveSpeed.IsVisible = areMainButtonsVisible;
+            btnSteerLeft.IsVisible = areMainButtonsVisible;
+            btnSteerRight.IsVisible = areMainButtonsVisible;
+            lblPing.IsVisible = areMainButtonsVisible;
         }
 
         private void Button_SetPosAnchors_Clicked(object sender, EventArgs e)
         {
             ChangeVisibility(true, true);
+        }
+
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            if (width != this.deviceWidth || height != this.deviceHeight)
+            {
+                this.deviceWidth = width;
+                this.deviceHeight = height;
+                if (width > height)
+                {
+                    deviceOrientation = StackOrientation.Horizontal;
+                }
+                else
+                {
+                    deviceOrientation = StackOrientation.Vertical;
+                }
+            }
+        }
+
+        private void Gyro_ChangeDirectionLandscape(object sender, DirectionChangedEventArgs e)
+        {
+            if (deviceOrientation == StackOrientation.Horizontal)
+            {
+                MoveWithGyro(e.Direction);
+            }
+        }
+
+        private void Gyro_ChangeDirectionPortrait(object sender, DirectionChangedEventArgs e)
+        {
+            if (deviceOrientation == StackOrientation.Vertical)
+            {
+                MoveWithGyro(e.Direction);
+            }
+        }
+
+        private void MoveWithGyro(GyroDirection direction)
+        {
+            if (!isConnected)
+            {
+                return;
+            }
+            if ((DateTime.Now - _lastSteerMoveTime).TotalMilliseconds < 300 && direction != GyroDirection.Stop)
+            {
+                return;
+            }
+            switch (direction)
+            {
+                case GyroDirection.Left:
+                    if (curSteer > -120)
+                    {
+                        curSteer -= 10;
+                        lblSpeedSteer.Text = $"speed: {curSpeed }, steer: {curSteer}, GyroDir: {direction}";
+                        ch.SendAction(new SpeedSteerRequest(Convert.ToSByte(curSpeed), Convert.ToSByte(curSteer)));
+                    }
+                    break;
+                case GyroDirection.Right:
+                    if (curSteer < 120)
+                    {
+                        curSteer += 10;
+                        lblSpeedSteer.Text = $"speed: {curSpeed }, steer: {curSteer}, GyroDir: {direction}";
+                        ch.SendAction(new SpeedSteerRequest(Convert.ToSByte(curSpeed), Convert.ToSByte(curSteer)));
+                    }
+                    break;
+                case GyroDirection.Stop:
+                    if (curSteer == 0) break;
+                    curSteer = 0;
+                    lblSpeedSteer.Text = $"speed: {curSpeed }, steer: {curSteer}, GyroDir: {direction}";
+                    ch.SendAction(new SpeedSteerRequest(Convert.ToSByte(curSpeed), Convert.ToSByte(curSteer)));
+                    break;
+                default:
+                    break;
+            }
+            _lastSteerMoveTime = DateTime.Now;
         }
     }
 }
