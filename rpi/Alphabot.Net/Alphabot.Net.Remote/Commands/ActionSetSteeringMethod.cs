@@ -1,5 +1,5 @@
-using Alphabot.Net.Car.Settings;
 using System;
+using Alphabot.Net.Car.Settings;
 
 namespace Alphabot.Net.Remote.Commands
 {
