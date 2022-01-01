@@ -14,7 +14,7 @@ namespace AlphabotClientLibrary.Shared
 
         protected PingResponse GetPingResponse()
         {
-            long time = BitConverter.ToInt64(DataBytes);
+            long time = BitConverter.ToInt64(DataBytes, 0);
 
             return new PingResponse(time);
         }

@@ -335,9 +335,9 @@ The 2nd byte changes certain logging options.
 
 ### 3.1.1. Bit field – 1. Byte (Settings)
 
-| Bit 7 (MSB)         | Bit 6  | Bit 5       | Bit 4               | Bit 3           | Bit 2        | Bit 1    | Bit 0 (LSB) |
-|---------------------|--------|-------------|---------------------|-----------------|--------------|----------|-------------|
-| Compass calibration | Invite | Positioning | Collision Avoidance | Navigation-Mode | Explore-Mode | not used | not used    |
+| Bit 7 (MSB) | Bit 6       | Bit 5               | Bit 4           | Bit 3        | Bit 2    | Bit 1    | Bit 0 (LSB) |
+|-------------|-------------|---------------------|-----------------|--------------|----------|----------|-------------|
+| Invite      | Positioning | Collision Avoidance | Navigation-Mode | Explore-Mode | not used | not used | not used    |
 
 ### 3.1.2. Bit field – 2. Byte (Logging)
 

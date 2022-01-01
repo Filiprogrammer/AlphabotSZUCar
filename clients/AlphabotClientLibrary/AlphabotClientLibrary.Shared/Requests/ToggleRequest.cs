@@ -8,8 +8,6 @@ namespace AlphabotClientLibrary.Shared.Requests
     public class ToggleRequest : IAlphabotRequest
     {
         #region properties
-        public bool DoCompassCalibration { get; set; }
-
         public bool DoInvite { get; set; }
 
         public bool DoPositioningSystem { get; set; }
@@ -40,13 +38,12 @@ namespace AlphabotClientLibrary.Shared.Requests
             byte[] bytes = BitConverter.GetBytes(bitField);
             BitArray bitArray = new BitArray(bytes);
 
-            // Bits 0 and 1 are not used.
-            DoExploreMode = bitArray[2];
-            DoNavigationMode = bitArray[3];
-            DoCollisionAvoidance = bitArray[4];
-            DoPositioningSystem = bitArray[5];
-            DoInvite = bitArray[6];
-            DoCompassCalibration = bitArray[7];
+            // Bits 0 to 2 are not used.
+            DoExploreMode = bitArray[3];
+            DoNavigationMode = bitArray[4];
+            DoCollisionAvoidance = bitArray[5];
+            DoPositioningSystem = bitArray[6];
+            DoInvite = bitArray[7];
 
             // Bit 8 is not used.
             LogIMU = bitArray[9];
@@ -79,13 +76,12 @@ namespace AlphabotClientLibrary.Shared.Requests
         {
             BitArray bitArray = new BitArray(16);
 
-            // Bits 0 and 1 are not used.
-            bitArray[2] = DoExploreMode;
-            bitArray[3] = DoNavigationMode;
-            bitArray[4] = DoCollisionAvoidance;
-            bitArray[5] = DoPositioningSystem;
-            bitArray[6] = DoInvite;
-            bitArray[7] = DoCompassCalibration;
+            // Bits 0 to 2 are not used.
+            bitArray[3] = DoExploreMode;
+            bitArray[4] = DoNavigationMode;
+            bitArray[5] = DoCollisionAvoidance;
+            bitArray[6] = DoPositioningSystem;
+            bitArray[7] = DoInvite;
 
             // Bit 8 is not used.
             bitArray[9] = LogIMU;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using AlphabotClientLibrary.Shared.Contracts;
 
@@ -7,8 +7,6 @@ namespace AlphabotClientLibrary.Shared.Responses
     public class ToggleResponse : IAlphabotResponse
     {
         #region properties
-        public bool DoCompassCalibration { get; private set; }
-
         public bool DoInvite { get; private set; }
 
         public bool DoPositioningSystem { get; private set; }
@@ -49,13 +47,12 @@ namespace AlphabotClientLibrary.Shared.Responses
         {
             BitArray bitArray = new BitArray(bytes);
 
-            // Bit 0 and 1 are not used.
-            DoExploreMode = bitArray[2];
-            DoNavigationMode = bitArray[3];
-            DoCollisionAvoidance = bitArray[4];
-            DoPositioningSystem = bitArray[5];
-            DoInvite = bitArray[6];
-            DoCompassCalibration = bitArray[7];
+            // Bits 0 to 2 are not used.
+            DoExploreMode = bitArray[3];
+            DoNavigationMode = bitArray[4];
+            DoCollisionAvoidance = bitArray[5];
+            DoPositioningSystem = bitArray[6];
+            DoInvite = bitArray[7];
 
             // Bit 8 is not used.
             LogIMU = bitArray[9];
