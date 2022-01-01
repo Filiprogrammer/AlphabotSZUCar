@@ -8,9 +8,7 @@ namespace Alphabot.Net.Remote.Commands
         Prefs _prefs = Prefs.GetInstance();
         public ActionSetSteeringMethod(bool isActiveSteering) : base()
         {
-            Args = new int[1];
-
-            Args[0] = Convert.ToInt32(isActiveSteering);
+            Args = { Convert.ToInt32(isActiveSteering) };
         }
 
         public override void Perform()
