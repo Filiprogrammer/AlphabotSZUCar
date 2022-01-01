@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AlphabotClientLibrary.Shared.Models;
 using AlphabotClientLibrary.Shared.Requests;
 using Xunit;
@@ -112,9 +112,9 @@ namespace AlphabotClientLibrary.Test
             ToggleRequest request = new ToggleRequest(0);
             request.DoExploreMode = true;
             request.LogPositioning = true;
-            request.LogGyroscope = true;
+            request.LogIMU = true;
 
-            byte[] expectedBytes = { 0x05, 0x08, 0x81 };
+            byte[] expectedBytes = { 0x05, 0x08, 0x82 };
 
             Assert.Equal(expectedBytes, request.GetBytes());
         }

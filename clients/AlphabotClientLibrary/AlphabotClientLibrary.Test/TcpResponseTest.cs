@@ -12,6 +12,45 @@ namespace AlphabotClientLibrary.Test
     public class TcpResponseTest
     {
         [Fact]
+        public void TestAccelerometerResponse()
+        {
+            float expectedX = 5.035351242f;
+            float expectedY = -6.0001f;
+            float expectedZ = 13.4f;
+            byte[] xBytes = BitConverter.GetBytes(Convert.ToInt16(expectedX * 1000));
+            byte[] yBytes = BitConverter.GetBytes(Convert.ToInt16(expectedY * 1000));
+            byte[] zBytes = BitConverter.GetBytes(Convert.ToInt16(expectedZ * 1000));
+
+            byte[] packetHeader = { 0x0B };
+            byte[] responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
+
+            IAlphabotResponse response = new TcpResponseInterpreter(responseBytes).GetResponse();
+            Assert.True(response is AccelerometerResponse, "Response was of the wrong type");
+
+            AccelerometerResponse accelerometerResponse = response as AccelerometerResponse;
+            Assert.InRange(accelerometerResponse.XAxis, expectedX - 0.001, expectedX + 0.001);
+            Assert.InRange(accelerometerResponse.YAxis, expectedY - 0.001, expectedY + 0.001);
+            Assert.InRange(accelerometerResponse.ZAxis, expectedZ - 0.001, expectedZ + 0.001);
+        }
+
+        [Fact]
+        public void TestAnchorDistancesResponse()
+        {
+            byte[] bytes = { 0x08, 0x6F, 0x00, 0xAE, 0x08, 0x35, 0x82 };
+            ushort expectedDistance0 = 111;
+            ushort expectedDistance1 = 2222;
+            ushort expectedDistance2 = 33333;
+
+            IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
+            Assert.True(response is AnchorDistancesResponse, "Response was of the wrong type");
+
+            AnchorDistancesResponse anchorDistanceResponse = response as AnchorDistancesResponse;
+            Assert.Equal(expectedDistance0, anchorDistanceResponse.DistanceAnchor0);
+            Assert.Equal(expectedDistance1, anchorDistanceResponse.DistanceAnchor1);
+            Assert.Equal(expectedDistance2, anchorDistanceResponse.DistanceAnchor2);
+        }
+
+        [Fact]
         public void TestCompassResponse()
         {
             byte[] bytes = { 0x04, 0x64, 0x00 };
@@ -42,7 +81,7 @@ namespace AlphabotClientLibrary.Test
         [Fact]
         public void TestErrorResponse()
         {
-            byte[] bytes = { 0x08, 0x03, 0x0E, 0x01, 0x02, 0x03, 0x04, 0x05 };
+            byte[] bytes = { 0x0D, 0x03, 0x0E, 0x01, 0x02, 0x03, 0x04, 0x05 };
             ErrorResponse.ErrorType expectedErrorType = ErrorResponse.ErrorType.UnknownPacketId;
             byte expectedHeader = 14;
             byte[] expectedPayload = { 0x01, 0x02, 0x03, 0x04, 0x05 };
@@ -54,6 +93,50 @@ namespace AlphabotClientLibrary.Test
             Assert.Equal(expectedErrorType, errorResponse.Error);
             Assert.Equal(expectedHeader, errorResponse.Header);
             Assert.Equal(expectedPayload, errorResponse.Payload);
+        }
+
+        [Fact]
+        public void TestGyroscopeResponse()
+        {
+            float expectedX = -24.298f;
+            float expectedY = -8.0001f;
+            float expectedZ = 1113.75f;
+            byte[] xBytes = BitConverter.GetBytes(Convert.ToInt16(expectedX * 10));
+            byte[] yBytes = BitConverter.GetBytes(Convert.ToInt16(expectedY * 10));
+            byte[] zBytes = BitConverter.GetBytes(Convert.ToInt16(expectedZ * 10));
+
+            byte[] packetHeader = { 0x0A };
+            byte[] responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
+
+            IAlphabotResponse response = new TcpResponseInterpreter(responseBytes).GetResponse();
+            Assert.True(response is GyroscopeResponse, "Response was of the wrong type");
+
+            GyroscopeResponse gyroscopeResponse = response as GyroscopeResponse;
+            Assert.InRange(gyroscopeResponse.XAxis, expectedX - 0.1, expectedX + 0.1);
+            Assert.InRange(gyroscopeResponse.YAxis, expectedY - 0.1, expectedY + 0.1);
+            Assert.InRange(gyroscopeResponse.ZAxis, expectedZ - 0.1, expectedZ + 0.1);
+        }
+
+        [Fact]
+        public void TestMagnetometerResponse()
+        {
+            float expectedX = 340.09f;
+            float expectedY = -81.1f;
+            float expectedZ = 78.751f;
+            byte[] xBytes = BitConverter.GetBytes(Convert.ToInt16(expectedX * 10));
+            byte[] yBytes = BitConverter.GetBytes(Convert.ToInt16(expectedY * 10));
+            byte[] zBytes = BitConverter.GetBytes(Convert.ToInt16(expectedZ * 10));
+
+            byte[] packetHeader = { 0x0C };
+            byte[] responseBytes = packetHeader.Concat(xBytes).Concat(yBytes).Concat(zBytes).ToArray();
+
+            IAlphabotResponse response = new TcpResponseInterpreter(responseBytes).GetResponse();
+            Assert.True(response is MagnetometerResponse, "Response was of the wrong type");
+
+            MagnetometerResponse magnetometerResponse = response as MagnetometerResponse;
+            Assert.InRange(magnetometerResponse.XAxis, expectedX - 0.1, expectedX + 0.1);
+            Assert.InRange(magnetometerResponse.YAxis, expectedY - 0.1, expectedY + 0.1);
+            Assert.InRange(magnetometerResponse.ZAxis, expectedZ - 0.1, expectedZ + 0.1);
         }
 
         [Fact]
@@ -150,6 +233,19 @@ namespace AlphabotClientLibrary.Test
             Assert.True(toggleResponse.DoPositioningSystem);
             Assert.True(toggleResponse.LogPathfinderPath);
             Assert.True(toggleResponse.LogCompassDirection);
+        }
+
+        [Fact]
+        public void TestWheelSpeedResponse()
+        {
+            byte[] bytes = { 0x09, 0x68 };
+            int expectedSpeed = 104;
+
+            IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
+            Assert.True(response is WheelSpeedResponse, "Response was of the wrong type");
+
+            WheelSpeedResponse wheelSpeedResponse = response as WheelSpeedResponse;
+            Assert.Equal(expectedSpeed, wheelSpeedResponse.Speed);
         }
     }
 }

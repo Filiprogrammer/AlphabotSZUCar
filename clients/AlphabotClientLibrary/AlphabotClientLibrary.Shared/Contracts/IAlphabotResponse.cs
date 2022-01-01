@@ -12,7 +12,12 @@ namespace AlphabotClientLibrary.Shared.Contracts
         PathFinding,
         Ping,
         Positioning,
-        Toggle
+        Toggle,
+        AnchorDistances,
+        WheelSpeed,
+        Gyroscope,
+        Accelerometer,
+        Magnetometer
     }
 
     public interface IAlphabotResponse

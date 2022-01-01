@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using AlphabotClientLibrary.Shared.Contracts;
 
@@ -29,9 +29,7 @@ namespace AlphabotClientLibrary.Shared.Responses
 
         public bool LogWheelSpeed { get; private set; }
 
-        public bool LogAccelerometer { get; private set; }
-
-        public bool LogGyroscope { get; private set; }
+        public bool LogIMU { get; private set; }
         #endregion
 
         public ToggleResponse(ushort bitField)
@@ -56,8 +54,8 @@ namespace AlphabotClientLibrary.Shared.Responses
             DoPositioningSystem = bitArray[6];
             DoInvite = bitArray[7];
 
-            LogGyroscope = bitArray[8];
-            LogAccelerometer = bitArray[9];
+            // Bit 8 is not used.
+            LogIMU = bitArray[9];
             LogWheelSpeed = bitArray[10];
             LogAnchorDistances = bitArray[11];
             LogCompassDirection = bitArray[12];
