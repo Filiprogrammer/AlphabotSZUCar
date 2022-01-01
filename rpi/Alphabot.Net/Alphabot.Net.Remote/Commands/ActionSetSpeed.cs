@@ -7,8 +7,7 @@ namespace Alphabot.Net.Remote.Commands
     {
         public ActionSetSpeed(int speed) : base()
         {
-            Args = new int[1];
-            Args[0] = speed;
+            Args = { speed };
         }
 
         public override void Perform()
