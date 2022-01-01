@@ -6,9 +6,7 @@ namespace Alphabot.Net.Remote.Commands
     {
         public ActionTurn(int steer) : base()
         {
-            Args = new int[1];
-
-            Args[0] = steer;
+            Args = { steer };
         }
 
         public override void Perform()
