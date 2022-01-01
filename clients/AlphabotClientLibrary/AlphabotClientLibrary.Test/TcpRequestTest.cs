@@ -114,7 +114,7 @@ namespace AlphabotClientLibrary.Test
             request.LogPositioning = true;
             request.LogIMU = true;
 
-            byte[] expectedBytes = { 0x05, 0x08, 0x81 };
+            byte[] expectedBytes = { 0x05, 0x08, 0x82 };
 
             Assert.Equal(expectedBytes, request.GetBytes());
         }
