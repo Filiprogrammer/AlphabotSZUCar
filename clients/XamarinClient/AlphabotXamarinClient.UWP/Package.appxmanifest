@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="ec0cc741-fd3e-485c-81be-68815c480690" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>App2.UWP</DisplayName>
+    <DisplayName>AlphabotXamarinClient.UWP</DisplayName>
     <PublisherDisplayName>82a31e90-094d-4a02-83d1-01392cc3d09e</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

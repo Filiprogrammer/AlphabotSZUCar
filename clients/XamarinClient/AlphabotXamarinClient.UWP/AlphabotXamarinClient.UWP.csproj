@@ -7,8 +7,8 @@
     <ProjectGuid>{BFAC1FC9-8CAD-48BA-A13E-F2ADD1A7626F}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>App2.UWP</RootNamespace>
-    <AssemblyName>App2.UWP</AssemblyName>
+    <RootNamespace>AlphabotXamarinClient.UWP</RootNamespace>
+    <AssemblyName>AlphabotXamarinClient.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
