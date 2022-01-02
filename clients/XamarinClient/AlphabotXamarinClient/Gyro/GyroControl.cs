@@ -21,9 +21,13 @@ namespace AlphabotXamarinClient
         public event EventHandler<DirectionChangedEventArgs> ChangeDirectionLandscape;
 
         public GyroscopeData LastPos { get; private set; }
+
         public float X { get; private set; }
+
         public float Y { get; private set; }
+
         public float Z { get; private set; }
+
         public bool IsMonitoring { get { return Gyroscope.IsMonitoring; } }
 
         public GyroControl(double sensitivity = 5.5)
@@ -109,13 +113,10 @@ namespace AlphabotXamarinClient
                 Y = 0;
                 Z = 0;
                 if (Gyroscope.IsMonitoring)
-                {
                     Gyroscope.Stop();
-                }
                 else
-                {
                     Gyroscope.Start(speed);
-                }
+
                 return true;
             }
             catch (FeatureNotSupportedException)

@@ -131,9 +131,8 @@ namespace AlphabotXamarinClient
             toggleRequest.LogPositioning = cbxLogPositioningsys.IsChecked;
 
             if (ch == null)
-            {
                 return;
-            }
+
             ch.SendAction(toggleRequest);
         }
 
@@ -225,47 +224,39 @@ namespace AlphabotXamarinClient
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
+
             if (width != this.deviceWidth || height != this.deviceHeight)
             {
                 this.deviceWidth = width;
                 this.deviceHeight = height;
+
                 if (width > height)
-                {
                     deviceOrientation = StackOrientation.Horizontal;
-                }
                 else
-                {
                     deviceOrientation = StackOrientation.Vertical;
-                }
             }
         }
 
         private void Gyro_ChangeDirectionLandscape(object sender, DirectionChangedEventArgs e)
         {
             if (deviceOrientation == StackOrientation.Horizontal)
-            {
                 MoveWithGyro(e.Direction);
-            }
         }
 
         private void Gyro_ChangeDirectionPortrait(object sender, DirectionChangedEventArgs e)
         {
             if (deviceOrientation == StackOrientation.Vertical)
-            {
                 MoveWithGyro(e.Direction);
-            }
         }
 
         private void MoveWithGyro(GyroDirection direction)
         {
             if (!isConnected)
-            {
                 return;
-            }
+
             if ((DateTime.Now - _lastSteerMoveTime).TotalMilliseconds < 300 && direction != GyroDirection.Stop)
-            {
                 return;
-            }
+
             switch (direction)
             {
                 case GyroDirection.Left:
