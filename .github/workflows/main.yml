@@ -547,3 +547,20 @@ jobs:
         run: |
           cd clients/AlphabotClientLibrary
           dotnet test
+  build_xamarin_client:
+    runs-on: windows-latest
+    name: Build Xamarin Client
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Build dependencies from AlphabotClientLibrary
+        run: |
+          cd clients/AlphabotClientLibrary
+          dotnet build AlphabotClientLibrary.Shared/AlphabotClientLibrary.Shared.csproj -c Release
+          dotnet build AlphabotClientLibrary.Core/AlphabotClientLibrary.Core.csproj -c Release
+          dotnet build AlphabotClientLibrary.Core.Tcp/AlphabotClientLibrary.Core.Tcp.csproj -c Release
+      - name: Build XamarinClient Solution
+        run: |
+          cd clients/XamarinClient
+          msbuild ./XamarinClient.sln /restore /p:Configuration=Release
