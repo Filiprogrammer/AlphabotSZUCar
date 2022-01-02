@@ -87,7 +87,7 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AlphabotClientLibrary.Example.Xamarin\XamarinClient.csproj">
+    <ProjectReference Include="..\XamarinClient\XamarinClient.csproj">
       <Project>{E86B1835-E131-458B-AF40-86224B281912}</Project>
       <Name>XamarinClient</Name>
     </ProjectReference>

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinClient", "AlphabotClientLibrary.Example.Xamarin\XamarinClient.csproj", "{E86B1835-E131-458B-AF40-86224B281912}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinClient", "XamarinClient\XamarinClient.csproj", "{E86B1835-E131-458B-AF40-86224B281912}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinClient.Android", "AlphabotClientLibrary.Example.Xamarin.Android\XamarinClient.Android.csproj", "{CE1046EC-1850-457E-9179-BB5FB4AD1A25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinClient.Android", "XamarinClient.Android\XamarinClient.Android.csproj", "{CE1046EC-1850-457E-9179-BB5FB4AD1A25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinClient.UWP", "AlphabotClientLibrary.Example.Xamarin.UWP\XamarinClient.UWP.csproj", "{BFAC1FC9-8CAD-48BA-A13E-F2ADD1A7626F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinClient.UWP", "XamarinClient.UWP\XamarinClient.UWP.csproj", "{BFAC1FC9-8CAD-48BA-A13E-F2ADD1A7626F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
