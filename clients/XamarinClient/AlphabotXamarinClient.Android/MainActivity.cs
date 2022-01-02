@@ -1,10 +1,8 @@
-﻿using System;
-
+using System;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
-using AlphabotXamarinClient;
 
 namespace AlphabotXamarinClient.Android
 {
@@ -17,8 +15,9 @@ namespace AlphabotXamarinClient.Android
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            LoadApplication(new AlphabotXamarinClient.App());
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
