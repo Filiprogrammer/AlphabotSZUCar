@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Xamarin.Forms;
 
-namespace AlphabotClientLibrary.Example.Xamarin.UWP
+namespace AlphabotXamarinClient.UWP
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

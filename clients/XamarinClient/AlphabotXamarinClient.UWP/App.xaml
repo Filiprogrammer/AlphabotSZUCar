@@ -1,5 +1,5 @@
 ﻿<Application
-    x:Class="AlphabotClientLibrary.Example.Xamarin.UWP.App"
+    x:Class="AlphabotXamarinClient.UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:App2.UWP">

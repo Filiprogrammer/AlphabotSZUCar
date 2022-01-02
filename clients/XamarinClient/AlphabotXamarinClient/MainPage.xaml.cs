@@ -9,7 +9,7 @@ using System.Threading;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace AlphabotClientLibrary.Example.Xamarin
+namespace AlphabotXamarinClient
 {
     public partial class MainPage : ContentPage
     {

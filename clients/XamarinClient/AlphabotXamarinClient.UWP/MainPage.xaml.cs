@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace AlphabotClientLibrary.Example.Xamarin.UWP
+namespace AlphabotXamarinClient.UWP
 {
     public sealed partial class MainPage
     {
@@ -21,7 +21,7 @@ namespace AlphabotClientLibrary.Example.Xamarin.UWP
         {
             this.InitializeComponent();
 
-            LoadApplication(new AlphabotClientLibrary.Example.Xamarin.App());
+            LoadApplication(new AlphabotXamarinClient.App());
         }
     }
 }

@@ -2,7 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace AlphabotClientLibrary.Example.Xamarin
+namespace AlphabotXamarinClient
 {
     public partial class App : Application
     {

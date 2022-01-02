@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Essentials;
 
-namespace AlphabotClientLibrary.Example.Xamarin
+namespace AlphabotXamarinClient
 {
     public class DirectionChangedEventArgs : EventArgs
     {
