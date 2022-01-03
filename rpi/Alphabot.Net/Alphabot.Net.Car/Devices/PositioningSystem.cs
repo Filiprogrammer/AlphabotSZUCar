@@ -6,7 +6,6 @@ using Alphabot.Net.Shared;
 using Alphabot.Net.Shared.Contracts;
 using Alphabot.Net.Shared.Logger;
 using Alphabot.Net.Shared.Responses;
-using AlphabotClientLibrary.Shared.Contracts;
 
 namespace Alphabot.Net.Car.Devices
 {
@@ -37,12 +36,10 @@ namespace Alphabot.Net.Car.Devices
 
         public SerialPort _serialPort;
 
-        public delegate void ResponseSender(IAlphabotResponse response);
-
-        private ResponseSender _responseSenderMethod;
+        private Delegates.ResponseSender _responseSenderMethod;
         private readonly IAlphabotCar _car = RemoteCar.GetInstance().Current;
 
-        public PositioningSystem(ushort anc1ShortAddress, ushort anc2ShortAddress, ushort anc3ShortAddress, ResponseSender responseSender)
+        public PositioningSystem(ushort anc1ShortAddress, ushort anc2ShortAddress, ushort anc3ShortAddress, Delegates.ResponseSender responseSender)
         {
             if(_car is DummyCar)
             {
