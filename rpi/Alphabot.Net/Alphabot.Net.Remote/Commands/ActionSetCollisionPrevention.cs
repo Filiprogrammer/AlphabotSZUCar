@@ -6,7 +6,7 @@ namespace Alphabot.Net.Remote.Commands
     {
         public ActionSetCollisionPrevention(bool preventCollision) : base()
         {
-            Args = { Convert.ToInt32(preventCollision) };
+            Args = new int[] { Convert.ToInt32(preventCollision) };
         }
 
         public override void Perform()
