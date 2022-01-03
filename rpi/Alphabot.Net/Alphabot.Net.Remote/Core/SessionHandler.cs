@@ -167,6 +167,7 @@ namespace Alphabot.Net.Remote.Core
         }
 
         #endregion
+
         #region events 
         public event EventHandler SessionClosed;
 
