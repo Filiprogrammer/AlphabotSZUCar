@@ -18,17 +18,21 @@ namespace Alphabot.Net.Shared
         Prefs _prefs = Prefs.GetInstance();
         private NetworkStream _networkStream;
 
+        public bool IsConnected => _clientSocket.Connected;
+
         public NetworkStream GetStream()
         {
-            if (_networkStream == null) _networkStream = new NetworkStream(_clientSocket);
+            if (_networkStream == null)
+                _networkStream = new NetworkStream(_clientSocket);
 
             return _networkStream;
         }
-        public bool IsConnected => _clientSocket.Connected;
+
         public SocketReader(Socket clientSocket)
         {
             _clientSocket = clientSocket;
         }
+
         /// <summary>
         /// This method receives a incoming message and encodes it to ASCII.
         /// </summary>
@@ -40,6 +44,7 @@ namespace Alphabot.Net.Shared
             s = s.Substring(0, s.IndexOf('\0'));
             return s;
         }
+
         /// <summary>
         /// This method receives a incoming message and encodes it to ASCII - interpreting Environment.NewLine als seperator
         /// </summary>
@@ -52,14 +57,13 @@ namespace Alphabot.Net.Shared
 
         public byte[] ReceiveBytes()
         {
-            byte[] msg = new byte[this._prefs.ServiceSettings.SocketBufferSize];
+            byte[] msg = new byte[_prefs.ServiceSettings.SocketBufferSize];
             try
             {
                 int size = this._clientSocket.Receive(msg);
                 if (size == 0)
-                {
                     throw new TcpConnectionLostException("0 Bytes received: Tcp connection lost");
-                }
+
                 this._serviceLogger.Log(LogLevel.Debug, "Shared.SocketReader.ReceiveText", string.Format("bytes received: {0}", size));
             }
             catch (SocketException sx)
@@ -82,7 +86,5 @@ namespace Alphabot.Net.Shared
             _clientSocket.Shutdown(SocketShutdown.Both);
             _clientSocket.Close();
         }
-
-
     }
 }

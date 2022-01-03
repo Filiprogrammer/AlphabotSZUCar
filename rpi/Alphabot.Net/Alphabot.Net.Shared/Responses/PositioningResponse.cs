@@ -1,5 +1,5 @@
-﻿using AlphabotClientLibrary.Shared.Contracts;
-using System;
+﻿using System;
+using AlphabotClientLibrary.Shared.Contracts;
 
 namespace Alphabot.Net.Shared.Responses
 {

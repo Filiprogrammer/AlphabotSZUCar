@@ -1,12 +1,13 @@
-﻿using Alphabot.Net.Shared.Contracts;
-using System;
+﻿using System;
 using System.Linq;
+using Alphabot.Net.Shared.Contracts;
 
 namespace Alphabot.Net.Shared.Requests
 {
     public class ConfigurePositioningAnchorRequest : IAlphabotRequest
     {
         public byte AnchorId { get; private set; }
+
         public Position Position { get; private set; }
 
         public ConfigurePositioningAnchorRequest(byte anchorId, Position position)

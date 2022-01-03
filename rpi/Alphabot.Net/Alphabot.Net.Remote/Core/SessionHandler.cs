@@ -26,6 +26,7 @@ namespace Alphabot.Net.Remote.Core
         private readonly object _sync = new object();
 
         #endregion
+
         #region properties
         public bool IsConnected
         {
@@ -33,6 +34,7 @@ namespace Alphabot.Net.Remote.Core
             private set;
         }
         #endregion
+
         #region ctor
         public SessionHandler(Socket clientSocket)
         {
@@ -176,7 +178,5 @@ namespace Alphabot.Net.Remote.Core
             }
         }
         #endregion
-
-
     }
 }

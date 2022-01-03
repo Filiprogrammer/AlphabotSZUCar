@@ -1,6 +1,6 @@
-﻿using AlphabotClientLibrary.Shared.Contracts;
-using System;
+﻿using System;
 using System.Collections;
+using AlphabotClientLibrary.Shared.Contracts;
 
 namespace Alphabot.Net.Shared.Responses
 {

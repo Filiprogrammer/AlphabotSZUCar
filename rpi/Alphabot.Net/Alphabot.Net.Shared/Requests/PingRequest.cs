@@ -1,7 +1,7 @@
-﻿using Alphabot.Net.Shared.Contracts;
-using Alphabot.Net.Shared.Responses;
-using System;
+﻿using System;
 using System.Linq;
+using Alphabot.Net.Shared.Contracts;
+using Alphabot.Net.Shared.Responses;
 
 namespace Alphabot.Net.Shared.Requests
 {

@@ -1,15 +1,16 @@
-﻿using Alphabot.Net.Shared.Responses;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Alphabot.Net.Shared.Responses;
 
 namespace Alphabot.Net.Remote.Core
 {
     public class ToggleSettings
     {
         private static ToggleSettings _instance;
+
         public static ToggleSettings GetInstance
         {
             get
@@ -22,18 +23,18 @@ namespace Alphabot.Net.Remote.Core
             }
         }
 
+        public bool DoCollisionAvoidance { get; set; }
+
+        public bool LogPositioning { get; set; }
+
+        public bool DoPositioningSystem { get; set; }
+
         private ToggleSettings()
         {
             DoCollisionAvoidance = false;
             LogPositioning = true;
             DoPositioningSystem = true;
         }
-
-        public bool DoCollisionAvoidance { get; set; }
-
-        public bool LogPositioning { get; set; }
-
-        public bool DoPositioningSystem { get; set; }
 
         public ToggleResponse GetToggleResponse()
         {

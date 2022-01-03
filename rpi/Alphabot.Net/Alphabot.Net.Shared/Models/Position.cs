@@ -35,11 +35,10 @@ namespace Alphabot.Net.Shared
         /// <returns>byte[0-1]: PositionX (short), byte[2-3]: PositionY (short)</returns>
         public byte[] ToByteArray()
         {
-            byte[] ret = new byte[4];
-
             byte[] distanceXInBytes = BitConverter.GetBytes(PositionX);
             byte[] distanceYInBytes = BitConverter.GetBytes(PositionY);
 
+            byte[] ret = new byte[4];
             ret[0] = distanceXInBytes[0];
             ret[1] = distanceXInBytes[1];
             ret[2] = distanceYInBytes[0];

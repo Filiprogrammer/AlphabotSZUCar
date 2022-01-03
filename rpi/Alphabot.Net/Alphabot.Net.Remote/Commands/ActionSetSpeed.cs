@@ -1,7 +1,7 @@
+using System;
 using Alphabot.Net.Shared.Logger;
 
 namespace Alphabot.Net.Remote.Commands
-
 {
     class ActionSetSpeed : AlphabotAction
     {

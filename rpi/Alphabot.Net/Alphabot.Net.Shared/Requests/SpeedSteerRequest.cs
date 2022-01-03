@@ -1,5 +1,5 @@
-﻿using Alphabot.Net.Shared.Contracts;
-using System;
+﻿using System;
+using Alphabot.Net.Shared.Contracts;
 
 namespace Alphabot.Net.Shared.Requests
 {
