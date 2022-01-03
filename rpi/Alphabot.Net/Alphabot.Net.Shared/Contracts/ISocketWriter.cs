@@ -6,6 +6,7 @@ namespace Alphabot.Net.Shared.Contracts
     {
         NetworkStream GetStream();
         void SendText(string message);
+        void SendBytes(byte[] bytes);
         void WriteLine(string message);
         void Close();
     }

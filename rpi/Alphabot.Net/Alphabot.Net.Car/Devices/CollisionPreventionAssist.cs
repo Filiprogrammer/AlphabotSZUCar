@@ -5,7 +5,6 @@ using Alphabot.Net.Shared.Logger;
 using Alphabot.Net.Car.Settings;
 using Alphabot.Net.Shared.Contracts;
 using Iot.Device.Hcsr04;
-//using UnitsNet;
 
 namespace Alphabot.Net.Car.Devices
 {
@@ -18,8 +17,6 @@ namespace Alphabot.Net.Car.Devices
         private readonly int _measurementInterval;
         private readonly int _holdOnCollisionAlarmCount;
         private int _collisionAlarmCount;
-        
-        //      SpeechService _speechService = SpeechService.GetInstance();
 
         private readonly Hcsr04 _hcsr04;
         private readonly IAlphabotCar _car;
@@ -36,7 +33,6 @@ namespace Alphabot.Net.Car.Devices
         }
 
         public bool SensorIsMeasuring { get; private set; }
-
 
         public async Task Stop()
         {
@@ -76,14 +72,13 @@ namespace Alphabot.Net.Car.Devices
                             _collisionAlarmCount++;
                             if (_collisionAlarmCount++ >= _holdOnCollisionAlarmCount)
                             {
-                                //TODO check if factory works
+                               //TODO check if factory works
                                // await AlphabotCar.GetInstance().Stop();
                                await _car.Stop();
                                _collisionAlarmCount = 0;
                                 _serviceLogger.Log(LogLevel.Information, $"Car stopped at {distance} cm or less. ");
                             }
 
-                            //  
                             _serviceLogger.Log(LogLevel.Information, $"Obstacle found at {distance} cm or less. ");
 
                             #region TDOT

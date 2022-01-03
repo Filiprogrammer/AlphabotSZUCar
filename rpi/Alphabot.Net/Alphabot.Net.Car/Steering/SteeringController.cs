@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Alphabot.Net.Car.Contracts;
 using Alphabot.Net.Car.Devices;
 using Alphabot.Net.Car.Settings;
 using Alphabot.Net.Shared.Contracts;

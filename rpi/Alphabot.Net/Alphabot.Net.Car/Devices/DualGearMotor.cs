@@ -1,4 +1,3 @@
-using Alphabot.Net.Car.Contracts;
 using Alphabot.Net.Shared.Contracts;
 using Alphabot.Net.Shared.Logger;
 

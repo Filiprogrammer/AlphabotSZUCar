@@ -2,8 +2,6 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
-using Alphabot.Net.Car.Contracts;
 using Alphabot.Net.Car.Settings;
 using Alphabot.Net.Remote.Contracts;
 using Alphabot.Net.Remote.Core;

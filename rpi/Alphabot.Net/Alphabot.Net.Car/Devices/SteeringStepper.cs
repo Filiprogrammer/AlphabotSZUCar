@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Alphabot.Net.Car.Contracts;
 using Alphabot.Net.Car.Settings;
 using Alphabot.Net.Car.Steering;
 using Alphabot.Net.Shared.Contracts;
@@ -120,7 +119,6 @@ namespace Alphabot.Net.Car.Devices
                 _logger.Log(LogLevel.Information, "SteeringStepper", "uln 2003 stopped");
             }
         }
-
 
         /// <summary>
         /// Stop the motor.

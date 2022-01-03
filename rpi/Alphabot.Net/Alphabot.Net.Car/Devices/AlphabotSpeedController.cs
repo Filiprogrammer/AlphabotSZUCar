@@ -19,7 +19,6 @@ namespace Alphabot.Net.Car.Devices
         public AlphabotSpeedController()
         {
             _pwmChannels = new List<PwmChannel>();
-
         }
 
         public void AddPin(int speedControlPin)

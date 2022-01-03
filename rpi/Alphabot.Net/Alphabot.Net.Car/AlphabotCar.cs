@@ -5,12 +5,9 @@ using Alphabot.Net.Shared.Logger;
 using Alphabot.Net.Car.Settings;
 using Alphabot.Net.Car.Steering;
 using Alphabot.Net.Shared.Contracts;
-using Iot.Device.Mpr121;
 
 namespace Alphabot.Net.Car
 {
-
-
     /// <summary>
     /// Represents the Alphabot car with all controls and additional features
     /// </summary>
@@ -39,7 +36,6 @@ namespace Alphabot.Net.Car
                 {
                     _instance = new AlphabotCar();
                 }
-                
             }
             return _instance;
         

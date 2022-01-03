@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Threading;
-using Alphabot.Net.Car;
-using Alphabot.Net.Car.Contracts;
-using Alphabot.Net.Car.Devices;
 using Alphabot.Net.Car.Settings;
-using Alphabot.Net.Car.Steering;
 using Alphabot.Net.Remote;
-using Alphabot.Net.Remote.Core;
 
 namespace Alphabot.Net.Cli
 {
@@ -15,63 +9,7 @@ namespace Alphabot.Net.Cli
         static Prefs _prefs = Prefs.GetInstance();
 
         static void Main(string[] args)
-
         {
-
-
-            /*
-            IAlphabotCar rc = RemoteCar.GetInstance().Current;
-
-            Console.WriteLine("forward");
-            rc.MoveBackward();
-            Thread.Sleep(3000);
-            for (int i = 20; i < 100; i++)
-            {
-                rc.SetSpeed(i);
-                Thread.Sleep(100);
-            }
-
-            rc.Stop();
-            Console.WriteLine("backward");
-            rc.MoveBackward();
-            
-            for (int i = 20; i < 100; i++)
-            {
-                rc.SetSpeed(i);
-                Thread.Sleep(100);
-            }
-
-            rc.Stop();
-
-            Console.WriteLine("commandline starting");
-            string command = "";
-            while ((command = Console.ReadLine()) != "exit")
-            {
-                
-                if (command == "forward")
-                {
-                    rc.MoveForward();
-                }
-                if (command == "stop")
-                {
-                    rc.Stop();
-                }
-                if (command == "left")
-                {
-                    rc.TurnLeft();
-                }
-                if (command == "speed")
-                {
-                    rc.SetSpeed(80);
-                }
-            }
-
-            Console.WriteLine("press enter to exit");
-            Console.ReadLine();
-            */
-        
-            
-            
             bool autostart = true;
             bool running = false;
             Console.WriteLine("Alphabot Remote Service");
@@ -94,7 +32,6 @@ namespace Alphabot.Net.Cli
             }
 
             string command = string.Empty;
-
 
             do
             {
@@ -128,8 +65,6 @@ namespace Alphabot.Net.Cli
                     }
                 }
             } while (command.ToLower().Trim() != "exit");
-            
-            
 
             Console.WriteLine(":> Alphabot Remote Service closed ...");
         }
