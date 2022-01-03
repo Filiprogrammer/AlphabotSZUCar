@@ -9,7 +9,7 @@ using Alphabot.Net.Shared.Contracts;
 using Alphabot.Net.Shared.Logger;
 using Alphabot.Net.Shared.Requests;
 using Alphabot.Net.Shared.Responses;
-using static Alphabot.Net.Car.Devices.PositioningSystem;
+using Alphabot.Net.Car.Devices;
 
 namespace Alphabot.Net.Remote.Core
 {
@@ -17,9 +17,9 @@ namespace Alphabot.Net.Remote.Core
     {
         IAlphabotRequest _req;
         private readonly IServiceLogger _serviceLogger = ServiceLogger.GetInstance().Current;
-        private ResponseSender _responseSender;
+        private PositioningSystem.ResponseSender _responseSender;
 
-        public ActionExecutor(IAlphabotRequest req, ResponseSender responseSender)
+        public ActionExecutor(IAlphabotRequest req, PositioningSystem.ResponseSender responseSender)
         {
             _req = req;
             _responseSender = responseSender;

@@ -8,16 +8,16 @@ using Alphabot.Net.Shared;
 using Alphabot.Net.Shared.Contracts;
 using Alphabot.Net.Shared.Requests;
 using Alphabot.Net.Shared.Responses;
-using static Alphabot.Net.Car.Devices.PositioningSystem;
+using Alphabot.Net.Car.Devices;
 
 namespace Alphabot.Net.Remote.Core
 {
     public class BitProtocolParser
     {
         byte[] _bytes;
-        ResponseSender _responseSender;
+        PositioningSystem.ResponseSender _responseSender;
 
-        public BitProtocolParser(byte[] bytes, ResponseSender responseSender)
+        public BitProtocolParser(byte[] bytes, PositioningSystem.ResponseSender responseSender)
         {
             _bytes = bytes;
             _responseSender = responseSender;
