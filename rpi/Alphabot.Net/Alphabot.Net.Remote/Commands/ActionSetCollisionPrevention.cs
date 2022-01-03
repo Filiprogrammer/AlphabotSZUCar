@@ -15,7 +15,7 @@ namespace Alphabot.Net.Remote.Commands
             {
                 if (Args[0] == 1)
                 {
-                    //  _car.StartCollisionPrevention();
+                    // _car.StartCollisionPrevention();
                 }
                 if (Args[0] == 0)
                 {

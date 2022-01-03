@@ -2,8 +2,6 @@ namespace Alphabot.Net.Car.Settings
 {
     public class DeviceSettings
     {
-
-        
         public DeviceSettings()
         {
             MotorRightPinA = 27;

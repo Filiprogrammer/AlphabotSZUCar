@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
-
 using Alphabot.Net.Shared.Contracts;
 using Alphabot.Net.Shared.Logger;
 using Alphabot.Net.Remote.Contracts;

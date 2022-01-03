@@ -1,4 +1,3 @@
-
 using Alphabot.Net.Shared.Logger;
 
 namespace Alphabot.Net.Shared.Contracts

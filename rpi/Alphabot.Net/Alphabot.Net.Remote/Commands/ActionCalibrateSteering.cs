@@ -1,5 +1,4 @@
 using Alphabot.Net.Shared.Logger;
-using Alphabot.Net.Remote.Core;
 
 namespace Alphabot.Net.Remote.Commands
 {

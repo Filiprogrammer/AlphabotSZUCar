@@ -2,7 +2,6 @@ using System;
 using Alphabot.Net.Car;
 using Alphabot.Net.Car.Contracts;
 using Alphabot.Net.Remote.Contracts;
-using Alphabot.Net.Remote.Core;
 using Alphabot.Net.Shared.Contracts;
 using Alphabot.Net.Shared.Logger;
 
