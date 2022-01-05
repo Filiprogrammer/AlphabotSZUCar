@@ -75,8 +75,9 @@ namespace AlphabotClientLibrary.Core.Tcp
 
         private WheelSpeedResponse GetWheelSpeedResponse()
         {
-            sbyte speed = (sbyte)(DataBytes[0]);
-            return new WheelSpeedResponse(speed);
+            sbyte speedLeft = (sbyte)(DataBytes[0]);
+            sbyte speedRight = (sbyte)(DataBytes[1]);
+            return new WheelSpeedResponse(speedLeft, speedRight);
         }
 
         private AnchorDistancesResponse GetAnchorDistancesResponse()

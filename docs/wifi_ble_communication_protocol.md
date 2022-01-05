@@ -156,9 +156,10 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 
 ### Wheel speed response (Packet ID: 0x09)
 
-| Field Name | Field Type | Notes                          |
-|------------|------------|--------------------------------|
-| Speed      | int8       | The speed of the wheels in m/s |
+| Field Name  | Field Type | Notes                               |
+|-------------|------------|-------------------------------------|
+| Speed left  | int8       | The speed of the left wheel in m/s  |
+| Speed right | int8       | The speed of the right wheel in m/s |
 
 ### Gyroscope response (Packet ID: 0x0A)
 
@@ -308,9 +309,10 @@ If there are multiple objects on the same position, all of them will be removed.
 
 ### BLE_CHAR_WHEEL_SPEED (UUID: 8efafa16-15de-461f-bde1-493261201e2b)
 
-| Field Name | Field Type | Notes                          |
-|------------|------------|--------------------------------|
-| Speed      | int8       | The speed of the wheels in m/s |
+| Field Name  | Field Type | Notes                               |
+|-------------|------------|-------------------------------------|
+| Speed left  | int8       | The speed of the left wheel in m/s  |
+| Speed right | int8       | The speed of the right wheel in m/s |
 
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
