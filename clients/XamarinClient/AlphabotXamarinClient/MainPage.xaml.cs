@@ -69,6 +69,47 @@ namespace AlphabotXamarinClient
                     lblPing.Text = "Last ping: " + pres.Latency + "ms";
                 });
             }
+            else if (res is ErrorResponse)
+            {
+                ErrorResponse errorRes = res as ErrorResponse;
+
+                ErrorResponse.ErrorType errorType = (ErrorResponse.ErrorType)errorRes.Error;
+                byte errorNumber = (byte)errorType;
+                string errorMessage = null;
+
+                if (errorType == ErrorResponse.ErrorType.WrongPayload)
+                {
+                    // ConfigurePositioningAnchor out of range
+                    if (errorRes.Header == 0x07)
+                    {
+                        errorMessage = "The positioning anchor with id " + errorRes.Payload[0] + " is not available. Please choose the id between 0 and 2";
+                    }
+                }
+
+                if (errorMessage == null)
+                {
+                    string payload = "";
+                    for (int i = 0; i < errorRes.Payload.Length; i++)
+                    {
+                        payload += errorRes.Payload[i].ToString();
+                        if (i != errorRes.Payload.Length - 1)
+                        {
+                            payload += ", ";
+                        }
+                        if(i == 9)
+                        {
+                            payload += "...";
+                            break;
+                        }
+                    }
+                    errorMessage = $"The Alphabot answered with Error #{errorNumber} ({errorType.ToString()}): HeaderByte={errorRes.Header}; Payload={payload}";
+                }
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    DisplayAlert("Error #" + errorNumber, errorMessage, "Okay");
+                });
+            }
         }
 
         private void Button_Connect_Clicked(object sender, EventArgs e)
