@@ -254,7 +254,7 @@ Obstacles can be removed either by ID or by position.
 If the characteristic is 0 bytes long, ALL obstacles will be removed.
 If the characteristic is 10 bytes long, the value is interpreted as the obstacle ID.
 If the characteristic is 12 bytes long, the values are interpreted as the position.
-The Alphabot will send one byte with content 0x00 when the deletion is finished in every case.
+The Alphabot will send the corresponding packet when the removal of obstacles is completed.
 If there are multiple objects on the same position, all of them will be removed.
 
 | Field Name | Field Type | Notes                                                       |
