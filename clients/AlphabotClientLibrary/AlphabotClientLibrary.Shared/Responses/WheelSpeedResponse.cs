@@ -8,14 +8,14 @@ namespace AlphabotClientLibrary.Shared.Responses
         /// <summary>
         /// Speed of the left wheel in meters per second
         /// </summary>
-        public sbyte SpeedLeft { get; private set; }
+        public float SpeedLeft { get; private set; }
 
         /// <summary>
         /// Speed of the right wheel in meters per second
         /// </summary>
-        public sbyte SpeedRight { get; private set; }
+        public float SpeedRight { get; private set; }
 
-        public WheelSpeedResponse(sbyte speedLeft, sbyte speedRight)
+        public WheelSpeedResponse(float speedLeft, float speedRight)
         {
             SpeedLeft = speedLeft;
             SpeedRight = speedRight;
