@@ -11,6 +11,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class LPSView extends View implements View.OnTouchListener {
@@ -80,8 +81,10 @@ public class LPSView extends View implements View.OnTouchListener {
         for (Obstacle obstacle : obstacles) {
             if (selectedObstacle == obstacle)
                 paint.setColor(Color.GREEN);
-            else
+            else if (obstacle.hasId())
                 paint.setColor(Color.RED);
+            else
+                paint.setColor(Color.GRAY);
 
             int obstacleX = obstacle.getX();
             int obstacleY = obstacle.getY();
@@ -108,13 +111,13 @@ public class LPSView extends View implements View.OnTouchListener {
         if (path != null && path.length >= 3) {
             int prevX = path[0] * 10;
             int prevY = path[1] * 10;
-            int len = path[2];
+            int len = path[2] & 0x3F;
 
             for (int i = 0; i < len; ++i) {
-                int val = ((path[3 + (i * 3) / 8] & 0xFF) >> ((i * 3) % 8)) & 7;
+                int val = ((path[2 + (i * 3 + 6) / 8] & 0xFF) >> ((i * 3 + 6) % 8)) & 7;
 
-                if (((i * 3) % 8) > 5)
-                    val |= ((path[4 + (i * 3) / 8] & 0xFF) << (8 - ((i * 3) % 8))) & 7;
+                if (((i * 3 + 6) % 8) > 5)
+                    val |= ((path[3 + (i * 3 + 6) / 8] & 0xFF) << (8 - ((i * 3 + 6) % 8))) & 7;
 
                 if (val == 4)
                     val = 8;
@@ -157,6 +160,31 @@ public class LPSView extends View implements View.OnTouchListener {
         invalidate();
     }
 
+    public void updatePosition(int x, int y, boolean invalidate) {
+        posX = x;
+        posY = y;
+
+        if (invalidate)
+            invalidate();
+    }
+
+    public void updateDirection(float dir, boolean invalidate) {
+        this.dir = dir;
+
+        if (invalidate)
+            invalidate();
+    }
+
+    public void updateObstacleSensorDistances(int dist_front, int dist_left, int dist_right, int dist_back, boolean invalidate) {
+        this.dist_front = dist_front;
+        this.dist_left = dist_left;
+        this.dist_right = dist_right;
+        this.dist_back = dist_back;
+
+        if (invalidate)
+            invalidate();
+    }
+
     public void updatePath(byte[] vals) {
         this.path = vals;
         invalidate();
@@ -170,8 +198,38 @@ public class LPSView extends View implements View.OnTouchListener {
         obstacles.remove(obstacle);
     }
 
+    public void removeObstacle(short id) {
+        for (Obstacle obstacle : obstacles) {
+            if (id == obstacle.getId()) {
+                obstacles.remove(obstacle);
+                break;
+            }
+        }
+    }
+
+    public void removeObstacle(short x, short y) {
+        Iterator<Obstacle> obstacleIterator = obstacles.iterator();
+
+        while (obstacleIterator.hasNext()) {
+            Obstacle obstacle = obstacleIterator.next();
+
+            if (x >= obstacle.getX() && x <= obstacle.getX() + obstacle.getWidth() &&
+                y >= obstacle.getY() && y <= obstacle.getY() + obstacle.getHeight()) {
+                obstacleIterator.remove();
+            }
+        }
+    }
+
     public List<Obstacle> getObstacles() {
         return Collections.unmodifiableList(obstacles);
+    }
+
+    public Obstacle getObstacle(short id) {
+        for (Obstacle obstacle : obstacles)
+            if (obstacle.hasId() && obstacle.getId() == id)
+                return obstacle;
+
+        return null;
     }
 
     public void clearObstacles() {
@@ -192,6 +250,9 @@ public class LPSView extends View implements View.OnTouchListener {
         float zoom = Math.min(bitmap.getWidth() / (float)maxX, bitmap.getHeight() / (float)maxY);
 
         for (Obstacle obstacle : obstacles) {
+            if (!obstacle.hasId())
+                continue;
+
             int obstacleX = obstacle.getX();
             int obstacleY = obstacle.getY();
             int obstacleW = obstacle.getWidth();

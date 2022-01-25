@@ -9,6 +9,7 @@ struct Obstacle {
     float y;
     float width;
     float height;
+    uint16_t id;
 };
 
 struct PathNode {
@@ -28,7 +29,7 @@ struct Coordinate {
 
 class Pathfinder {
 private:
-    std::vector<struct Obstacle> obstacles;
+    std::list<struct Obstacle> obstacles;
     int32_t map_x;
     int32_t map_y;
     int32_t map_width;
@@ -43,7 +44,10 @@ private:
 
 public:
     void clearObstacles();
-    void addObstacle(float x, float y, float width, float height);
+    void addObstacle(float x, float y, float width, float height, uint16_t id);
+    void removeObstacleById(uint16_t id);
+    void removeObstacleByPosition(float x, float y);
+    std::list<struct Obstacle> getObstacles();
     void setTarget(float x, float y, bool update = true);
     void setStartingPos(float x, float y, bool update = true);
     void calculatePath(std::list<Coordinate>& path);

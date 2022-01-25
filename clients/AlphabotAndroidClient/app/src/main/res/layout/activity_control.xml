@@ -12,19 +12,18 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/speedBar"
         android:layout_below="@+id/btnDisconnect"
-        android:layout_toLeftOf="@id/btnCalibrateCompassDirection"
+        android:layout_toLeftOf="@+id/swtchLogWheelSpeed"
         android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/pingView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="165dp"
         android:text="Ping: 0ms"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="151dp" />
+        android:textAppearance="@android:style/TextAppearance.Material.Widget" />
 
     <Button
         android:id="@+id/btnDisconnect"
@@ -32,45 +31,105 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Disconnect"
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:text="Disconnect" />
 
     <Switch
-        android:id="@+id/swtchCollisionDetect"
+        android:id="@+id/swtchCollisionAvoid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/btnBrake"
-        android:layout_below="@+id/speedBar"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
+        android:layout_alignEnd="@+id/lps_canvas"
+        android:layout_alignTop="@+id/btnBrake"
         android:checked="true"
-        android:text="Collision detection"
-        tools:checked="true"
-        tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="74dp" />
+        android:text="Collision avoid"
+        tools:checked="true" />
 
     <Switch
-        android:id="@+id/swtchLPS"
+        android:id="@+id/swtchPositioning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/btnBrake"
-        android:layout_below="@+id/swtchCollisionDetect"
-        android:layout_marginRight="20dp"
-        android:text="LPS"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="111dp" />
+        android:layout_alignEnd="@+id/lps_canvas"
+        android:layout_below="@+id/swtchCollisionAvoid"
+        android:text="Positioning" />
 
     <Switch
-        android:id="@+id/swtchAIDrive"
+        android:id="@+id/swtchNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/btnBrake"
-        android:layout_below="@+id/swtchLPS"
-        android:layout_marginRight="20dp"
-        android:text="AI Drive"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="111dp" />
+        android:layout_alignEnd="@+id/lps_canvas"
+        android:layout_below="@+id/swtchPositioning"
+        android:text="Navigation" />
+
+    <Switch
+        android:id="@+id/swtchExplore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/lps_canvas"
+        android:layout_below="@+id/swtchNavigation"
+        android:text="Explore" />
+
+    <Switch
+        android:id="@+id/swtchLogImu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/swtchInvite"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Log IMU"
+        tools:checked="true" />
+
+    <Switch
+        android:id="@+id/swtchLogWheelSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/swtchLogImu"
+        android:layout_alignRight="@+id/swtchLogImu"
+        android:text="Log Wheel Speed"
+        android:fontFamily="sans-serif-condensed" />
+
+    <Switch
+        android:id="@+id/swtchLogAnchorDistances"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/swtchLogWheelSpeed"
+        android:layout_below="@+id/swtchLogWheelSpeed"
+        android:text="Log Anchor Dist"
+        android:fontFamily="sans-serif-condensed" />
+
+    <Switch
+        android:id="@+id/swtchLogCompassDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/swtchLogAnchorDistances"
+        android:layout_below="@+id/swtchLogAnchorDistances"
+        android:text="Log Compass Dir"
+        android:fontFamily="sans-serif-condensed" />
+
+    <Switch
+        android:id="@+id/swtchLogPathfinderPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/swtchLogCompassDirection"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Log Pathfinding" />
+
+    <Switch
+        android:id="@+id/swtchLogObstacleDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/swtchLogPathfinderPath"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Log Obstacle Dist" />
+
+    <Switch
+        android:id="@+id/swtchLogPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/swtchLogObstacleDistance"
+        android:text="Log Position"
+        android:fontFamily="sans-serif-condensed" />
 
     <Button
         android:id="@+id/btnBrake"
@@ -125,22 +184,57 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnAccelerate"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="-4dp"
+        android:layout_marginTop="-4dp"
         android:max="64"
         android:progress="0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/speedBar"
+        android:layout_alignParentStart="true"
+        android:weightSum="2">
+
+        <ProgressBar
+            android:id="@+id/speedLeftBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="-4dp"
+            android:layout_marginTop="-4dp"
+            android:max="64"
+            android:progress="0" />
+
+        <ProgressBar
+            android:id="@+id/speedRightBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="-4dp"
+            android:layout_marginTop="-4dp"
+            android:max="64"
+            android:progress="0"
+            android:rotation="180" />
+
+    </LinearLayout>
 
     <Switch
         android:id="@+id/swtchInvite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:text="Invite" />
 
     <Button
         android:id="@+id/btnCalibrateSteering"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/swtchInvite"
+        android:layout_toLeftOf="@+id/swtchCollisionAvoid"
+        android:layout_alignTop="@+id/swtchCollisionAvoid"
         android:fontFamily="sans-serif-condensed"
         android:minHeight="32sp"
         android:text="Calibr Steering"
@@ -150,18 +244,18 @@
         android:id="@+id/btnCalibrateCompassDirection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/btnCalibrateSteering"
+        android:layout_alignEnd="@+id/btnCalibrateSteering"
         android:fontFamily="sans-serif-condensed"
-        android:text="Calibr Compass Dir"
         android:minHeight="32sp"
+        android:text="Calibr Compass Dir"
         android:textAppearance="@style/TextAppearance.AppCompat" />
 
     <Switch
         android:id="@+id/swtchCalibrateMagnetometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_alignEnd="@+id/btnCalibrateCompassDirection"
         android:layout_below="@+id/btnCalibrateCompassDirection"
         android:text="Calibr MAG" />
 
@@ -169,22 +263,22 @@
         android:id="@+id/btnAddObstacle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/swtchCalibrateMagnetometer"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/btnRemoveObstacle"
         android:fontFamily="sans-serif-condensed"
-        android:text="Add Obstacle"
         android:minHeight="32sp"
+        android:text="Add Obstacle"
         android:textAppearance="@style/TextAppearance.AppCompat" />
 
     <Button
         android:id="@+id/btnRemoveObstacle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/btnAddObstacle"
+        android:layout_alignEnd="@+id/lps_canvas"
+        android:layout_alignParentTop="true"
         android:fontFamily="sans-serif-condensed"
-        android:text="Remove Obstacle"
         android:minHeight="32sp"
+        android:text="Remove Obstacle"
         android:textAppearance="@style/TextAppearance.AppCompat" />
 
 </RelativeLayout>

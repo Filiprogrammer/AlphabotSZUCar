@@ -76,7 +76,7 @@ void StepperMotor::startStepperTask() {
     xTaskCreate(
         [](void* o) { static_cast<StepperMotor*>(o)->stepperTask(); },
         "stepperTask",
-        8192,           // Stack size of task
+        768,            // Stack size of task
         this,           // parameter of the task
         1,              // priority of the task
         NULL);          // Task handle to keep track of created task
