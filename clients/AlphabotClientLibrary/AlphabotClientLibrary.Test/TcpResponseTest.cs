@@ -238,16 +238,21 @@ namespace AlphabotClientLibrary.Test
         [Fact]
         public void TestWheelSpeedResponse()
         {
-            byte[] bytes = { 0x09, 0x68, 0x05 };
-            int expectedSpeedLeft = 104;
-            int expectedSpeedRight = 5;
+            byte[] header = { 0x09 };
+            float expectedSpeedLeft = 1.23f;
+            float expectedSpeedRight = -0.19f;
 
-            IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
+            byte[] leftBytes = BitConverter.GetBytes(Convert.ToSByte(expectedSpeedLeft * 100));
+            byte[] rightBytes = BitConverter.GetBytes(Convert.ToSByte(expectedSpeedRight * 100));
+
+            byte[] responseByte = header.Concat(leftBytes).Concat(rightBytes).ToArray();
+
+            IAlphabotResponse response = new TcpResponseInterpreter(responseByte).GetResponse();
             Assert.True(response is WheelSpeedResponse, "Response was of the wrong type");
 
             WheelSpeedResponse wheelSpeedResponse = response as WheelSpeedResponse;
-            Assert.Equal(expectedSpeedLeft, wheelSpeedResponse.SpeedLeft);
-            Assert.Equal(expectedSpeedRight, wheelSpeedResponse.SpeedRight);
+            Assert.InRange(wheelSpeedResponse.SpeedLeft, expectedSpeedLeft - 0.2, expectedSpeedLeft + 0.2);
+            Assert.InRange(wheelSpeedResponse.SpeedRight, expectedSpeedRight - 0.2, expectedSpeedRight + 0.2);
         }
     }
 }
