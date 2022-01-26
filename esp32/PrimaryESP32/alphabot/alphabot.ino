@@ -274,7 +274,7 @@ void onCharAddObstacleArrive() {
 
 void setup() {
     REG_CLR_BIT(RTC_CNTL_BROWN_OUT_REG, RTC_CNTL_BROWN_OUT_ENA);
-    setCpuFrequencyMhz(240);
+    setCpuFrequencyMhz(80);
     #ifdef DEBUG
     Serial.begin(115200);
     #endif
@@ -400,7 +400,7 @@ void loop() {
                         isFirst = false;
                     } else {
                         uint8_t val = ((coord.x > previous_coords.x) ? 2 : ((coord.x < previous_coords.x) ? 0 : 1)) * 3 +
-                                        ((coord.y > previous_coords.y) ? 2 : ((coord.y < previous_coords.y) ? 0 : 1));
+                                      ((coord.y > previous_coords.y) ? 2 : ((coord.y < previous_coords.y) ? 0 : 1));
 
                         if (val == 8)
                             val = 4;
