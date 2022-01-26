@@ -53,5 +53,15 @@ BLECharacteristicSender::BLECharacteristicSender(BLECharacteristic* characterist
 }
 
 BLECharacteristicSender::~BLECharacteristicSender() {
+    vTaskDelete(sendTask);
+    vSemaphoreDelete(currentlySendingMutex);
 
+    if (currentlySending != NULL)
+        free(currentlySending);
+
+    while (!toSendQueue.empty()) {
+        DataToSend* element = toSendQueue.front();
+        toSendQueue.pop();
+        free(element);
+    }
 }
