@@ -91,7 +91,7 @@ sudo rpi/sd_image/build.sh
 Running on real hardware
 ------------------------
 
-### Raspberry Pi 3B 3B/3B+/4B
+### Raspberry Pi 3B/3B+/4B
 
 Flash rpi/sd_image/raspi_alphabot.img onto an SD card with a size of at least 1GiB.
 
