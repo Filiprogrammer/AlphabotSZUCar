@@ -132,7 +132,7 @@ install -m 644 -o root -g root vmlinuz-$KERNEL_RELEASE-arm64 $RASPI_DEBIAN_ROOT/
 mv vmlinuz-$KERNEL_RELEASE-arm64 $RASPI_DEBIAN_ROOT/boot/firmware/
 
 cp /root/build-debian/brcm-firmware/* $RASPI_DEBIAN_ROOT/usr/lib/firmware/brcm/
-cp /root/build-debian/etc/initramfs-tools/hooks/fix_brcm_missing_firmware $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/fix_brcm_missing_firmware
+cp /root/build-debian/rootfs/etc/initramfs-tools/hooks/fix_brcm_missing_firmware $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/fix_brcm_missing_firmware
 chmod 755 $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/fix_brcm_missing_firmware
 
 # Build initrd.img.
