@@ -567,6 +567,7 @@ jobs:
   test_client_library:
     runs-on: windows-latest
     name: Test Client Library
+    needs: [build_client_library]
     steps:
       - uses: actions/checkout@v2
       - name: Setup dotnet
