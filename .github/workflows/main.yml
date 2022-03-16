@@ -555,12 +555,12 @@ jobs:
           name: AlphabotClientLibrary.Shared.dll
           path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Shared.dll
       - name: Archive AlphabotClientLibrary.Core artifact
-        uses: arctions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: AlphabotClientLibrary.Core.dll
           path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Core/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.dll
       - name: Archive AlphabotClientLibrary.Core.Tcp artifact
-        uses: arctions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: AlphabotClientLibrary.Core.Tcp.dll
           path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Core.Tcp/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.Tcp.dll
