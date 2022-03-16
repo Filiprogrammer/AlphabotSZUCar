@@ -534,6 +534,36 @@ jobs:
         with:
           name: esp32_secondary_firmware.bin
           path: esp32/SecondaryESP32/.pio/build/esp32dev/firmware.bin
+  build_client_library:
+    runs-on: windows-latest
+    name: Build Client Library
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.403'
+      - name: Build AlphabotClientLibrary
+        run: |
+          cd clients/AlphabotClientLibrary
+          dotnet build AlphabotClientLibrary.Shared/AlphabotClientLibrary.Shared.csproj -c Release
+          dotnet build AlphabotClientLibrary.Core/AlphabotClientLibrary.Core.csproj -c Release
+          dotnet build AlphabotClientLibrary.Core.Tcp/AlphabotClientLibrary.Core.Tcp.csproj -c Release
+      - name: Archive AlphabotClientLibrary.Shared artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Shared.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Shared.dll
+      - name: Archive AlphabotClientLibrary.Core artifact
+        uses: arctions/upload-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Core.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Core/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.dll
+      - name: Archive AlphabotClientLibrary.Core.Tcp artifact
+        uses: arctions/upload-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Core.Tcp.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Core.Tcp/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.Tcp.dll
   test_client_library:
     runs-on: windows-latest
     name: Test Client Library
@@ -543,6 +573,21 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.403'
+      - name: Download AlphabotClientLibrary.Shared artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Shared.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Shared.dll
+      - name: Download AlphabotClientLibrary.Core artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Core.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.dll
+      - name: Download AlphabotClientLibrary.Core.Tcp artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Core.Tcp.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.Tcp.dll
       - name: Test AlphabotClientLibrary
         run: |
           cd clients/AlphabotClientLibrary
@@ -550,16 +595,26 @@ jobs:
   build_xamarin_client:
     runs-on: windows-latest
     name: Build Xamarin Client
+    needs: [build_client_library]
     steps:
       - uses: actions/checkout@v2
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
-      - name: Build dependencies from AlphabotClientLibrary
-        run: |
-          cd clients/AlphabotClientLibrary
-          dotnet build AlphabotClientLibrary.Shared/AlphabotClientLibrary.Shared.csproj -c Release
-          dotnet build AlphabotClientLibrary.Core/AlphabotClientLibrary.Core.csproj -c Release
-          dotnet build AlphabotClientLibrary.Core.Tcp/AlphabotClientLibrary.Core.Tcp.csproj -c Release
+      - name: Download AlphabotClientLibrary.Shared artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Shared.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Shared.dll
+      - name: Download AlphabotClientLibrary.Core artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Core.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.dll
+      - name: Download AlphabotClientLibrary.Core.Tcp artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AlphabotClientLibrary.Core.Tcp.dll
+          path: clients/AlphabotClientLibrary/AlphabotClientLibrary.Shared/bin/Release/netstandard2.0/AlphabotClientLibrary.Core.Tcp.dll
       - name: Build XamarinClient Solution
         run: |
           cd clients/XamarinClient
