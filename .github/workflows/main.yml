@@ -19,7 +19,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: qemu_rpi/build/qemu-system-aarch64.xz
-          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('qemu_rpi') }}
+          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('qemu_rpi', '!qemu_rpi/build') }}
       - name: Install tools
         if: steps.qemu-rpi-build.outputs.cache-hit != 'true'
         run: sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build
@@ -53,7 +53,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: qemu_rpi/build/qemu-system-aarch64-win64.tar.xz
-          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('qemu_rpi') }}
+          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('qemu_rpi', '!qemu_rpi/build') }}
       - name: Install cygwin key and add cygwin sources
         if: steps.qemu-rpi-build-win64.outputs.cache-hit != 'true'
         run: |
