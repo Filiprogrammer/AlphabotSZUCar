@@ -132,7 +132,7 @@ install -m 644 -o root -g root vmlinuz-$KERNEL_RELEASE-arm64 $RASPI_DEBIAN_ROOT/
 mv vmlinuz-$KERNEL_RELEASE-arm64 $RASPI_DEBIAN_ROOT/boot/firmware/
 
 cp /root/build-debian/brcm-firmware/* $RASPI_DEBIAN_ROOT/usr/lib/firmware/brcm/
-cp /root/build-debian/fix_brcm_missing_firmware $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/fix_brcm_missing_firmware
+cp /root/build-debian/rootfs/etc/initramfs-tools/hooks/fix_brcm_missing_firmware $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/fix_brcm_missing_firmware
 chmod 755 $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/fix_brcm_missing_firmware
 
 # Build initrd.img.
@@ -174,6 +174,7 @@ ln -s /etc/systemd/system/rpi-set-sysconf.service $RASPI_DEBIAN_ROOT/etc/systemd
 
 rm -f $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/rpi-resizerootfs
 rm -f $RASPI_DEBIAN_ROOT/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
+rm -f $RASPI_DEBIAN_ROOT/etc/initramfs-tools/hooks/fix_brcm_missing_firmware
 install -m 644 -o root -g root /root/build-debian/rootfs/etc/systemd/system/rpi-reconfigure-raspi-firmware.service $RASPI_DEBIAN_ROOT/etc/systemd/system/
 mkdir -p $RASPI_DEBIAN_ROOT/etc/systemd/system/multi-user.target.requires/
 ln -s /etc/systemd/system/rpi-reconfigure-raspi-firmware.service $RASPI_DEBIAN_ROOT/etc/systemd/system/multi-user.target.requires/rpi-reconfigure-raspi-firmware.service
