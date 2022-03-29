@@ -421,8 +421,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                                 // Distance sensor
                                 int direction = (vals[offset] & 0xFF) * 2;
                                 int distance = (vals[offset + 1] & 0xFF) * 2;
-                                System.out.println("Distance Sensor direction: " + direction + " distance: " + distance);
-                                // TODO: Pass distances to LPSView
+                                lpsView.updateObstacleSensorDistance(direction, distance, false);
                                 offset += 2;
                                 break;
                             case 2:
@@ -526,6 +525,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                     short anchor1_distance = (short)(vals[2] | ((int)vals[3] << 8));
                     short anchor2_distance = (short)(vals[4] | ((int)vals[5] << 8));
                     System.out.println("anchor0_distance: " + anchor0_distance + " anchor1_distance: " + anchor1_distance + " anchor2_distance: " + anchor2_distance);
+                    // TODO: Show anchor distances in GUI
                 } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_IMU) == 0) {
                     byte[] vals = characteristic.getValue();
                     byte type = vals[0];
@@ -533,6 +533,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                     short yAxis = (short)(vals[3] | ((int)vals[4] << 8));
                     short zAxis = (short)(vals[5] | ((int)vals[6] << 8));
                     System.out.println("IMU type: " + type + " xAxis: " + xAxis + " yAxis: " + yAxis + " zAxis: " + zAxis);
+                    // TODO: Show IMU values in GUI
                 } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_WHEEL_SPEED) == 0) {
                     byte[] vals = characteristic.getValue();
                     final byte speed_left = vals[0];

@@ -11,8 +11,10 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class LPSView extends View implements View.OnTouchListener {
     private Bitmap bitmap;
@@ -21,10 +23,7 @@ public class LPSView extends View implements View.OnTouchListener {
     private int posX = 0;
     private int posY = 0;
     private float dir = 0;
-    private int dist_front = 0;
-    private int dist_left = 0;
-    private int dist_right = 0;
-    private int dist_back = 0;
+    private Map<Integer, Integer> obstacleDistances = new HashMap<>();
     private Obstacle selectedObstacle = null;
     private int targetX = 0;
     private int targetY = 0;
@@ -141,23 +140,13 @@ public class LPSView extends View implements View.OnTouchListener {
         canvas.drawCircle((posX - minX) * zoom, (posY - minY) * zoom, 15 * zoom, paint);
         canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir)) * 20 - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir)) * 20 - minY) * zoom, paint);
         paint.setColor(Color.CYAN);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir)) * dist_front - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir)) * dist_front - minY) * zoom, paint);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir - 25)) * dist_left - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir - 25)) * dist_left - minY) * zoom, paint);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir + 25)) * dist_right - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir + 25)) * dist_right - minY) * zoom, paint);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX - Math.cos(Math.toRadians(dir)) * dist_back - minX) * zoom, (float) (posY - Math.sin(Math.toRadians(dir)) * dist_back - minY) * zoom, paint);
+
+        for (Integer direction : obstacleDistances.keySet()) {
+            int distance = obstacleDistances.get(direction);
+            canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir + direction)) * distance - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir + direction)) * distance - minY) * zoom, paint);
+        }
 
         canvas.drawCircle((targetX - minX) * zoom, (targetY - minY) * zoom, 5 * zoom, paint);
-    }
-
-    public void update(int x, int y, float dir, int dist_front, int dist_left, int dist_right, int dist_back){
-        posX = x;
-        posY = y;
-        this.dir = dir;
-        this.dist_front = dist_front;
-        this.dist_left = dist_left;
-        this.dist_right = dist_right;
-        this.dist_back = dist_back;
-        invalidate();
     }
 
     public void updatePosition(int x, int y, boolean invalidate) {
@@ -175,11 +164,8 @@ public class LPSView extends View implements View.OnTouchListener {
             invalidate();
     }
 
-    public void updateObstacleSensorDistances(int dist_front, int dist_left, int dist_right, int dist_back, boolean invalidate) {
-        this.dist_front = dist_front;
-        this.dist_left = dist_left;
-        this.dist_right = dist_right;
-        this.dist_back = dist_back;
+    public void updateObstacleSensorDistance(int direction, int distance, boolean invalidate) {
+        obstacleDistances.put(direction, distance);
 
         if (invalidate)
             invalidate();

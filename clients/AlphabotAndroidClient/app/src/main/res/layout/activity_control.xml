@@ -19,9 +19,9 @@
         android:id="@+id/pingView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/kmphView"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="165dp"
+        android:layout_marginStart="35dp"
         android:text="Ping: 0ms"
         android:textAppearance="@android:style/TextAppearance.Material.Widget" />
 

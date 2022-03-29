@@ -155,6 +155,7 @@ void charCalibrateDataReceived(const char* data, size_t len) {
                     stepper_motor->calibrate();
                     break;
                 case 1: // Automatic magnetometer calibration
+                    // TODO: Automatic magnetometer calibration
                     break;
                 case 2: // Begin manual magnetometer calibration
                     compass->beginMagnetSensorCalibration();
