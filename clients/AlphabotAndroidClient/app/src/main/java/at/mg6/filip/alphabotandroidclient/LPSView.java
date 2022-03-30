@@ -11,7 +11,10 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class LPSView extends View implements View.OnTouchListener {
     private Bitmap bitmap;
@@ -20,10 +23,7 @@ public class LPSView extends View implements View.OnTouchListener {
     private int posX = 0;
     private int posY = 0;
     private float dir = 0;
-    private int dist_front = 0;
-    private int dist_left = 0;
-    private int dist_right = 0;
-    private int dist_back = 0;
+    private Map<Integer, Integer> obstacleDistances = new HashMap<>();
     private Obstacle selectedObstacle = null;
     private int targetX = 0;
     private int targetY = 0;
@@ -80,8 +80,10 @@ public class LPSView extends View implements View.OnTouchListener {
         for (Obstacle obstacle : obstacles) {
             if (selectedObstacle == obstacle)
                 paint.setColor(Color.GREEN);
-            else
+            else if (obstacle.hasId())
                 paint.setColor(Color.RED);
+            else
+                paint.setColor(Color.GRAY);
 
             int obstacleX = obstacle.getX();
             int obstacleY = obstacle.getY();
@@ -108,13 +110,13 @@ public class LPSView extends View implements View.OnTouchListener {
         if (path != null && path.length >= 3) {
             int prevX = path[0] * 10;
             int prevY = path[1] * 10;
-            int len = path[2];
+            int len = path[2] & 0x3F;
 
             for (int i = 0; i < len; ++i) {
-                int val = ((path[3 + (i * 3) / 8] & 0xFF) >> ((i * 3) % 8)) & 7;
+                int val = ((path[2 + (i * 3 + 6) / 8] & 0xFF) >> ((i * 3 + 6) % 8)) & 7;
 
-                if (((i * 3) % 8) > 5)
-                    val |= ((path[4 + (i * 3) / 8] & 0xFF) << (8 - ((i * 3) % 8))) & 7;
+                if (((i * 3 + 6) % 8) > 5)
+                    val |= ((path[3 + (i * 3 + 6) / 8] & 0xFF) << (8 - ((i * 3 + 6) % 8))) & 7;
 
                 if (val == 4)
                     val = 8;
@@ -138,23 +140,35 @@ public class LPSView extends View implements View.OnTouchListener {
         canvas.drawCircle((posX - minX) * zoom, (posY - minY) * zoom, 15 * zoom, paint);
         canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir)) * 20 - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir)) * 20 - minY) * zoom, paint);
         paint.setColor(Color.CYAN);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir)) * dist_front - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir)) * dist_front - minY) * zoom, paint);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir - 25)) * dist_left - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir - 25)) * dist_left - minY) * zoom, paint);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir + 25)) * dist_right - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir + 25)) * dist_right - minY) * zoom, paint);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX - Math.cos(Math.toRadians(dir)) * dist_back - minX) * zoom, (float) (posY - Math.sin(Math.toRadians(dir)) * dist_back - minY) * zoom, paint);
+
+        for (Integer direction : obstacleDistances.keySet()) {
+            int distance = obstacleDistances.get(direction);
+            canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir + direction)) * distance - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir + direction)) * distance - minY) * zoom, paint);
+        }
 
         canvas.drawCircle((targetX - minX) * zoom, (targetY - minY) * zoom, 5 * zoom, paint);
     }
 
-    public void update(int x, int y, float dir, int dist_front, int dist_left, int dist_right, int dist_back){
+    public void updatePosition(int x, int y, boolean invalidate) {
         posX = x;
         posY = y;
+
+        if (invalidate)
+            invalidate();
+    }
+
+    public void updateDirection(float dir, boolean invalidate) {
         this.dir = dir;
-        this.dist_front = dist_front;
-        this.dist_left = dist_left;
-        this.dist_right = dist_right;
-        this.dist_back = dist_back;
-        invalidate();
+
+        if (invalidate)
+            invalidate();
+    }
+
+    public void updateObstacleSensorDistance(int direction, int distance, boolean invalidate) {
+        obstacleDistances.put(direction, distance);
+
+        if (invalidate)
+            invalidate();
     }
 
     public void updatePath(byte[] vals) {
@@ -170,8 +184,38 @@ public class LPSView extends View implements View.OnTouchListener {
         obstacles.remove(obstacle);
     }
 
+    public void removeObstacle(short id) {
+        for (Obstacle obstacle : obstacles) {
+            if (id == obstacle.getId()) {
+                obstacles.remove(obstacle);
+                break;
+            }
+        }
+    }
+
+    public void removeObstacle(short x, short y) {
+        Iterator<Obstacle> obstacleIterator = obstacles.iterator();
+
+        while (obstacleIterator.hasNext()) {
+            Obstacle obstacle = obstacleIterator.next();
+
+            if (x >= obstacle.getX() && x <= obstacle.getX() + obstacle.getWidth() &&
+                y >= obstacle.getY() && y <= obstacle.getY() + obstacle.getHeight()) {
+                obstacleIterator.remove();
+            }
+        }
+    }
+
     public List<Obstacle> getObstacles() {
         return Collections.unmodifiableList(obstacles);
+    }
+
+    public Obstacle getObstacle(short id) {
+        for (Obstacle obstacle : obstacles)
+            if (obstacle.hasId() && obstacle.getId() == id)
+                return obstacle;
+
+        return null;
     }
 
     public void clearObstacles() {
@@ -192,6 +236,9 @@ public class LPSView extends View implements View.OnTouchListener {
         float zoom = Math.min(bitmap.getWidth() / (float)maxX, bitmap.getHeight() / (float)maxY);
 
         for (Obstacle obstacle : obstacles) {
+            if (!obstacle.hasId())
+                continue;
+
             int obstacleX = obstacle.getX();
             int obstacleY = obstacle.getY();
             int obstacleW = obstacle.getWidth();

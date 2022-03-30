@@ -17,9 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.math.BigInteger;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,9 +27,17 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
     TextView mpsView;
     TextView lpsPosView;
     Button btnDisconnect;
-    Switch swtchCollisionDetect;
-    Switch swtchAIDrive;
-    Switch swtchLPS;
+    Switch swtchCollisionAvoid;
+    Switch swtchPosition;
+    Switch swtchNavigation;
+    Switch swtchExplore;
+    Switch swtchLogImu;
+    Switch swtchLogWheelSpeed;
+    Switch swtchLogAnchorDistances;
+    Switch swtchLogCompassDirection;
+    Switch swtchLogPathfinderPath;
+    Switch swtchLogObstacleDistance;
+    Switch swtchLogPosition;
     Button btnAccelerate;
     Button btnBrake;
     Button btnCalibrateSteering;
@@ -41,6 +47,8 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
     Button btnAddObstacle;
     Button btnRemoveObstacle;
     ProgressBar speedBar;
+    ProgressBar speedLeftBar;
+    ProgressBar speedRightBar;
     LPSView lpsView;
 
     BluetoothLeServiceListener bleListener;
@@ -51,17 +59,29 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
     float carSteer = 0;
     float carSteer_prev = carSteer;
 
-    boolean lps = false;
-    boolean aiDrive = false;
+    boolean exploreMode = false;
+    boolean navigationMode = false;
     boolean collisionAvoidance = true;
+    boolean positioning = false;
+    boolean invite = false;
 
-    BLECharacteristicSender lpsCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharLPS);
-    BLECharacteristicSender collAvoidCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharCollDetect);
-    BLECharacteristicSender aiDriveCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharAIDrive);
-    BLECharacteristicSender calibrateCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharCalibrate);
-    BLECharacteristicSender pathfindingObstaclesCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharPathfindingObstacles);
+    boolean loggingImu = false;
+    boolean loggingWheelSpeed = false;
+    boolean loggingAnchorDistances = false;
+    boolean loggingCompassDirection = false;
+    boolean loggingPathfinderPath = false;
+    boolean loggingObstacleDistance = false;
+    boolean loggingPositioning = false;
+
+    BLECharacteristicSender toggleCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharToggle);
     BLECharacteristicSender pathfindingTargetCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharPathfindingTarget);
-    BLECharacteristicSender inviteCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharInvite);
+    BLECharacteristicSender calibrateCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharCalibrate);
+    BLECharacteristicSender addObstacleCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharAddObstacle);
+    BLECharacteristicSender removeObstacleCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharRemoveObstacle);
+    BLECharacteristicSender anchorLocationsCharSender = new BLECharacteristicSender(BLEHandler.getInstance().bleClient, BLEHandler.getInstance().bleCharAnchorLocations);
+
+    Obstacle pendingObstacleToAdd = null;
+    Obstacle pendingObstacleToRemove = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +92,17 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
         mpsView = findViewById(R.id.mpsView);
         lpsPosView = findViewById(R.id.lpsPosView);
         btnDisconnect = findViewById(R.id.btnDisconnect);
-        swtchCollisionDetect = findViewById(R.id.swtchCollisionDetect);
-        swtchAIDrive = findViewById(R.id.swtchAIDrive);
-        swtchLPS = findViewById(R.id.swtchLPS);
+        swtchCollisionAvoid = findViewById(R.id.swtchCollisionAvoid);
+        swtchPosition = findViewById(R.id.swtchPositioning);
+        swtchNavigation = findViewById(R.id.swtchNavigation);
+        swtchExplore = findViewById(R.id.swtchExplore);
+        swtchLogImu = findViewById(R.id.swtchLogImu);
+        swtchLogWheelSpeed = findViewById(R.id.swtchLogWheelSpeed);
+        swtchLogAnchorDistances = findViewById(R.id.swtchLogAnchorDistances);
+        swtchLogCompassDirection = findViewById(R.id.swtchLogCompassDirection);
+        swtchLogPathfinderPath = findViewById(R.id.swtchLogPathfinderPath);
+        swtchLogObstacleDistance = findViewById(R.id.swtchLogObstacleDistance);
+        swtchLogPosition = findViewById(R.id.swtchLogPosition);
         btnAccelerate = findViewById(R.id.btnAccelerate);
         btnBrake = findViewById(R.id.btnBrake);
         btnCalibrateSteering = findViewById(R.id.btnCalibrateSteering);
@@ -84,9 +112,10 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
         btnAddObstacle = findViewById(R.id.btnAddObstacle);
         btnRemoveObstacle = findViewById(R.id.btnRemoveObstacle);
         speedBar = findViewById(R.id.speedBar);
+        speedLeftBar = findViewById(R.id.speedLeftBar);
+        speedRightBar = findViewById(R.id.speedRightBar);
         lpsView = findViewById(R.id.lps_canvas);
         setTitle("Alphabot Android Client");
-        loadObstaclesPreference();
         loadLPSAnchorsPreference();
         setupTasksAndListeners();
     }
@@ -127,7 +156,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
             public void onClick(View view) {
                 btnCalibrateCompassDirection.setEnabled(false);
                 byte[] vals = new byte[9];
-                vals[0] = 3;
+                vals[0] = 4;
                 writeTimestamp(vals, 1);
                 calibrateCharSender.sendValue(vals);
             }
@@ -138,7 +167,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 swtchCalibrateMagnetometer.setEnabled(false);
                 byte[] vals = new byte[9];
-                vals[0] = (byte)(b ? 1 : 2);
+                vals[0] = (byte)(b ? 2 : 3);
                 writeTimestamp(vals, 1);
                 calibrateCharSender.sendValue(vals);
             }
@@ -148,7 +177,8 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 swtchInvite.setEnabled(false);
-                inviteCharSender.sendValue(new byte[] {b ? (byte)1 : 0});
+                invite = b;
+                sendToggleUpdate();
             }
         });
 
@@ -175,33 +205,34 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                 Obstacle selectedObstacle = lpsView.getSelectedObstacle();
 
                 if (selectedObstacle != null) {
-                    lpsView.removeObstacle(selectedObstacle);
-                    saveObstaclesPreference();
+                    btnRemoveObstacle.setEnabled(false);
+
+                    byte[] vals = new byte[10];
+                    short id = selectedObstacle.getId();
+                    vals[8] = (byte)id;
+                    vals[9] = (byte)(id >> 8);
+                    writeTimestamp(vals, 0);
+                    removeObstacleCharSender.sendValue(vals);
+
+                    pendingObstacleToRemove = selectedObstacle;
                     lpsView.invalidate();
                 }
             }
         });
 
-        swtchCollisionDetect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swtchCollisionAvoid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                swtchCollisionDetect.setEnabled(false);
-                collAvoidCharSender.sendValue(new byte[] {b ? (byte)1 : 0});
+                swtchCollisionAvoid.setEnabled(false);
+                collisionAvoidance = b;
+                sendToggleUpdate();
             }
         });
 
-        swtchAIDrive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swtchPosition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
-                swtchAIDrive.setEnabled(false);
-                aiDriveCharSender.sendValue(new byte[] {b ? (byte)1 : 0});
-            }
-        });
-
-        swtchLPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
-                swtchLPS.setEnabled(false);
+                swtchPosition.setEnabled(false);
 
                 if(b) {
                     LPSConfigureDialog lpsConfigureDialog = new LPSConfigureDialog();
@@ -215,8 +246,91 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                     lpsConfigureDialog.setArguments(args);
                     lpsConfigureDialog.show(getSupportFragmentManager(), "lps_configure_dialog");
                 } else {
-                    lpsCharSender.sendValue(new byte[]{0}); // Disable LPS
+                    // Disable positioning
+                    positioning = false;
+                    sendToggleUpdate();
                 }
+            }
+        });
+
+        swtchNavigation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchNavigation.setEnabled(false);
+                navigationMode = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchExplore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchExplore.setEnabled(false);
+                exploreMode = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchLogImu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchLogImu.setEnabled(false);
+                loggingImu = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchLogWheelSpeed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchLogWheelSpeed.setEnabled(false);
+                loggingWheelSpeed = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchLogAnchorDistances.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchLogAnchorDistances.setEnabled(false);
+                loggingAnchorDistances = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchLogCompassDirection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchLogCompassDirection.setEnabled(false);
+                loggingCompassDirection = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchLogPathfinderPath.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchLogPathfinderPath.setEnabled(false);
+                loggingPathfinderPath = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchLogObstacleDistance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchLogObstacleDistance.setEnabled(false);
+                loggingObstacleDistance = b;
+                sendToggleUpdate();
+            }
+        });
+
+        swtchLogPosition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                swtchLogPosition.setEnabled(false);
+                loggingPositioning = b;
+                sendToggleUpdate();
             }
         });
 
@@ -282,36 +396,187 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
         bleListener = new BluetoothLeServiceListener() {
             @Override
             public void onCharacteristicChanged(final BluetoothGattCharacteristic characteristic) {
-                System.out.println("Got notified: " + new String(characteristic.getValue()));
+                System.out.println("Got notified: " + new BigInteger(1, characteristic.getValue()).toString(16));
                 BLEHandler bleHandler = BLEHandler.getInstance();
-                if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_POSUPDATE) == 0) {
+
+                if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_SENSOR) == 0) {
+                    byte[] vals = characteristic.getValue();
+                    byte[] sensorTypes = new byte[8];
+                    byte sensorCount = 8;
+
+                    for (byte i = 0; i < 8; ++i) {
+                        byte sensorType = (byte) ((vals[i / 4] >> ((i % 4) * 2)) & 0x03);
+
+                        if (sensorType == 0)
+                            sensorCount = i;
+                        else
+                            sensorTypes[i] = sensorType;
+                    }
+
+                    byte offset = 2;
+
+                    for (byte i = 0; i < sensorCount; ++i) {
+                        switch (sensorTypes[i]) {
+                            case 1:
+                                // Distance sensor
+                                int direction = (vals[offset] & 0xFF) * 2;
+                                int distance = (vals[offset + 1] & 0xFF) * 2;
+                                lpsView.updateObstacleSensorDistance(direction, distance, false);
+                                offset += 2;
+                                break;
+                            case 2:
+                                // Position
+                                final int x = vals[offset] | ((vals[offset + 1] & 0x0F) << 8);
+                                final int y = ((vals[offset + 1] & 0xF0) >> 4) | (vals[offset + 2] << 4);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        lpsPosView.setText("X: " + x + "\nY: " + y);
+                                    }
+                                });
+                                lpsView.updatePosition(x, y, false);
+                                offset += 3;
+                                break;
+                            case 3:
+                                // Compass
+                                int compass_direction = vals[offset] | (vals[offset + 1] << 8);
+                                lpsView.updateDirection(compass_direction, false);
+                                offset += 2;
+                                break;
+                        }
+                    }
+
+                    if (sensorCount != 0) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                lpsView.invalidate();
+                            }
+                        });
+                    }
+                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_ADD_OBSTACLE) == 0) {
+                    byte[] vals = characteristic.getValue();
+                    short x = (short)(vals[8] | ((int)vals[9] << 8));
+                    short y = (short)(vals[10] | ((int)vals[11] << 8));
+                    short width = (short)(vals[12] | ((int)vals[13] << 8));
+                    short height = (short)(vals[14] | ((int)vals[15] << 8));
+                    short id = (short)(vals[16] | vals[17]);
+
+                    Obstacle obstacle = lpsView.getObstacle(id);
+
+                    if (obstacle == null) {
+                        if (pendingObstacleToAdd != null) {
+                            pendingObstacleToAdd.setId(id);
+                            pendingObstacleToAdd = null;
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    lpsView.invalidate();
+                                    btnAddObstacle.setEnabled(true);
+                                }
+                            });
+                        } else {
+                            obstacle = new Obstacle(x, y, width, height, id);
+                            lpsView.addObstacle(obstacle);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    lpsView.invalidate();
+                                }
+                            });
+                        }
+                    } else {
+                        obstacle.setX(x);
+                        obstacle.setY(y);
+                        obstacle.setWidth(width);
+                        obstacle.setHeight(height);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                lpsView.invalidate();
+                            }
+                        });
+                    }
+                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_REMOVE_OBSTACLE) == 0) {
+                    byte[] vals = characteristic.getValue();
+
+                    if (vals.length >= 12) {
+                        short x = (short)(vals[8] | ((int)vals[9] << 8));
+                        short y = (short)(vals[10] | ((int)vals[11] << 8));
+                        lpsView.removeObstacle(x, y);
+                    } else if (vals.length >= 10) {
+                        short id = (short)(vals[8] | ((int)vals[9] << 8));
+                        lpsView.removeObstacle(id);
+
+                        if (pendingObstacleToRemove != null && pendingObstacleToRemove.getId() == id) {
+                            pendingObstacleToRemove = null;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    btnRemoveObstacle.setEnabled(true);
+                                }
+                            });
+                        }
+                    }
+                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_ANCHOR_DISTANCES) == 0) {
+                    byte[] vals = characteristic.getValue();
+                    short anchor0_distance = (short)(vals[0] | ((int)vals[1] << 8));
+                    short anchor1_distance = (short)(vals[2] | ((int)vals[3] << 8));
+                    short anchor2_distance = (short)(vals[4] | ((int)vals[5] << 8));
+                    System.out.println("anchor0_distance: " + anchor0_distance + " anchor1_distance: " + anchor1_distance + " anchor2_distance: " + anchor2_distance);
+                    // TODO: Show anchor distances in GUI
+                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_IMU) == 0) {
+                    byte[] vals = characteristic.getValue();
+                    byte type = vals[0];
+                    short xAxis = (short)(vals[1] | ((int)vals[2] << 8));
+                    short yAxis = (short)(vals[3] | ((int)vals[4] << 8));
+                    short zAxis = (short)(vals[5] | ((int)vals[6] << 8));
+                    System.out.println("IMU type: " + type + " xAxis: " + xAxis + " yAxis: " + yAxis + " zAxis: " + zAxis);
+                    // TODO: Show IMU values in GUI
+                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_WHEEL_SPEED) == 0) {
+                    byte[] vals = characteristic.getValue();
+                    final byte speed_left = vals[0];
+                    final byte speed_right = vals[1];
+                    System.out.println("Wheel speed left: " + speed_left + " right: " + speed_right);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            byte[] vals = characteristic.getValue();
-
-                            if (vals.length < 20)
-                                return;
-
-                            int front = (vals[0] & 0xFF) | ((vals[1] & 0xFF) << 8);
-                            int left = (vals[2] & 0xFF) | ((vals[3] & 0xFF) << 8);
-                            int right = (vals[4] & 0xFF) | ((vals[5] & 0xFF) << 8);
-                            int back = (vals[6] & 0xFF) | ((vals[7] & 0xFF) << 8);
-                            int anchor1_dist = (vals[8] & 0xFF) | ((vals[9] & 0xFF) << 8);
-                            int anchor2_dist = (vals[10] & 0xFF) | ((vals[11] & 0xFF) << 8);
-                            int anchor3_dist = (vals[12] & 0xFF) | ((vals[13] & 0xFF) << 8);
-                            int dir = (vals[14] & 0xFF) | (vals[15] << 8);
-                            int x = (vals[16] & 0xFF) | (vals[17] << 8);
-                            int y = (vals[18] & 0xFF) | (vals[19] << 8);
-                            lpsPosView.setText("X: " + x + "\nY: " + y + "\nanchor1_dist: " + anchor1_dist + "cm\nanchor2_dist: " + anchor2_dist + "cm\nanchor3_dist: " + anchor3_dist + "cm\nfront: " + front + "cm\nleft: " + left + "cm\nright: " + right + "cm\nback: " + back + "cm\ndir: " + dir);
-                            lpsView.update(x, y, dir, front, left, right, back);
+                            speedLeftBar.setProgress(Math.max(0, Math.abs(speed_left) - 20));
+                            speedRightBar.setProgress(Math.max(0, Math.abs(speed_right) - 20));
                         }
                     });
-                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_INVITE) == 0) {
+                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_ERROR) == 0) {
+                    System.out.println("Received error");
+                } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_TOGGLE) == 0) {
+                    byte[] vals = characteristic.getValue();
+                    exploreMode = ((vals[0] >> 3) & 1) == 1;
+                    navigationMode = ((vals[0] >> 4) & 1) == 1;
+                    collisionAvoidance = ((vals[0] >> 5) & 1) == 1;
+                    positioning = ((vals[0] >> 6) & 1) == 1;
+                    invite = ((vals[0] >> 7) & 1) == 1;
+
+                    loggingImu = ((vals[1] >> 1) & 1) == 1;
+                    loggingWheelSpeed = ((vals[1] >> 2) & 1) == 1;
+                    loggingAnchorDistances = ((vals[1] >> 3) & 1) == 1;
+                    loggingCompassDirection = ((vals[1] >> 4) & 1) == 1;
+                    loggingPathfinderPath = ((vals[1] >> 5) & 1) == 1;
+                    loggingObstacleDistance = ((vals[1] >> 6) & 1) == 1;
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            swtchInvite.setChecked(new String(characteristic.getValue()).startsWith("1"));
+                            swtchExplore.setChecked(exploreMode);
+                            swtchNavigation.setChecked(navigationMode);
+                            swtchCollisionAvoid.setChecked(collisionAvoidance);
+                            swtchPosition.setChecked(positioning);
+                            swtchInvite.setChecked(invite);
+                            swtchLogImu.setChecked(loggingImu);
+                            swtchLogWheelSpeed.setChecked(loggingWheelSpeed);
+                            swtchLogAnchorDistances.setChecked(loggingAnchorDistances);
+                            swtchLogCompassDirection.setChecked(loggingCompassDirection);
+                            swtchLogPathfinderPath.setChecked(loggingPathfinderPath);
+                            swtchLogObstacleDistance.setChecked(loggingObstacleDistance);
                         }
                     });
                 } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_PATHFINDING_PATH) == 0) {
@@ -357,62 +622,80 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                 bleHandler.bleService = null;
                 bleHandler.bleCharPingclient = null;
                 bleHandler.bleCharUpdateMotors = null;
-                bleHandler.bleCharCollDetect = null;
-                bleHandler.bleCharAIDrive = null;
-                bleHandler.bleCharLPS = null;
-                bleHandler.bleCharPosUpdate = null;
-                bleHandler.bleCharCalibrate = null;
-                bleHandler.bleCharInvite = null;
+                bleHandler.bleCharToggle = null;
+                bleHandler.bleCharSensor = null;
                 bleHandler.bleCharPathfindingTarget = null;
-                bleHandler.bleCharPathfindingObstacles = null;
+                bleHandler.bleCharCalibrate = null;
+                bleHandler.bleCharAddObstacle = null;
+                bleHandler.bleCharRemoveObstacle = null;
+                bleHandler.bleCharPathfindingPath = null;
+                bleHandler.bleCharAnchorLocations = null;
+                bleHandler.bleCharAnchorDistances = null;
+                bleHandler.bleCharImu = null;
+                bleHandler.bleCharWheelSpeed = null;
+                bleHandler.bleCharError = null;
                 sensorManager.unregisterListener(_this);
                 finish();
             }
         };
         BLEHandler.getInstance().bleClient.addListener(bleListener);
 
-        collAvoidCharSender.addListener(new BLECharacteristicSender.BLECharacteristicSenderListener() {
+        toggleCharSender.addListener(new BLECharacteristicSender.BLECharacteristicSenderListener() {
             @Override
             public void onValueArrive(byte[] value) {
-                if (value.length >= 1) {
-                    collisionAvoidance = (value[0] == 1);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            swtchCollisionDetect.setChecked(collisionAvoidance);
-                            swtchCollisionDetect.setEnabled(true);
-                        }
-                    });
-                }
-            }
-        });
+                if (value.length >= 2) {
+                    final boolean tmpExploreMode = ((value[0] >> 3) & 1) == 1;
+                    final boolean tmpNavigationMode = ((value[0] >> 4) & 1) == 1;
+                    final boolean tmpCollisionAvoidance = ((value[0] >> 5) & 1) == 1;
+                    final boolean tmpPositioning = ((value[0] >> 6) & 1) == 1;
+                    final boolean tmpInvite = ((value[0] >> 7) & 1) == 1;
 
-        aiDriveCharSender.addListener(new BLECharacteristicSender.BLECharacteristicSenderListener() {
-            @Override
-            public void onValueArrive(byte[] value) {
-                if (value.length >= 1) {
-                    aiDrive = (value[0] == 1);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            swtchAIDrive.setChecked(aiDrive);
-                            swtchAIDrive.setEnabled(true);
-                        }
-                    });
-                }
-            }
-        });
+                    final boolean tmpLoggingImu = ((value[1] >> 1) & 1) == 1;
+                    final boolean tmpLoggingWheelSpeed = ((value[1] >> 2) & 1) == 1;
+                    final boolean tmpLoggingAnchorDistances = ((value[1] >> 3) & 1) == 1;
+                    final boolean tmpLoggingCompassDirection = ((value[1] >> 4) & 1) == 1;
+                    final boolean tmpLoggingPathfinderPath = ((value[1] >> 5) & 1) == 1;
+                    final boolean tmpLoggingObstacleDistance = ((value[1] >> 6) & 1) == 1;
+                    final boolean tmpLoggingPositioning = ((value[1] >> 7) & 1) == 1;
 
-        lpsCharSender.addListener(new BLECharacteristicSender.BLECharacteristicSenderListener() {
-            @Override
-            public void onValueArrive(byte[] value) {
-                if (value.length >= 1) {
-                    lps = (value[0] == 1);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            swtchLPS.setChecked(lps);
-                            swtchLPS.setEnabled(true);
+                            if (tmpExploreMode == exploreMode)
+                                swtchExplore.setEnabled(true);
+
+                            if (tmpNavigationMode == navigationMode)
+                                swtchNavigation.setEnabled(true);
+
+                            if (tmpCollisionAvoidance == collisionAvoidance)
+                                swtchCollisionAvoid.setEnabled(true);
+
+                            if (tmpPositioning == positioning)
+                                swtchPosition.setEnabled(true);
+
+                            if (tmpInvite == invite)
+                                swtchInvite.setEnabled(true);
+
+                            if (tmpLoggingImu == loggingImu)
+                                swtchLogImu.setEnabled(true);
+
+                            if (tmpLoggingWheelSpeed == loggingWheelSpeed)
+                                swtchLogWheelSpeed.setEnabled(true);
+
+                            if (tmpLoggingAnchorDistances == loggingAnchorDistances)
+                                swtchLogAnchorDistances.setEnabled(true);
+
+                            if (tmpLoggingCompassDirection == loggingCompassDirection)
+                                swtchLogCompassDirection.setEnabled(true);
+
+                            if (tmpLoggingPathfinderPath == loggingPathfinderPath)
+                                swtchLogPathfinderPath.setEnabled(true);
+
+                            if (tmpLoggingObstacleDistance == loggingObstacleDistance)
+                                swtchLogObstacleDistance.setEnabled(true);
+
+                            if (tmpLoggingPositioning == loggingPositioning)
+                                swtchLogPosition.setEnabled(true);
                         }
                     });
                 }
@@ -433,7 +716,10 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                             });
                             break;
                         case 1:
+                            // TODO: Automatic compass calibration
+                            break;
                         case 2:
+                        case 3:
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -441,7 +727,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                                 }
                             });
                             break;
-                        case 3:
+                        case 4:
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -450,45 +736,6 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                             });
                             break;
                     }
-                }
-            }
-        });
-
-        pathfindingObstaclesCharSender.addListener(new BLECharacteristicSender.BLECharacteristicSenderListener() {
-            @Override
-            public void onValueArrive(byte[] value) {
-                if (value.length >= 1) {
-                    switch (value[0]) {
-                        case 0:
-                            break;
-                        case 1:
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    btnAddObstacle.setEnabled(true);
-                                }
-                            });
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                    }
-                }
-            }
-        });
-
-        inviteCharSender.addListener(new BLECharacteristicSender.BLECharacteristicSenderListener() {
-            @Override
-            public void onValueArrive(final byte[] value) {
-                if (value.length >= 1) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            swtchInvite.setChecked(value[0] == 1);
-                            swtchInvite.setEnabled(true);
-                        }
-                    });
                 }
             }
         });
@@ -508,21 +755,24 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
         lpsView.anchor2x = anchor2x;
         lpsView.anchor2y = anchor2y;
 
-        byte[] vals = new byte[13];
-        vals[0] = 1;
-        vals[1] = (byte)lpsView.anchor0x;
-        vals[2] = (byte)(lpsView.anchor0x >> 8);
-        vals[3] = (byte)lpsView.anchor0y;
-        vals[4] = (byte)(lpsView.anchor0y >> 8);
-        vals[5] = (byte)lpsView.anchor1x;
-        vals[6] = (byte)(lpsView.anchor1x >> 8);
-        vals[7] = (byte)lpsView.anchor1y;
-        vals[8] = (byte)(lpsView.anchor1y >> 8);
-        vals[9] = (byte)lpsView.anchor2x;
-        vals[10] = (byte)(lpsView.anchor2x >> 8);
-        vals[11] = (byte)lpsView.anchor2y;
-        vals[12] = (byte)(lpsView.anchor2y >> 8);
-        lpsCharSender.sendValue(vals); // Enable LPS
+        positioning = true;
+        sendToggleUpdate();
+
+        byte[] vals = new byte[20];
+        writeTimestamp(vals, 0);
+        vals[8] = (byte)lpsView.anchor0x;
+        vals[9] = (byte)(lpsView.anchor0x >> 8);
+        vals[10] = (byte)lpsView.anchor0y;
+        vals[11] = (byte)(lpsView.anchor0y >> 8);
+        vals[12] = (byte)lpsView.anchor1x;
+        vals[13] = (byte)(lpsView.anchor1x >> 8);
+        vals[14] = (byte)lpsView.anchor1y;
+        vals[15] = (byte)(lpsView.anchor1y >> 8);
+        vals[16] = (byte)lpsView.anchor2x;
+        vals[17] = (byte)(lpsView.anchor2x >> 8);
+        vals[18] = (byte)lpsView.anchor2y;
+        vals[19] = (byte)(lpsView.anchor2y >> 8);
+        anchorLocationsCharSender.sendValue(vals);
 
         saveLPSAnchorsPreference();
 
@@ -532,27 +782,26 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
     @Override
     public void onLPSConfigureDialogCancel() {
         enableImmersiveMode();
-        swtchLPS.setEnabled(true);
-        swtchLPS.setChecked(false);
+        swtchPosition.setEnabled(true);
+        swtchPosition.setChecked(false);
     }
 
     @Override
     public void onObstacleConfigureDialogConfirm(short x, short y, short width, short height) {
         byte[] vals = new byte[17];
-        vals[0] = 1;
-        vals[9] = (byte)x;
-        vals[10] = (byte)(x >> 8);
-        vals[11] = (byte)y;
-        vals[12] = (byte)(y >> 8);
-        vals[13] = (byte)width;
-        vals[14] = (byte)(width >> 8);
-        vals[15] = (byte)height;
-        vals[16] = (byte)(height >> 8);
-        writeTimestamp(vals, 1);
-        pathfindingObstaclesCharSender.sendValue(vals);
+        vals[8] = (byte)x;
+        vals[9] = (byte)(x >> 8);
+        vals[10] = (byte)y;
+        vals[11] = (byte)(y >> 8);
+        vals[12] = (byte)width;
+        vals[13] = (byte)(width >> 8);
+        vals[14] = (byte)height;
+        vals[15] = (byte)(height >> 8);
+        writeTimestamp(vals, 0);
+        addObstacleCharSender.sendValue(vals);
 
-        lpsView.addObstacle(new Obstacle(x, y, width, height));
-        saveObstaclesPreference();
+        pendingObstacleToAdd = new Obstacle(x, y, width, height);
+        lpsView.addObstacle(pendingObstacleToAdd);
         lpsView.invalidate();
 
         enableImmersiveMode();
@@ -604,28 +853,16 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
         editor.apply();
     }
 
-    private void loadObstaclesPreference() {
-        SharedPreferences obstaclesPref = getApplicationContext().getSharedPreferences("obstacles", 0);
-        Set<String> obstaclesSerialized = obstaclesPref.getStringSet("obstacles", new HashSet<String>());
-        lpsView.clearObstacles();
-
-        for (String obstacleStr : obstaclesSerialized) {
-            String[] obstacleStrs = obstacleStr.split(";");
-            lpsView.addObstacle(new Obstacle(Short.parseShort(obstacleStrs[0]), Short.parseShort(obstacleStrs[1]), Short.parseShort(obstacleStrs[2]), Short.parseShort(obstacleStrs[3])));
-        }
-    }
-
-    private void saveObstaclesPreference() {
-        List<Obstacle> obstacles = lpsView.getObstacles();
-        Set<String> serializedObstacles = new HashSet<>();
-
-        for (Obstacle obstacle : obstacles)
-            serializedObstacles.add(obstacle.toString());
-
-        SharedPreferences obstaclesPref = getApplicationContext().getSharedPreferences("obstacles", 0);
-        SharedPreferences.Editor editor = obstaclesPref.edit();
-        editor.clear();
-        editor.putStringSet("obstacles", serializedObstacles);
-        editor.apply();
+    private void sendToggleUpdate() {
+        byte[] vals = new byte[10];
+        vals[0] = (byte) (((exploreMode ? 1 : 0) << 3) | ((navigationMode ? 1 : 0) << 4) |
+                         ((collisionAvoidance ? 1 : 0) << 5) | ((positioning ? 1 : 0) << 6) |
+                         ((invite ? 1 : 0) << 7));
+        vals[1] = (byte) (((loggingImu ? 1 : 0) << 1) | ((loggingWheelSpeed ? 1 : 0) << 2) |
+                         ((loggingAnchorDistances ? 1 : 0) << 3) | ((loggingCompassDirection ? 1 : 0) << 4) |
+                         ((loggingPathfinderPath ? 1 : 0) << 5) | ((loggingObstacleDistance ? 1 : 0) << 6) |
+                         ((loggingPositioning ? 1 : 0) << 7));
+        writeTimestamp(vals, 2);
+        toggleCharSender.sendValue(vals);
     }
 }

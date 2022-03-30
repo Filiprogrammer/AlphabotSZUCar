@@ -3,72 +3,19 @@
 #include <BLEServer.h>
 #include <BLE2902.h>
 
-BLERemoteCharacteristic* char_posupdate;
-BLERemoteCharacteristic* char_pathfinding_obstacles;
+BLERemoteCharacteristic* char_sensor;
 BLERemoteCharacteristic* char_pathfinding_target;
+BLERemoteCharacteristic* char_add_obstacle;
+BLERemoteCharacteristic* char_remove_obstacle;
 BLERemoteCharacteristic* char_pathfinding_path;
-BLERemoteCharacteristic* char_lps;
+BLERemoteCharacteristic* char_anchor_locations;
 
-static void notifyPosupdateCallback(
+static void notifySensorCallback(
   BLERemoteCharacteristic* ble_remote_characteristic,
   uint8_t* data,
   size_t length,
   bool is_notify) {
-    uint16_t* val = (uint16_t*)data;
-    uint16_t front_dist = val[0];
-    uint16_t left_dist = val[1];
-    uint16_t right_dist = val[2];
-    uint16_t back_dist = val[3];
-    uint16_t anchor1_dist = val[4];
-    uint16_t anchor2_dist = val[5];
-    uint16_t anchor3_dist = val[6];
-    int16_t dir = val[7];
-    int16_t lps_x = val[8];
-    int16_t lps_y = val[9];
-    Serial.print("POSUPDATE: ");
-    Serial.print(front_dist);
-    Serial.print(";");
-    Serial.print(left_dist);
-    Serial.print(";");
-    Serial.print(right_dist);
-    Serial.print(";");
-    Serial.print(back_dist);
-    Serial.print(";");
-    Serial.print(anchor1_dist);
-    Serial.print(";");
-    Serial.print(anchor2_dist);
-    Serial.print(";");
-    Serial.print(anchor3_dist);
-    Serial.print(";");
-    Serial.print(dir);
-    Serial.print(";");
-    Serial.print(lps_x);
-    Serial.print(";");
-    Serial.println(lps_y);
-}
-
-static void notifyPathfindingPathCallback(
-  BLERemoteCharacteristic* ble_remote_characteristic,
-  uint8_t* data,
-  size_t length,
-  bool is_notify) {
-    Serial.print("PATHFINDING_PATH: ");
-    char buff[3];
-
-    for (uint32_t i = 0; i < length; ++i) {
-        sprintf(buff, "%02X", data[i]);
-        Serial.print(buff);
-    }
-
-    Serial.println();
-}
-
-static void notifyPathfindingObstaclesCallback(
-  BLERemoteCharacteristic* ble_remote_characteristic,
-  uint8_t* data,
-  size_t length,
-  bool is_notify) {
-    Serial.print("PATHFINDING_OBSTACLES: ");
+    Serial.print("SENSOR: ");
     char buff[3];
 
     for (uint32_t i = 0; i < length; ++i) {
@@ -95,17 +42,68 @@ static void notifyPathfindingTargetCallback(
     Serial.println();
 }
 
-static void notifyLpsCallback(
+static void notifyAddObstacleCallback(
   BLERemoteCharacteristic* ble_remote_characteristic,
   uint8_t* data,
   size_t length,
   bool is_notify) {
-    char hex_buff[3];
-    Serial.print("LPS: ");
+    if (length != 18)
+        return;
+
+    Serial.print("ADD_OBSTACLE: ");
+    char buff[3];
 
     for (uint32_t i = 0; i < length; ++i) {
-        sprintf(hex_buff, "%02X", data[i]);
-        Serial.print(hex_buff);
+        sprintf(buff, "%02X", data[i]);
+        Serial.print(buff);
+    }
+
+    Serial.println();
+}
+
+static void notifyRemoveObstacleCallback(
+  BLERemoteCharacteristic* ble_remote_characteristic,
+  uint8_t* data,
+  size_t length,
+  bool is_notify) {
+    Serial.print("REMOVE_OBSTACLE: ");
+    char buff[3];
+
+    for (uint32_t i = 0; i < length; ++i) {
+        sprintf(buff, "%02X", data[i]);
+        Serial.print(buff);
+    }
+
+    Serial.println();
+}
+
+static void notifyPathfindingPathCallback(
+  BLERemoteCharacteristic* ble_remote_characteristic,
+  uint8_t* data,
+  size_t length,
+  bool is_notify) {
+    Serial.print("PATHFINDING_PATH: ");
+    char buff[3];
+
+    for (uint32_t i = 0; i < length; ++i) {
+        sprintf(buff, "%02X", data[i]);
+        Serial.print(buff);
+    }
+
+    Serial.println();
+}
+
+static void notifyAnchorLocationsCallback(
+  BLERemoteCharacteristic* ble_remote_characteristic,
+  uint8_t* data,
+  size_t length,
+  bool is_notify) {
+    Serial.print("ANCHOR_LOCATIONS: ");
+    char buff[3];
+
+    for (uint32_t i = 0; i < length; ++i) {
+        sprintf(buff, "%02X", data[i]);
+        Serial.print(buff);
     }
 
     Serial.println();
@@ -140,29 +138,17 @@ void setup() {
 
     Serial.println(" - Found service");
 
-    char_posupdate = remote_service->getCharacteristic("11618450-ceec-438d-b376-ce666e612da1");
+    char_sensor = remote_service->getCharacteristic("4c999381-35e2-4af4-8443-ee8b9fe56ba0");
 
-    if (char_posupdate == nullptr) {
-        Serial.println(" - Did not find POSUPDATE characteristic");
+    if (char_sensor == nullptr) {
+        Serial.println(" - Did not find SENSOR characteristic");
         ESP.restart();
     }
 
-    Serial.println(" - Found POSUPDATE characteristic");
+    Serial.println(" - Found SENSOR characteristic");
 
-    char_posupdate->registerForNotify(notifyPosupdateCallback, true);
-    Serial.println(" - Registered POSUPDATE characteristic for notify");
-
-    char_pathfinding_obstacles = remote_service->getCharacteristic("60db37c7-afeb-4d40-bb17-a19a07d6fc95");
-
-    if (char_pathfinding_obstacles == nullptr) {
-        Serial.println(" - Did not find PATHFINDING_OBSTACLES characteristic");
-        ESP.restart();
-    }
-
-    Serial.println(" - Found PATHFINDING_OBSTACLES characteristic");
-
-    char_pathfinding_obstacles->registerForNotify(notifyPathfindingObstaclesCallback, true);
-    Serial.println(" - Registered PATHFINDING_OBSTACLES characteristic for notify");
+    char_sensor->registerForNotify(notifySensorCallback, true);
+    Serial.println(" - Registered SENSOR characteristic for notify");
 
     char_pathfinding_target = remote_service->getCharacteristic("f56f0a15-52ae-4ad5-bfe1-557eed983618");
 
@@ -176,6 +162,30 @@ void setup() {
     char_pathfinding_target->registerForNotify(notifyPathfindingTargetCallback, true);
     Serial.println(" - Registered PATHFINDING_TARGET characteristic for notify");
 
+    char_add_obstacle = remote_service->getCharacteristic("60db37c7-afeb-4d40-bb17-a19a07d6fc95");
+
+    if (char_add_obstacle == nullptr) {
+        Serial.println(" - Did not find ADD_OBSTACLE characteristic");
+        ESP.restart();
+    }
+
+    Serial.println(" - Found ADD_OBSTACLE characteristic");
+
+    char_add_obstacle->registerForNotify(notifyAddObstacleCallback, true);
+    Serial.println(" - Registered ADD_OBSTACLE characteristic for notify");
+
+    char_remove_obstacle = remote_service->getCharacteristic("6d43e0df-682b-45ef-abb7-814ecf475771");
+
+    if (char_remove_obstacle == nullptr) {
+        Serial.println(" - Did not find REMOVE_OBSTACLE characteristic");
+        ESP.restart();
+    }
+
+    Serial.println(" - Found REMOVE_OBSTACLE characteristic");
+
+    char_remove_obstacle->registerForNotify(notifyRemoveObstacleCallback, true);
+    Serial.println(" - Registered REMOVE_OBSTACLE characteristic for notify");
+
     char_pathfinding_path = remote_service->getCharacteristic("8dad4c9a-1a1c-4a42-a522-ded592f4ed99");
 
     if (char_pathfinding_path == nullptr) {
@@ -188,19 +198,19 @@ void setup() {
     char_pathfinding_path->registerForNotify(notifyPathfindingPathCallback, true);
     Serial.println(" - Registered PATHFINDING_PATH characteristic for notify");
 
-    char_lps = remote_service->getCharacteristic("63bbadb7-bfb9-4e36-a028-1747d70bfbbc");
+    char_anchor_locations = remote_service->getCharacteristic("8a55dd30-463b-40f6-8f21-d68efcc386b2");
 
-    if (char_lps == nullptr) {
-        Serial.println(" - Did not find LPS characteristic");
+    if (char_anchor_locations == nullptr) {
+        Serial.println(" - Did not find ANCHOR_LOCATIONS characteristic");
         ESP.restart();
     }
 
-    Serial.println(" - Found LPS characteristic");
+    Serial.println(" - Found ANCHOR_LOCATIONS characteristic");
 
-    char_lps->registerForNotify(notifyLpsCallback, true);
-    Serial.println(" - Registered LPS characteristic for notify");
+    char_anchor_locations->registerForNotify(notifyAnchorLocationsCallback, true);
+    Serial.println(" - Registered ANCHOR_LOCATIONS characteristic for notify");
 
-    printLPS();
+    printAnchorLocations();
 }
 
 void loop() {
@@ -208,7 +218,7 @@ void loop() {
     getLine(buffer);
 
     if (strncmp(buffer, "anchors", 7) == 0)
-        printLPS();
+        printAnchorLocations();
     else if (strncmp(buffer, "target: ", 8) == 0) {
         char* target_x_str = strtok(buffer + 8, ";");
         int32_t target_x = 0;
@@ -240,12 +250,12 @@ void loop() {
     }
 }
 
-void printLPS() {
-    std::string value = char_lps->readValue();
+void printAnchorLocations() {
+    std::string value = char_anchor_locations->readValue();
     size_t len = value.length();
     const char* cvalue = value.c_str();
     char hex_buff[3];
-    Serial.print("LPS: ");
+    Serial.print("ANCHOR_LOCATIONS: ");
 
     for (uint32_t i = 0; i < len; ++i) {
         sprintf(hex_buff, "%02X", cvalue[i]);

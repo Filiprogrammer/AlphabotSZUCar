@@ -15,12 +15,24 @@ bool Navigator::hasTarget() const {
     return has_target;
 }
 
-void Navigator::addObstacle(float x, float y, float width, float height) {
-    pathfinder->addObstacle(x, y, width, height);
+void Navigator::addObstacle(float x, float y, float width, float height, uint16_t id) {
+    pathfinder->addObstacle(x, y, width, height, id);
+}
+
+void Navigator::removeObstacleById(uint16_t id) {
+    pathfinder->removeObstacleById(id);
+}
+
+void Navigator::removeObstacleByPosition(float x, float y) {
+    pathfinder->removeObstacleByPosition(x, y);
 }
 
 void Navigator::clearObstacles() {
     pathfinder->clearObstacles();
+}
+
+std::list<struct Obstacle> Navigator::getObstacles() {
+    return pathfinder->getObstacles();
 }
 
 void Navigator::navigateStep(float dir, std::list<Coordinate>& path) {

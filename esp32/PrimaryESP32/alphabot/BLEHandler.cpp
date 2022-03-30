@@ -2,17 +2,27 @@
 #include "config.h"
 
 class BLEHandlerCallbacks : public BLECharacteristicCallbacks {
-    BLEUUID charUUID;
-    void (*dataReceived)(BLEUUID, const char*, size_t) = NULL;
+    BLECharacteristic* characteristic;
+    void (*dataReceived)(const char*, size_t) = NULL;
+    void (*stateChanged)(Status s, uint32_t code) = NULL;
 
 public:
-    BLEHandlerCallbacks(BLEUUID charUUID, void (*dataReceived)(BLEUUID, const char*, size_t)) : charUUID(charUUID) {
+    BLEHandlerCallbacks(BLECharacteristic* characteristic, void (*dataReceived)(const char*, size_t), void (*stateChanged)(Status s, uint32_t code) = NULL) {
+        this->characteristic = characteristic;
         this->dataReceived = dataReceived;
+        this->stateChanged = stateChanged;
     }
 
     void onWrite(BLECharacteristic* pCharacteristic) {
-        std::string str = pCharacteristic->getValue();
-        (*(dataReceived))(charUUID, str.c_str(), str.length());
+        if (dataReceived != NULL) {
+            std::string str = pCharacteristic->getValue();
+            (*(dataReceived))(str.c_str(), str.length());
+        }
+    }
+
+    void onStatus(BLECharacteristic* pCharacteristic, Status s, uint32_t code) {
+        if (stateChanged != NULL)
+            stateChanged(s, code);
     }
 };
 
@@ -57,12 +67,21 @@ uint32_t BLEHandler::getConnectedCount() {
     return server->getConnectedCount();
 }
 
-BLEHandler::BLEHandler(void (*dataReceived)(BLEUUID, const char*, size_t), void (*disconnected)(), void (*connected)()) {
+BLEHandler::BLEHandler(void (*charUpdateMotorsDataReceived)(const char*, size_t),
+                       void (*charToggleDataReceived)(const char*, size_t),
+                       void (*charToggleStateChanged)(BLECharacteristicCallbacks::Status s, uint32_t code),
+                       void (*charPathfindingTargetDataReceived)(const char*, size_t),
+                       void (*charCalibrateDataReceived)(const char*, size_t),
+                       void (*charAddObstacleDataReceived)(const char*, size_t),
+                       void (*charAddObstacleStateChanged)(BLECharacteristicCallbacks::Status s, uint32_t code),
+                       void (*charRemoveObstacleDataReceived)(const char*, size_t),
+                       void (*charAnchorLocationsDataReceived)(const char*, size_t),
+                       void (*disconnected)(), void (*connected)()) {
     BLEDevice::init(BLE_DEVICE_NAME);
     server = BLEDevice::createServer();
     advertising = server->getAdvertising();
     server->setCallbacks(new BLEHandlerConnectionCallbacks(advertising, connected, disconnected));
-    service = server->createService(BLEUUID(BLE_SVC_UUID), 40);
+    service = server->createService(BLEUUID(BLE_SVC_UUID), 50);
 
     charClientPing = service->createCharacteristic(BLE_CHAR_PINGCLIENT_UUID,
                        BLECharacteristic::PROPERTY_READ |
@@ -77,100 +96,121 @@ BLEHandler::BLEHandler(void (*dataReceived)(BLEUUID, const char*, size_t), void 
                       );
     charUpdateMotors->addDescriptor(new BLE2902());
     charUpdateMotors->setValue("");
-    charUpdateMotors->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_UPDATEMOTORS_UUID), dataReceived));
+    charUpdateMotors->setCallbacks(new BLEHandlerCallbacks(charUpdateMotors, charUpdateMotorsDataReceived));
 
-    charCollDetect = service->createCharacteristic(BLE_CHAR_COLLDETECT_UUID,
-                       BLECharacteristic::PROPERTY_READ |
-                       BLECharacteristic::PROPERTY_WRITE
-                      );
-    BLE2902* p2902Descriptor = new BLE2902();
-    p2902Descriptor->setNotifications(true);
-    charCollDetect->addDescriptor(p2902Descriptor);
-    charCollDetect->setValue("1");
-    charCollDetect->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_COLLDETECT_UUID), dataReceived));
-
-    charAIDrive = service->createCharacteristic(BLE_CHAR_AIDRIVE_UUID,
-                       BLECharacteristic::PROPERTY_READ |
-                       BLECharacteristic::PROPERTY_WRITE
-                      );
-    p2902Descriptor = new BLE2902();
-    p2902Descriptor->setNotifications(true);
-    charAIDrive->addDescriptor(p2902Descriptor);
-    charAIDrive->setValue("");
-    charAIDrive->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_AIDRIVE_UUID), dataReceived));
-
-    charLPS = service->createCharacteristic(BLE_CHAR_LPS_UUID,
-                       BLECharacteristic::PROPERTY_READ |
-                       BLECharacteristic::PROPERTY_WRITE
-                      );
-    p2902Descriptor = new BLE2902();
-    p2902Descriptor->setNotifications(true);
-    charLPS->addDescriptor(p2902Descriptor);
-    charLPS->setValue("");
-    charLPS->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_LPS_UUID), dataReceived));
-
-    charPosUpdate = service->createCharacteristic(BLE_CHAR_POSUPDATE_UUID,
+    charToggle = service->createCharacteristic(BLE_CHAR_TOGGLE_UUID,
                        BLECharacteristic::PROPERTY_READ |
                        BLECharacteristic::PROPERTY_WRITE |
                        BLECharacteristic::PROPERTY_NOTIFY
                       );
+    BLE2902* p2902Descriptor = new BLE2902();
+    p2902Descriptor->setNotifications(true);
+    charToggle->addDescriptor(p2902Descriptor);
+    charToggle->setValue("");
+    charToggle->setCallbacks(new BLEHandlerCallbacks(charToggle, charToggleDataReceived, charToggleStateChanged));
+
+    charSensor = service->createCharacteristic(BLE_CHAR_SENSOR_UUID,
+                       BLECharacteristic::PROPERTY_READ |
+                       BLECharacteristic::PROPERTY_NOTIFY
+                      );
     p2902Descriptor = new BLE2902();
     p2902Descriptor->setNotifications(true);
-    charPosUpdate->addDescriptor(p2902Descriptor);
-    charPosUpdate->setValue("");
+    charSensor->addDescriptor(p2902Descriptor);
+    charSensor->setValue("");
+
+    charPathfindingTarget = service->createCharacteristic(BLE_CHAR_PATHFINDING_TARGET_UUID,
+                       BLECharacteristic::PROPERTY_READ |
+                       BLECharacteristic::PROPERTY_WRITE
+                      );
+    charPathfindingTarget->addDescriptor(new BLE2902());
+    charPathfindingTarget->setValue("");
+    charPathfindingTarget->setCallbacks(new BLEHandlerCallbacks(charPathfindingTarget, charPathfindingTargetDataReceived));
 
     charCalibrate = service->createCharacteristic(BLE_CHAR_CALIBRATE_UUID,
                        BLECharacteristic::PROPERTY_READ |
-                       BLECharacteristic::PROPERTY_WRITE
+                       BLECharacteristic::PROPERTY_WRITE |
+                       BLECharacteristic::PROPERTY_NOTIFY
                       );
     p2902Descriptor = new BLE2902();
     p2902Descriptor->setNotifications(true);
     charCalibrate->addDescriptor(p2902Descriptor);
     charCalibrate->setValue("");
-    charCalibrate->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_CALIBRATE_UUID), dataReceived));
+    charCalibrate->setCallbacks(new BLEHandlerCallbacks(charCalibrate, charCalibrateDataReceived));
 
-    charInvite = service->createCharacteristic(BLE_CHAR_INVITE_UUID,
+    charAddObstacle = service->createCharacteristic(BLE_CHAR_ADD_OBSTACLE_UUID,
                        BLECharacteristic::PROPERTY_READ |
                        BLECharacteristic::PROPERTY_WRITE |
                        BLECharacteristic::PROPERTY_NOTIFY
                       );
     p2902Descriptor = new BLE2902();
     p2902Descriptor->setNotifications(true);
-    charInvite->addDescriptor(p2902Descriptor);
-    charInvite->setValue("");
-    charInvite->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_INVITE_UUID), dataReceived));
+    charAddObstacle->addDescriptor(p2902Descriptor);
+    charAddObstacle->setValue("");
+    charAddObstacle->setCallbacks(new BLEHandlerCallbacks(charAddObstacle, charAddObstacleDataReceived, charAddObstacleStateChanged));
 
-    charPathfindingObstacles = service->createCharacteristic(BLE_CHAR_PATHFINDING_OBSTACLES_UUID,
+    charRemoveObstacle = service->createCharacteristic(BLE_CHAR_REMOVE_OBSTACLE_UUID,
                        BLECharacteristic::PROPERTY_READ |
                        BLECharacteristic::PROPERTY_WRITE |
                        BLECharacteristic::PROPERTY_NOTIFY
                       );
     p2902Descriptor = new BLE2902();
     p2902Descriptor->setNotifications(true);
-    charPathfindingObstacles->addDescriptor(p2902Descriptor);
-    charPathfindingObstacles->setValue("");
-    charPathfindingObstacles->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_PATHFINDING_OBSTACLES_UUID), dataReceived));
-
-    charPathfindingTarget = service->createCharacteristic(BLE_CHAR_PATHFINDING_TARGET_UUID,
-                       BLECharacteristic::PROPERTY_READ |
-                       BLECharacteristic::PROPERTY_WRITE |
-                       BLECharacteristic::PROPERTY_NOTIFY
-                      );
-    p2902Descriptor = new BLE2902();
-    p2902Descriptor->setNotifications(true);
-    charPathfindingTarget->addDescriptor(p2902Descriptor);
-    charPathfindingTarget->setValue("");
-    charPathfindingTarget->setCallbacks(new BLEHandlerCallbacks(BLEUUID(BLE_CHAR_PATHFINDING_TARGET_UUID), dataReceived));
+    charRemoveObstacle->addDescriptor(p2902Descriptor);
+    charRemoveObstacle->setValue("");
+    charRemoveObstacle->setCallbacks(new BLEHandlerCallbacks(charRemoveObstacle, charRemoveObstacleDataReceived));
 
     charPathfindingPath = service->createCharacteristic(BLE_CHAR_PATHFINDING_PATH_UUID,
                        BLECharacteristic::PROPERTY_READ |
-                       BLECharacteristic::PROPERTY_WRITE |
                        BLECharacteristic::PROPERTY_NOTIFY
                       );
     p2902Descriptor = new BLE2902();
     p2902Descriptor->setNotifications(true);
     charPathfindingPath->addDescriptor(p2902Descriptor);
     charPathfindingPath->setValue("");
+
+    charAnchorLocations = service->createCharacteristic(BLE_CHAR_ANCHOR_LOCATIONS_UUID,
+                       BLECharacteristic::PROPERTY_READ |
+                       BLECharacteristic::PROPERTY_WRITE
+                      );
+    charAnchorLocations->addDescriptor(new BLE2902());
+    charAnchorLocations->setValue("");
+    charAnchorLocations->setCallbacks(new BLEHandlerCallbacks(charAnchorLocations, charAnchorLocationsDataReceived));
+
+    charAnchorDistances = service->createCharacteristic(BLE_CHAR_ANCHOR_DISTANCES_UUID,
+                       BLECharacteristic::PROPERTY_READ |
+                       BLECharacteristic::PROPERTY_NOTIFY
+                      );
+    p2902Descriptor = new BLE2902();
+    p2902Descriptor->setNotifications(true);
+    charAnchorDistances->addDescriptor(p2902Descriptor);
+    charAnchorDistances->setValue("");
+
+    charImu = service->createCharacteristic(BLE_CHAR_IMU_UUID,
+                       BLECharacteristic::PROPERTY_READ |
+                       BLECharacteristic::PROPERTY_NOTIFY
+                      );
+    p2902Descriptor = new BLE2902();
+    p2902Descriptor->setNotifications(true);
+    charImu->addDescriptor(p2902Descriptor);
+    charImu->setValue("");
+
+    charWheelSpeed = service->createCharacteristic(BLE_CHAR_WHEEL_SPEED_UUID,
+                       BLECharacteristic::PROPERTY_READ |
+                       BLECharacteristic::PROPERTY_NOTIFY
+                      );
+    p2902Descriptor = new BLE2902();
+    p2902Descriptor->setNotifications(true);
+    charWheelSpeed->addDescriptor(p2902Descriptor);
+    charWheelSpeed->setValue("");
+
+    charError = service->createCharacteristic(BLE_CHAR_ERROR_UUID,
+                       BLECharacteristic::PROPERTY_READ |
+                       BLECharacteristic::PROPERTY_NOTIFY
+                      );
+    p2902Descriptor = new BLE2902();
+    p2902Descriptor->setNotifications(true);
+    charError->addDescriptor(p2902Descriptor);
+    charError->setValue("");
 
     service->start();
     advertising->addServiceUUID(BLE_SVC_UUID);

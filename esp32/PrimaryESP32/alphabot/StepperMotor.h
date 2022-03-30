@@ -22,10 +22,11 @@ private:
     StepperState state;
     uint16_t calibration_step;
 
+    void stepperTask();
+
 public:
     void turnTo(int16_t dir);
     void calibrate();
-    void stepperTask();
     void startStepperTask();
 
     StepperMotor(uint8_t pin_in1, uint8_t pin_in2, uint8_t pin_in3, uint8_t pin_in4);
