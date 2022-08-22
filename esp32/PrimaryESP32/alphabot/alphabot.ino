@@ -285,7 +285,7 @@ void setup() {
     stepper_motor->calibrate();
     two_motor_drive = new TwoMotorDrive(motor_left, motor_right, stepper_motor);
     driving_assistent = new DrivingAssistent();
-    Wire.begin(I2C_SDA, I2C_SCL, 100000);
+    Wire.begin(I2C_SDA, I2C_SCL, (uint32_t)100000);
     distance_meter = new DistanceMeter(5);
     ble_handler = new BLEHandler(&charUpdateMotorsDataReceived,
                                  &charToggleDataReceived,
