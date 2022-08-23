@@ -2,8 +2,8 @@
 #include "config.h"
 
 float Compass::getRawDirection() {
-    motion_tracker->fetchOrientationData();
-    return motion_tracker->getYaw();
+    motion_tracker->fetchData();
+    return 360.0 - motion_tracker->getYaw();
 }
 
 void Compass::setAngleOffset(float offset) {

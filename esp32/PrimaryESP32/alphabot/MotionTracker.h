@@ -1,40 +1,38 @@
 #ifndef MOTION_TRACKER_H
 #define MOTION_TRACKER_H
 
-#include <ICM_20948.h>
+#include <Arduino-ICM20948.h>
 
 class MotionTracker {
 private:
-    ICM_20948_I2C icm20948;
-    bool initialized = false;
-    double quat_w;
-    double quat_x;
-    double quat_y;
-    double quat_z;
-    int16_t accuracy;
+    ArduinoICM20948 icm20948;
+    float accX;
+    float accY;
+    float accZ;
+    float gyrX;
+    float gyrY;
+    float gyrZ;
+    float magX;
+    float magY;
+    float magZ;
+    float roll;
+    float pitch;
+    float yaw;
 
 public:
-    bool isInitialized() const;
-    void fetchOrientationData();
-    void fetchRawData();
-    double getQuatW() const;
-    double getQuatX() const;
-    double getQuatY() const;
-    double getQuatZ() const;
-    int16_t getAccuracy() const;
-    double getRoll() const;
-    double getPitch() const;
-    double getYaw() const;
-    float getAccX();
-    float getAccY();
-    float getAccZ();
-    float getGyrX();
-    float getGyrY();
-    float getGyrZ();
-    float getMagX();
-    float getMagY();
-    float getMagZ();
-    float getTemp();
+    void fetchData();
+    float getRoll() const;
+    float getPitch() const;
+    float getYaw() const;
+    float getAccX() const;
+    float getAccY() const;
+    float getAccZ() const;
+    float getGyrX() const;
+    float getGyrY() const;
+    float getGyrZ() const;
+    float getMagX() const;
+    float getMagY() const;
+    float getMagZ() const;
 
     MotionTracker();
 };
