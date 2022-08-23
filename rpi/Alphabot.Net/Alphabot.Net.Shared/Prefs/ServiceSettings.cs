@@ -10,14 +10,10 @@ namespace Alphabot.Net.Car.Settings
             SocketBufferSize = 1024;
         }
 
-   
-
         public char CommandParamSeparator { get; set; }
-        public int AlphabotServicePort { get => _alphabotServicePort; set => _alphabotServicePort = value; }
-        
-        public int SocketBufferSize { get; set; }
-        
-        
 
+        public int AlphabotServicePort { get => _alphabotServicePort; set => _alphabotServicePort = value; }
+
+        public int SocketBufferSize { get; set; }
     }
 }

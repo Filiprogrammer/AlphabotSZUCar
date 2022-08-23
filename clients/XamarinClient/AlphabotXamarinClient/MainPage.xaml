@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlphabotXamarinClient.MainPage">
+    <ScrollView>
+        <StackLayout Margin="0,15,0,0">
+            <Label x:Name="lblIp" Text="IP-Adresse:"/>
+            <Entry Text="192.168.1.1" x:Name="entIp"></Entry>
+            <Label x:Name="lblPort" Text="Port:"/>
+            <Entry Text="9000" x:Name="entPort"></Entry>
+            <Button x:Name="btnConnect" Text="Connect" Clicked="Button_Connect_Clicked"></Button>
+            <Button x:Name="btnDisconnect" Text="Disconnect" Clicked="Button_Disconnect_Clicked" IsVisible="false"></Button>
+
+            <Button x:Name="btnCalibrate" Text="Calibrate Steering" Clicked="Button_Calibrate_Clicked" IsVisible="false"></Button>
+
+            <Button x:Name="btnSetPosAnchors" Text="Set Positioning Anchors" Clicked="Button_SetPosAnchors_Clicked" IsVisible="False"></Button>
+            <Label x:Name="lblAncId" Text="AncID" IsVisible="False"></Label>
+            <Entry x:Name="entAncId" IsVisible="False"></Entry>
+            <Label x:Name="lblAncX" Text="AncX" IsVisible="False"></Label>
+            <Entry x:Name="entAncX" IsVisible="False"></Entry>
+            <Label x:Name="lblAncY" Text="AncY" IsVisible="False"></Label>
+            <Entry x:Name="entAncY" IsVisible="False"></Entry>
+            <Button x:Name="btnSendAnchorPos" Text="Send Anchor Position" Clicked="Button_SendPositioningAnchors_Clicked" IsVisible="False"></Button>
+
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="2">
+                <Label x:Name="lblLogPos" Text="Log Positioningsystem ON/OFF:" IsVisible="False"></Label>
+                <CheckBox CheckedChanged="CheckBox_LogPositionCheckedChanged" x:Name="cbxLogPositioningsys" IsChecked="True" IsVisible="False"></CheckBox>
+                <Label x:Name="lblDoPos" Text="Activate Positioningsystem ON/OFF:" IsVisible="False"></Label>
+                <CheckBox CheckedChanged="CheckBox_DoPositionCheckedChanged" x:Name="cbxDoPositioningsys" IsChecked="True" IsVisible="False"></CheckBox>
+                <Label x:Name="lblGyro" Text="Activate Gyroscope control ON/OFF:" IsVisible="False"></Label>
+                <CheckBox CheckedChanged="CheckBox_GyroCheckedChanged" x:Name="cbxGyro" IsChecked="False" IsVisible="False"></CheckBox>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="6">
+                <Label Text="X-Pos: not sent" x:Name="lblXpos" IsVisible="False"></Label>
+                <Label Text="Y-Pos: not sent" x:Name="lblYpos" IsVisible="False"></Label>
+            </StackLayout>
+
+            <Button x:Name="btnAddSpeed" Text="Drive forward (speed 3)" Clicked="Button_AddSpeedClicked" IsVisible="False"></Button>
+            <Button x:Name="btnRemoveSpeed"  Text="Drive backward (speed -3)" Clicked="Button_RemoveSpeedClicked" IsVisible="False"></Button>
+            <Button x:Name="btnSteerLeft" Text="steer left(steer -10)" Clicked="Button_SteerLeftClicked" IsVisible="False"></Button>
+            <Button x:Name="btnSteerRight" Text="steer right(steer 10)" Clicked="Button_SteerRightClicked" IsVisible="False"></Button>
+            <Label Text="cur speed: 0, cur steer: 0" x:Name="lblSpeedSteer" IsVisible="False"></Label>
+
+            <Label Text="Last ping: N/A ms" x:Name="lblPing" IsVisible="False"></Label>
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -28,7 +28,7 @@ namespace AlphabotClientLibrary.Shared.Requests
         }
 
         /// <summary>
-        /// Remove obstacle by its id. If there are multiple objects in the same position, all of them will be removed.
+        /// Remove obstacle by its id.
         /// </summary>
         /// <param name="position"></param>
         public RemoveObstacleRequest(ushort Id)

@@ -31,7 +31,7 @@ namespace AlphabotClientLibrary.Test.Tcp.Server
                     StringBuilder receivedBytes = new StringBuilder("[CONNECTION]: Received the following bytes:");
 
                     foreach (var receivedByte in msg)
-                        sentBytes.AppendFormat(" 0x{0,2:X2},", receivedByte);
+                        receivedBytes.AppendFormat(" 0x{0,2:X2},", receivedByte);
 
                     Console.WriteLine(receivedBytes.ToString());
 

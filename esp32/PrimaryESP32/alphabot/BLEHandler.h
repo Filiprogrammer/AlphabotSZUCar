@@ -15,21 +15,33 @@ private:
 public:
     BLECharacteristic* charClientPing;
     BLECharacteristic* charUpdateMotors;
-    BLECharacteristic* charCollDetect;
-    BLECharacteristic* charAIDrive;
-    BLECharacteristic* charLPS;
-    BLECharacteristic* charPosUpdate;
-    BLECharacteristic* charCalibrate;
-    BLECharacteristic* charInvite;
-    BLECharacteristic* charPathfindingObstacles;
+    BLECharacteristic* charToggle;
+    BLECharacteristic* charSensor;
     BLECharacteristic* charPathfindingTarget;
+    BLECharacteristic* charCalibrate;
+    BLECharacteristic* charAddObstacle;
+    BLECharacteristic* charRemoveObstacle;
     BLECharacteristic* charPathfindingPath;
+    BLECharacteristic* charAnchorLocations;
+    BLECharacteristic* charAnchorDistances;
+    BLECharacteristic* charImu;
+    BLECharacteristic* charWheelSpeed;
+    BLECharacteristic* charError;
 
     void startAdvertising();
     void stopAdvertising();
     uint32_t getConnectedCount();
 
-    BLEHandler(void (*dataReceived)(BLEUUID, const char*, size_t), void (*disconnected)(), void (*connected)());
+    BLEHandler(void (*charUpdateMotorsDataReceived)(const char*, size_t),
+               void (*charToggleDataReceived)(const char*, size_t),
+               void (*charToggleStateChanged)(BLECharacteristicCallbacks::Status, uint32_t),
+               void (*charPathfindingTargetDataReceived)(const char*, size_t),
+               void (*charCalibrateDataReceived)(const char*, size_t),
+               void (*charAddObstacleDataReceived)(const char*, size_t),
+               void (*charAddObstacleStateChanged)(BLECharacteristicCallbacks::Status, uint32_t),
+               void (*charRemoveObstacleDataReceived)(const char*, size_t),
+               void (*charAnchorLocationsDataReceived)(const char*, size_t),
+               void (*disconnected)(), void (*connected)());
     ~BLEHandler();
 };
 

@@ -1,6 +1,5 @@
 using System.Device.Gpio;
 using Alphabot.Net.Car.Contracts;
-using Alphabot.Net.Shared.Logger;
 
 namespace Alphabot.Net.Car.Devices
 {
@@ -15,7 +14,6 @@ namespace Alphabot.Net.Car.Devices
         private readonly int _motorControlPin2;
         
         private readonly ISpeedController _speedController;
-
 
         /// <summary>
         /// Instance using two pins which allows to in both directions;

@@ -66,6 +66,8 @@ void TwoMotorDrive::updateMotors(int8_t x, int8_t y) {
     this->steer(dir * 14.0);
     this->speed = y;
     this->steer_direction = x;
+    this->left_speed = MAX(MIN(speed_left, 127), -127);
+    this->right_speed = MAX(MIN(speed_right, 127), -127);
 }
 
 int8_t TwoMotorDrive::getSpeed() const {
@@ -74,6 +76,14 @@ int8_t TwoMotorDrive::getSpeed() const {
 
 int8_t TwoMotorDrive::getSteerDirection() const {
     return this->steer_direction;
+}
+
+int8_t TwoMotorDrive::getLeftSpeed() const {
+    return this->left_speed;
+}
+
+int8_t TwoMotorDrive::getRightSpeed() const {
+    return this->right_speed;
 }
 
 TwoMotorDrive::TwoMotorDrive(Motor* motor_left, Motor* motor_right, StepperMotor* motor_steer) {

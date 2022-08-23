@@ -13,19 +13,21 @@ namespace AlphabotWPFClient
 {
     public struct Obstacle
     {
-        public Obstacle(short x, short y, short width, short height, bool selected = false)
+        public Obstacle(short x, short y, ushort width, ushort height, ushort id, bool selected = false)
         {
             X = x;
             Y = y;
             Width = width;
             Height = height;
+            Id = id;
             Selected = selected;
         }
 
         public short X { get; }
         public short Y { get; }
-        public short Width { get; }
-        public short Height { get; }
+        public ushort Width { get; }
+        public ushort Height { get; }
+        public ushort Id { get; }
         public bool Selected { get; set; }
     }
 
@@ -126,84 +128,68 @@ namespace AlphabotWPFClient
 
         private void ProcessLine(string line)
         {
-            if (line.StartsWith("POSUPDATE: "))
+            if (line.StartsWith("SENSOR: "))
             {
-                string[] vals = line.Substring(11).Split(';');
-
-                if (vals.Length < 10)
-                    return;
-
-                ushort.TryParse(vals[0], out frontDist);
-                ushort.TryParse(vals[1], out leftDist);
-                ushort.TryParse(vals[2], out rightDist);
-                ushort.TryParse(vals[3], out backDist);
-                ushort.TryParse(vals[4], out anchor1_dist);
-                ushort.TryParse(vals[5], out anchor2_dist);
-                ushort.TryParse(vals[6], out anchor3_dist);
-                short.TryParse(vals[7], out dir);
-                short.TryParse(vals[8], out lps_x);
-                short.TryParse(vals[9], out lps_y);
-                RedrawMap();
-            }
-            else if (line.StartsWith("PATHFINDING_PATH: "))
-            {
-                string hex = line.Substring(18);
-                path = Enumerable.Range(0, hex.Length)
-                     .Where(x => x % 2 == 0)
-                     .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                     .ToArray();
-                RedrawMap();
-            }
-            else if (line.StartsWith("LPS: "))
-            {
-                string hex = line.Substring(5);
-
-                if (hex.Length == 26)
-                {
-                    byte[] bytes = Enumerable.Range(0, hex.Length)
-                         .Where(x => x % 2 == 0)
-                         .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                         .ToArray();
-
-                    lps_beacon0x = (short)(bytes[1] | (bytes[2] << 8));
-                    lps_beacon0y = (short)(bytes[3] | (bytes[4] << 8));
-                    lps_beacon1x = (short)(bytes[5] | (bytes[6] << 8));
-                    lps_beacon1y = (short)(bytes[7] | (bytes[8] << 8));
-                    lps_beacon2x = (short)(bytes[9] | (bytes[10] << 8));
-                    lps_beacon2y = (short)(bytes[11] | (bytes[12] << 8));
-                }
-            }
-            else if (line.StartsWith("PATHFINDING_OBSTACLES: "))
-            {
-                string hex = line.Substring(24);
+                string hex = line.Substring(8);
                 byte[] bytes = Enumerable.Range(0, hex.Length)
                      .Where(x => x % 2 == 0)
                      .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                      .ToArray();
 
-                if (bytes.Length >= 1)
+                if (bytes.Length < 2)
+                    return;
+
+                byte[] sensorTypes = new byte[8];
+                byte sensorCount = 8;
+
+                for (byte i = 0; i < 8; ++i)
                 {
-                    if (bytes[0] == 0)
+                    byte sensorType = (byte)((bytes[i / 4] >> ((i % 4) * 2)) & 0x03);
+
+                    if (sensorType == 0)
+                        sensorCount = i;
+                    else
+                        sensorTypes[i] = sensorType;
+                }
+
+                byte offset = 2;
+
+                for (byte i = 0; i < sensorCount; ++i)
+                {
+                    switch (sensorTypes[i])
                     {
-                        // Clear obstacles
-                        obstacles.Clear();
-                    }
-                    else if (bytes[0] == 1 && bytes.Length >= 9)
-                    {
-                        // Add obstalce
-                        short obstacle_x = (short)(bytes[1] | (bytes[2] << 8));
-                        short obstacle_y = (short)(bytes[3] | (bytes[4] << 8));
-                        short obstacle_w = (short)(bytes[5] | (bytes[6] << 8));
-                        short obstacle_h = (short)(bytes[7] | (bytes[8] << 8));
-                        obstacles.Add(new Obstacle(obstacle_x, obstacle_y, obstacle_w, obstacle_h));
-                    }
-                    else if (bytes[0] == 2)
-                    {
-                        // Remove obstacle
+                        case 1:
+                            // Distance sensor
+                            int direction = bytes[offset] * 2;
+                            ushort distance = (ushort)(bytes[offset + 1] * 2);
+
+                            if (direction == 0)
+                                frontDist = distance;
+                            else if (direction == 334)
+                                leftDist = distance;
+                            else if (direction == 180)
+                                backDist = distance;
+                            else if (direction == 24)
+                                rightDist = distance;
+
+                            offset += 2;
+                            break;
+                        case 2:
+                            // Position
+                            lps_x = (short)(bytes[offset] | ((bytes[offset + 1] & 0x0F) << 8));
+                            lps_y = (short)(((bytes[offset + 1] & 0xF0) >> 4) | (bytes[offset + 2] << 4));
+                            offset += 3;
+                            break;
+                        case 3:
+                            // Compass
+                            dir = (short)(bytes[offset] | (bytes[offset + 1] << 8));
+                            offset += 2;
+                            break;
                     }
                 }
 
-                RedrawMap();
+                if (sensorCount != 0)
+                    RedrawMap();
             }
             else if (line.StartsWith("PATHFINDING_TARGET: "))
             {
@@ -220,6 +206,100 @@ namespace AlphabotWPFClient
                     target_x = (short)(bytes[0] | (bytes[1] << 8));
                     target_y = (short)(bytes[2] | (bytes[3] << 8));
                     has_target = true;
+                }
+            }
+            else if (line.StartsWith("ADD_OBSTACLE: "))
+            {
+                string hex = line.Substring(14);
+
+                if (hex.Length == 36)
+                {
+                    byte[] bytes = Enumerable.Range(0, hex.Length)
+                         .Where(x => x % 2 == 0)
+                         .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                         .ToArray();
+
+                    short obstacle_x = (short)(bytes[8] | (bytes[9] << 8));
+                    short obstacle_y = (short)(bytes[10] | (bytes[11] << 8));
+                    ushort obstacle_w = (ushort)(bytes[12] | (bytes[13] << 8));
+                    ushort obstacle_h = (ushort)(bytes[14] | (bytes[15] << 8));
+                    ushort obstacle_id = (ushort)(bytes[16] | (bytes[17] << 8));
+                    obstacles.Add(new Obstacle(obstacle_x, obstacle_y, obstacle_w, obstacle_h, obstacle_id));
+                    RedrawMap();
+                }
+            }
+            else if (line.StartsWith("REMOVE_OBSTACLE: "))
+            {
+                string hex = line.Substring(17);
+                byte[] bytes = Enumerable.Range(0, hex.Length)
+                     .Where(x => x % 2 == 0)
+                     .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                     .ToArray();
+
+                if (bytes.Length == 0)
+                {
+                    obstacles.Clear();
+                    RedrawMap();
+                }
+                else if (bytes.Length == 12)
+                {
+                    short x = (short)(bytes[8] | (bytes[9] << 8));
+                    short y = (short)(bytes[10] | (bytes[11] << 8));
+                    bool removed = false;
+
+                    foreach (Obstacle o in obstacles)
+                    {
+                        if (x >= o.X && x <= (o.X + o.Width) && y >= o.Y && y <= (o.Y + o.Height))
+                        {
+                            obstacles.Remove(o);
+                            removed = true;
+                        }
+                    }
+
+                    if (removed)
+                        RedrawMap();
+                }
+                else if (bytes.Length == 10)
+                {
+                    short id = (short)(bytes[8] | (bytes[9] << 8));
+
+                    foreach (Obstacle o in obstacles)
+                    {
+                        if (id == o.Id)
+                        {
+                            obstacles.Remove(o);
+                            RedrawMap();
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (line.StartsWith("PATHFINDING_PATH: "))
+            {
+                string hex = line.Substring(18);
+                path = Enumerable.Range(0, hex.Length)
+                     .Where(x => x % 2 == 0)
+                     .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                     .ToArray();
+                RedrawMap();
+            }
+            else if (line.StartsWith("ANCHOR_LOCATIONS: "))
+            {
+                string hex = line.Substring(18);
+
+                if (hex.Length == 40)
+                {
+                    byte[] bytes = Enumerable.Range(0, hex.Length)
+                         .Where(x => x % 2 == 0)
+                         .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                         .ToArray();
+
+                    lps_beacon0x = (short)(bytes[8] | (bytes[9] << 8));
+                    lps_beacon0y = (short)(bytes[10] | (bytes[11] << 8));
+                    lps_beacon1x = (short)(bytes[12] | (bytes[13] << 8));
+                    lps_beacon1y = (short)(bytes[14] | (bytes[15] << 8));
+                    lps_beacon2x = (short)(bytes[16] | (bytes[17] << 8));
+                    lps_beacon2y = (short)(bytes[18] | (bytes[19] << 8));
                 }
             }
         }
@@ -295,14 +375,14 @@ namespace AlphabotWPFClient
                 {
                     int prevX = path[0] * 10;
                     int prevY = path[1] * 10;
-                    int len = path[2];
+                    int len = path[2] & 0x3F;
 
                     for (int i = 0; i < len; ++i)
                     {
-                        int val = ((path[3 + (i * 3) / 8] & 0xFF) >> ((i * 3) % 8)) & 7;
+                        int val = ((path[2 + (i * 3 + 6) / 8] & 0xFF) >> ((i * 3 + 6) % 8)) & 7;
 
-                        if (((i * 3) % 8) > 5)
-                            val |= ((path[4 + (i * 3) / 8] & 0xFF) << (8 - ((i * 3) % 8))) & 7;
+                        if (((i * 3 + 6) % 8) > 5)
+                            val |= ((path[3 + (i * 3 + 6) / 8] & 0xFF) << (8 - ((i * 3 + 6) % 8))) & 7;
 
                         if (val == 4)
                             val = 8;

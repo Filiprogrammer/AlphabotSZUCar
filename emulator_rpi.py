@@ -77,7 +77,7 @@ def handle_socket_communication():
 def hcsr04_front_pinEchoHandler(state):
     print("Front Echo State: " + str(state))
     if is_connected:
-        m = 0x3f200000 + int(HCSR04_ECHO / 32)
+        m = 0x3f200000 + int(HCSR04_ECHO / 32) * 4
         if state:
             m += 0x1c
         else:

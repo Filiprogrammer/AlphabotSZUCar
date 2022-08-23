@@ -1,18 +1,16 @@
 using Alphabot.Net.Shared.Logger;
-using Alphabot.Net.Remote.Core;
 
 namespace Alphabot.Net.Remote.Commands
 {
-    internal class ActionCenterSteering: AlphabotAction
+    internal class ActionCenterSteering : AlphabotAction
     {
-        public ActionCenterSteering(string request) : base(request)
+        public ActionCenterSteering() : base()
         {
         }
 
         public override void Perform()
         {
             _car.CenterActiveSteering();
-            ActionResult = "ok";
             _logger.Log(LogLevel.Information, "AlphabotCenterSteeringAction.Perform done");
         }
     }

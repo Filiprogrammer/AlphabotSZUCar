@@ -28,14 +28,31 @@ void Pathfinder::clearObstacles() {
     obstacles.clear();
 }
 
-void Pathfinder::addObstacle(float x, float y, float width, float height) {
+void Pathfinder::addObstacle(float x, float y, float width, float height, uint16_t id) {
     struct Obstacle obstacle;
     obstacle.x = x;
     obstacle.y = y;
     obstacle.width = width;
     obstacle.height = height;
+    obstacle.id = id;
     obstacles.push_back(obstacle);
     updateMapDimensions();
+}
+
+void Pathfinder::removeObstacleById(uint16_t id) {
+    obstacles.erase(std::remove_if(obstacles.begin(), obstacles.end(), [&](const Obstacle& o) {
+        return id == o.id;
+    }), obstacles.end());
+}
+
+void Pathfinder::removeObstacleByPosition(float x, float y) {
+    obstacles.erase(std::remove_if(obstacles.begin(), obstacles.end(), [&](const Obstacle& o) {
+        return (x >= o.x && x <= (o.x + o.width) && y >= o.y && y <= (o.y + o.height));
+    }), obstacles.end());
+}
+
+std::list<struct Obstacle> Pathfinder::getObstacles() {
+    return obstacles;
 }
 
 void Pathfinder::setTarget(float x, float y, bool update) {

@@ -146,7 +146,46 @@ the Alphabot changes a setting by itself.
 
 see [3.1. Toggle bit field](#31-toggle---bit-field)
 
-### Error message (Packet ID: 0x08)
+### Anchor distance response (Packet ID: 0x08)
+
+| Field Name | Field Type | Notes                                   |
+|------------|------------|-----------------------------------------|
+| Distance   | uint16     | The distance to anchor 0 in centimeters |
+| Distance   | uint16     | The distance to anchor 1 in centimeters |
+| Distance   | uint16     | The distance to anchor 2 in centimeters |
+
+### Wheel speed response (Packet ID: 0x09)
+
+| Field Name  | Field Type | Notes                                     |
+|-------------|------------|-------------------------------------------|
+| Speed left  | int8       | The speed of the left wheel in m/s * 100  |
+| Speed right | int8       | The speed of the right wheel in m/s * 100 |
+
+### Gyroscope response (Packet ID: 0x0A)
+
+| Field Name | Field Type | Notes                                    |
+|------------|------------|------------------------------------------|
+| X-axis     | int16      | The speed of the x-axis in degree/s * 10 |
+| Y-axis     | int16      | The speed of the y-axis in degree/s * 10 |
+| Z-axis     | int16      | The speed of the z-axis in degree/s * 10 |
+
+### Accelerometer response (Packet ID: 0x0B)
+
+| Field Name | Field Type | Notes                                              |
+|------------|------------|----------------------------------------------------|
+| X-axis     | int16      | The acceleration of the x-axis in m/s&#xB2; * 1000 |
+| Y-axis     | int16      | The acceleration of the y-axis in m/s&#xB2; * 1000 |
+| Z-axis     | int16      | The acceleration of the z-axis in m/s&#xB2; * 1000 |
+
+### Magnetometer response (Packet ID: 0x0C)
+
+| Field Name | Field Type | Notes                                                   |
+|------------|------------|---------------------------------------------------------|
+| X-axis     | int16      | The magnetic flux density of the x-axis in &#xB5;T * 10 |
+| Y-axis     | int16      | The magnetic flux density of the y-axis in &#xB5;T * 10 |
+| Z-axis     | int16      | The magnetic flux density of the z-axis in &#xB5;T * 10 |
+
+### Error message (Packet ID: 0x0D)
 
 | Field Name     | Field Type         | Notes                                          |
 |----------------|--------------------|------------------------------------------------|
@@ -215,7 +254,7 @@ Obstacles can be removed either by ID or by position.
 If the characteristic is 0 bytes long, ALL obstacles will be removed.
 If the characteristic is 10 bytes long, the value is interpreted as the obstacle ID.
 If the characteristic is 12 bytes long, the values are interpreted as the position.
-The Alphabot will send one byte with content 0x00 when the deletion is finished in every case.
+The Alphabot will send the corresponding packet when the removal of obstacles is completed.
 If there are multiple objects on the same position, all of them will be removed.
 
 | Field Name | Field Type | Notes                                                       |
@@ -251,6 +290,30 @@ If there are multiple objects on the same position, all of them will be removed.
 | Position X | int16      | The x coordinate in centimetres of anchor 2                 |
 | Position Y | int16      | The y coordinate in centimetres of anchor 2                 |
 
+### BLE_CHAR_ANCHORS_DISTANCES (UUID: 254492a2-9324-469b-b1e2-4d4590972c35)
+
+| Field Name | Field Type | Notes                                   |
+|------------|------------|-----------------------------------------|
+| Distance   | uint16     | The distance to anchor 0 in centimetres |
+| Distance   | uint16     | The distance to anchor 1 in centimetres |
+| Distance   | uint16     | The distance to anchor 2 in centimetres |
+
+### BLE_CHAR_IMU (UUID: 93758afa-ce6f-4670-9562-ce92bda84d49)
+
+| Field Name | Field Type | Notes                                                                                                                                   |
+|------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| Type       | int8       | Indicates whether the packet is a gyroscope-package (value 0), an accelerometer-package (value 1), or an magnetometer-package (value 2) |
+| x-Axis     | int16      | The value of the x-Axis                                                                                                                 |
+| y-Axis     | int16      | The value of the y-Axis                                                                                                                 |
+| z-Axis     | int16      | The value of the z-Axis                                                                                                                 |
+
+### BLE_CHAR_WHEEL_SPEED (UUID: 8efafa16-15de-461f-bde1-493261201e2b)
+
+| Field Name  | Field Type | Notes                                     |
+|-------------|------------|-------------------------------------------|
+| Speed left  | int8       | The speed of the left wheel in m/s * 100  |
+| Speed right | int8       | The speed of the right wheel in m/s * 100 |
+
 ### BLE_CHAR_ERROR (UUID: dc458f08-ea3e-4fe1-adb3-25c840be081a)
 
 If the original payload was 19 or 20 bytes long, the last one or two bytes won't be shown.
@@ -274,15 +337,15 @@ The 2nd byte changes certain logging options.
 
 ### 3.1.1. Bit field – 1. Byte (Settings)
 
-| Bit 7 (MSB)         | Bit 6  | Bit 5       | Bit 4               | Bit 3           | Bit 2        | Bit 1    | Bit 0 (LSB) |
-|---------------------|--------|-------------|---------------------|-----------------|--------------|----------|-------------|
-| Compass calibration | Invite | Positioning | Collision Avoidance | Navigation-Mode | Explore-Mode | not used | not used    |
+| Bit 7 (MSB) | Bit 6       | Bit 5               | Bit 4           | Bit 3        | Bit 2    | Bit 1    | Bit 0 (LSB) |
+|-------------|-------------|---------------------|-----------------|--------------|----------|----------|-------------|
+| Invite      | Positioning | Collision Avoidance | Navigation-Mode | Explore-Mode | not used | not used | not used    |
 
 ### 3.1.2. Bit field – 2. Byte (Logging)
 
-| Bit 7 (MSB) | Bit 6             | Bit 5           | Bit 4             | Bit 3            | Bit 2       | Bit 1         | Bit 0 (LSB) |
-|-------------|-------------------|-----------------|-------------------|------------------|-------------|---------------|-------------|
-| Positioning | Obstacle distance | Pathfinder path | Compass direction | Anchor distances | Wheel speed | Accelerometer | Gyroscope   |
+| Bit 7 (MSB) | Bit 6             | Bit 5           | Bit 4             | Bit 3            | Bit 2       | Bit 1                     | Bit 0 (LSB) |
+|-------------|-------------------|-----------------|-------------------|------------------|-------------|---------------------------|-------------|
+| Positioning | Obstacle distance | Pathfinder path | Compass direction | Anchor distances | Wheel speed | Inertial Measurement Unit | not used    |
 
 ## 3.2. Sensor – Packets (BLE only)
 
