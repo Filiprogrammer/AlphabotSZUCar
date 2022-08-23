@@ -9,6 +9,7 @@
 #include <soc/rtc_cntl_reg.h>
 #include "PositioningSystem.h"
 #include <math.h>
+#include "MotionTracker.h"
 #include "Compass.h"
 #include "SaveFile.h"
 #include "Navigator.h"
@@ -20,6 +21,7 @@ DistanceMeter* distance_meter = NULL;
 StepperMotor* stepper_motor = NULL;
 DrivingAssistent* driving_assistent = NULL;
 PositioningSystem* positioning_system = NULL;
+MotionTracker* motion_tracker = NULL;
 Compass* compass = NULL;
 SaveFile* save_file = NULL;
 Navigator* navigator = NULL;
@@ -291,7 +293,8 @@ void setup() {
     ble_char_toggle_sender = new BLECharacteristicSender(ble_handler->charToggle, &onCharToggleArrive);
     ble_char_add_obstacle_sender = new BLECharacteristicSender(ble_handler->charAddObstacle, &onCharAddObstacleArrive);
     positioning_system = new PositioningSystem(DW1000_ANCHOR_1_SHORT_ADDRESS, DW1000_ANCHOR_2_SHORT_ADDRESS, DW1000_ANCHOR_3_SHORT_ADDRESS);
-    compass = new Compass();
+    motion_tracker = new MotionTracker();
+    compass = new Compass(motion_tracker);
     save_file = new SaveFile();
     compass->setAngleOffset(save_file->getCompassAngleOffset());
     navigator = new Navigator(two_motor_drive);

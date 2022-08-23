@@ -16,7 +16,7 @@ public:
     float getAngleOffset() const;
     float getDirection();
 
-    Compass();
+    Compass(MotionTracker* motion_tracker);
 };
 
 #endif

@@ -18,6 +18,6 @@ float Compass::getDirection() {
     return angle_offset + getRawDirection();
 }
 
-Compass::Compass() {
-    motion_tracker = new MotionTracker();
+Compass::Compass(MotionTracker* motion_tracker) {
+    this->motion_tracker = motion_tracker;
 }
