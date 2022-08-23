@@ -352,7 +352,7 @@ void loop() {
 
     if (logging.compass_direction || settings.positioning) {
         raw_dir = compass->getRawDirection();
-        dir = compass->getAngleOffset() + raw_dir;
+        dir = fmodf(compass->getAngleOffset() + raw_dir + 360.0, 360.0);
     }
 
     if (settings.positioning) {
@@ -450,9 +450,9 @@ void loop() {
 
         if (logging.positioning) {
             sensor_logging_val[sensor_logging_val_len] = (uint8_t)lps_x;
-            sensor_logging_val[sensor_logging_val_len + 1] = (((uint8_t)lps_x >> 8) & 0x07) | ((lps_x < 0) << 3);
+            sensor_logging_val[sensor_logging_val_len + 1] = (((uint16_t)lps_x >> 8) & 0x07) | ((lps_x < 0) << 3);
             sensor_logging_val[sensor_logging_val_len + 1] |= (uint8_t)lps_y << 4;
-            sensor_logging_val[sensor_logging_val_len + 2] = (((uint8_t)lps_y >> 4) & 0x7F) | ((lps_y < 0) << 7);
+            sensor_logging_val[sensor_logging_val_len + 2] = (((uint16_t)lps_y >> 4) & 0x7F) | ((lps_y < 0) << 7);
             sensor_logging_val_len += 3;
             sensor_logging_val[sensor_logging_counter / 4] |= 2 << ((sensor_logging_counter % 4) * 2);
             sensor_logging_counter++;
@@ -460,7 +460,7 @@ void loop() {
 
         if (logging.compass_direction) {
             sensor_logging_val[sensor_logging_val_len] = (uint8_t)dir;
-            sensor_logging_val[sensor_logging_val_len + 1] = (uint8_t)dir >> 8;
+            sensor_logging_val[sensor_logging_val_len + 1] = (uint16_t)dir >> 8;
             sensor_logging_val_len += 2;
             sensor_logging_val[sensor_logging_counter / 4] |= 3 << ((sensor_logging_counter % 4) * 2);
             sensor_logging_counter++;
