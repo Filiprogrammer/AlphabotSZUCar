@@ -1,0 +1,10 @@
+{
+    "name": "Arduino_ICM20948_DMP_Full-Function",
+    "description": "Arduino Library for ICM20948 using DMP for i2c and SPI",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/isouriadakis/Arduino_ICM20948_DMP_Full-Function"
+    },
+    "frameworks": "arduino"
+}
