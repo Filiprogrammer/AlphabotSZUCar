@@ -426,7 +426,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                                 break;
                             case 2:
                                 // Position
-                                final int x = vals[offset] | ((vals[offset + 1] & 0x0F) << 8);
+                                final int x = (vals[offset] & 0xFF) | ((vals[offset + 1] & 0x07) << 8) | (((vals[offset + 1] & 0x08) != 0) ? 0xFFFFF800 : 0);
                                 final int y = ((vals[offset + 1] & 0xF0) >> 4) | (vals[offset + 2] << 4);
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -439,7 +439,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                                 break;
                             case 3:
                                 // Compass
-                                int compass_direction = vals[offset] | (vals[offset + 1] << 8);
+                                int compass_direction = (vals[offset] & 0xFF) | (vals[offset + 1] << 8);
                                 lpsView.updateDirection(compass_direction, false);
                                 offset += 2;
                                 break;
