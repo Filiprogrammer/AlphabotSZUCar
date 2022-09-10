@@ -116,8 +116,11 @@ Degree 90 is the right direction.
 
 ### Compass response (Packet ID: 0x04)
 
-Degree 0 represents the direction, in which the Alphabot is headed towards.
-Degree 90 is the right direction.
+The direction is relative to the coordinate system, where +X is right and +Y is down.\
+0 degrees indicates the Alphabot is facing in the +X direction.\
+90 degrees indicates the Alphabot is facing in the +Y direction.\
+180 degrees indicates the Alphabot is facing in the -X direction.\
+270 degrees indicates the Alphabot is facing in the -Y direction.
 
 | Field Name | Field Type | Notes                       |
 |------------|------------|-----------------------------|
@@ -380,8 +383,11 @@ The position will be split into 3 bytes, 12 bit per coordinate
 
 ### Compass response (Sensor type: 0b11)
 
-Degree 0 represents the direction, in which the Alphabot is headed towards.
-Degree 90 is the right direction.
+The direction is relative to the coordinate system, where +X is right and +Y is down.\
+0 degrees indicates the Alphabot is facing in the +X direction.\
+90 degrees indicates the Alphabot is facing in the +Y direction.\
+180 degrees indicates the Alphabot is facing in the -X direction.\
+270 degrees indicates the Alphabot is facing in the -Y direction.
 
 | Field Name | Field Type | Notes                       |
 |------------|------------|-----------------------------|
