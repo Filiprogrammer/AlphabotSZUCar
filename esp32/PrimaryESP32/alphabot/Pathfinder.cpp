@@ -9,14 +9,17 @@ void Pathfinder::updateMapDimensions() {
     for (Obstacle o : obstacles) {
         map_x = _min(map_x, o.x - 50);
         map_y = _min(map_y, o.y - 50);
-        map_width = _max(map_x + map_width, o.x + o.width + 50) - map_x;
-        map_height = _max(map_y + map_height, o.y + o.height + 50) - map_y;
     }
 
     map_x = _min(map_x, starting_pos_x - 30);
     map_y = _min(map_y, starting_pos_y - 30);
     map_x = _min(map_x, target_x - 30);
     map_y = _min(map_y, target_y - 30);
+    
+    for (Obstacle o : obstacles) {
+        map_width = _max(map_x + map_width, o.x + o.width + 50) - map_x;
+        map_height = _max(map_y + map_height, o.y + o.height + 50) - map_y;
+    }
 
     map_width = _max(map_x + map_width, starting_pos_x + 30) - map_x;
     map_height = _max(map_y + map_height, starting_pos_y + 30) - map_y;
