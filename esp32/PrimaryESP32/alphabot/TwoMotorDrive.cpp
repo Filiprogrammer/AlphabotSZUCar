@@ -90,4 +90,8 @@ TwoMotorDrive::TwoMotorDrive(Motor* motor_left, Motor* motor_right, StepperMotor
     this->motor_left = motor_left;
     this->motor_right = motor_right;
     this->motor_steer = motor_steer;
+    speed = 0;
+    steer_direction = 0;
+    left_speed = 0;
+    right_speed = 0;
 }

@@ -144,6 +144,12 @@ PositioningSystem::PositioningSystem(uint16_t anc1_short_address, uint16_t anc2_
     this->anc1_short_address = anc1_short_address;
     this->anc2_short_address = anc2_short_address;
     this->anc3_short_address = anc3_short_address;
+    anc1_x = 0;
+    anc1_y = 0;
+    anc2_x = 100;
+    anc2_y = 0;
+    anc3_x = 0;
+    anc3_y = 100;
 
     Serial2.begin(115200, SERIAL_8N1, SERIAL2_RX, SERIAL2_TX);
 }
