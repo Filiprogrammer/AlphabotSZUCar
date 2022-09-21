@@ -41,9 +41,9 @@ extern "C" {
 struct inv_icm20948;
 
 /** @brief Max size that can be read across I2C or SPI data lines */
-#define INV_MAX_SERIAL_READ 16
+#define INV_MAX_SERIAL_READ 32
 /** @brief Max size that can be written across I2C or SPI data lines */
-#define INV_MAX_SERIAL_WRITE 16
+#define INV_MAX_SERIAL_WRITE 32
 
 void INV_EXPORT inv_icm20948_transport_init(struct inv_icm20948 * s);
 
