@@ -34,7 +34,7 @@ public:
     float getMagY() const;
     float getMagZ() const;
 
-    MotionTracker();
+    MotionTracker(bool enable_gyro, bool enable_acc, bool enable_mag, bool enable_quat9);
 };
 
 #endif
