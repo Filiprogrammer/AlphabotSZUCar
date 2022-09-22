@@ -755,9 +755,6 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
         lpsView.anchor2x = anchor2x;
         lpsView.anchor2y = anchor2y;
 
-        positioning = true;
-        sendToggleUpdate();
-
         byte[] vals = new byte[20];
         writeTimestamp(vals, 0);
         vals[8] = (byte)lpsView.anchor0x;
@@ -773,6 +770,9 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
         vals[18] = (byte)lpsView.anchor2y;
         vals[19] = (byte)(lpsView.anchor2y >> 8);
         anchorLocationsCharSender.sendValue(vals);
+
+        positioning = true;
+        sendToggleUpdate();
 
         saveLPSAnchorsPreference();
 
