@@ -116,21 +116,22 @@ void PositioningSystem::calculatePosition(float anc1_dist, float anc2_dist, floa
     float P2[] = {anc2_x, anc2_y};
     float P3[] = {anc3_x, anc3_y};
 
-    float P2minusP1[] = {0, 0};
+    float P2minusP1[2];
     r2_subtract(P2, P1, P2minusP1);
-    float ex[] = {0, 0};
-    r2_scale(P2minusP1, 1 / r2_norm(P2minusP1), ex);
-    float P3minusP1[] = {0, 0};
+    float ex[2];
+    float r2_norm_P2minusP1 = r2_norm(P2minusP1);
+    r2_scale(P2minusP1, 1 / r2_norm_P2minusP1, ex);
+    float P3minusP1[2];
     r2_subtract(P3, P1, P3minusP1);
     float i = r2_dot(ex, P3minusP1);
 
-    float exmuli[] = {0, 0};
+    float exmuli[2];
     r2_scale(ex, i, exmuli);
-    float diff[] = {0, 0};
+    float diff[2];
     r2_subtract(P3minusP1, exmuli, diff);
-    float ey[] = {0, 0};
+    float ey[2];
     r2_scale(diff, 1 / r2_norm(diff), ey);
-    float d = r2_norm(P2minusP1);
+    float d = r2_norm_P2minusP1;
     float j = r2_dot(ey, P3minusP1);
 
     (*x) = anc1_x + (sq(anc1_dist) - sq(anc2_dist) + sq(d)) / (2 * d);
