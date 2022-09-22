@@ -1,12 +1,15 @@
 #include "PositioningSystem.h"
 #include "pinconfig.h"
 
-void PositioningSystem::readDistances(float* anc1_dist, float* anc2_dist, float* anc3_dist) {
+bool PositioningSystem::readDistances(float* anc1_dist, float* anc2_dist, float* anc3_dist) {
+    bool got_new_distances = false;
+
     while (Serial2.available()) {
         char c = Serial2.read();
 
         if (c == '\n') {
             serial2_buffer[serial2_buffer_position] = 0;
+            serial2_buffer_position = 0;
             uint16_t short_address;
 
             switch (serial2_buffer[0]) {
@@ -27,9 +30,21 @@ void PositioningSystem::readDistances(float* anc1_dist, float* anc2_dist, float*
                 case 'u':
                     serial2_buffer[5] = 0;
                     short_address = (uint16_t)strtol(&(serial2_buffer[1]), NULL, 16);
+                    uint8_t anchor_id;
+                    float* anc_dist;
 
-                    if (short_address != anc1_short_address && short_address != anc2_short_address && short_address != anc3_short_address)
+                    if (short_address == anc1_short_address) {
+                        anchor_id = 0;
+                        anc_dist = anc1_dist;
+                    } else if (short_address == anc2_short_address) {
+                        anchor_id = 1;
+                        anc_dist = anc2_dist;
+                    } else if (short_address == anc3_short_address) {
+                        anchor_id = 2;
+                        anc_dist = anc3_dist;
+                    } else {
                         break;
+                    }
 
                     char* tmp = strchr(&(serial2_buffer[6]), ':');
 
@@ -38,29 +53,35 @@ void PositioningSystem::readDistances(float* anc1_dist, float* anc2_dist, float*
 
                     tmp[0] = 0;
                     float range = atof(&(serial2_buffer[6]));
-                    range *= 100; // Convert from meters to centimeters
 
-                    if (short_address == anc1_short_address)
-                        (*anc1_dist) = ((*anc1_dist) + range) / 2.0;
-                    else if (short_address == anc2_short_address)
-                        (*anc2_dist) = ((*anc2_dist) + range) / 2.0;
-                    else if (short_address == anc3_short_address)
-                        (*anc3_dist) = ((*anc3_dist) + range) / 2.0;
+                    // Discard garbage data
+                    if (range >= 1000.00 || range < 0.00)
+                        break;
 
-                    #ifdef DEBUG
-                    Serial.print("DW1000 Device update: ");
-                    Serial.print(short_address, HEX);
-                    Serial.print(" Range: ");
-                    Serial.println(range);
-                    #endif
-                    break;
+                    float last_range = last_anc_ranges[anchor_id];
+
+                    // Only use the measurement if it does not differ more than 10 meters from the last one
+                    if (fabs(range - last_range) <= 10) {
+                        float range_cm = range * 100; // Convert from meters to centimeters
+                        (*anc_dist) = range_cm;
+
+                        #ifdef DEBUG
+                        Serial.print("DW1000 Device update: ");
+                        Serial.print(short_address, HEX);
+                        Serial.print(" Range: ");
+                        Serial.println(range_cm);
+                        #endif
+                        got_new_distances = true;
+                    }
+
+                    last_anc_ranges[anchor_id] = range;
             }
-
-            serial2_buffer_position = 0;
         } else {
             serial2_buffer[serial2_buffer_position++] = c;
         }
     }
+
+    return got_new_distances;
 }
 
 void PositioningSystem::setAnchorPositions(float anc1_x, float anc1_y, float anc2_x, float anc2_y, float anc3_x, float anc3_y) {
@@ -150,6 +171,9 @@ PositioningSystem::PositioningSystem(uint16_t anc1_short_address, uint16_t anc2_
     anc2_y = 0;
     anc3_x = 0;
     anc3_y = 100;
+    last_anc_ranges[0] = 0;
+    last_anc_ranges[1] = 0;
+    last_anc_ranges[2] = 0;
 
     Serial2.begin(115200, SERIAL_8N1, SERIAL2_RX, SERIAL2_TX);
 }

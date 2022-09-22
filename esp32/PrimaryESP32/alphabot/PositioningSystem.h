@@ -16,9 +16,10 @@ private:
     float anc2_y;
     float anc3_x;
     float anc3_y;
+    float last_anc_ranges[3];
 
 public:
-    void readDistances(float* anc1_dist, float* anc2_dist, float* anc3_dist);
+    bool readDistances(float* anc1_dist, float* anc2_dist, float* anc3_dist);
     void setAnchorPositions(float anc1_x, float anc1_y, float anc2_x, float anc2_y, float anc3_x, float anc3_y);
     void calculatePosition(float anc1_dist, float anc2_dist, float anc3_dist, float* x, float* y);
     float getAnc1X() const;
