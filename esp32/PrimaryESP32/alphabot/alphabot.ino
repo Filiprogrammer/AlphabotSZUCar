@@ -293,7 +293,7 @@ void setup() {
     ble_char_toggle_sender = new BLECharacteristicSender(ble_handler->charToggle, &onCharToggleArrive);
     ble_char_add_obstacle_sender = new BLECharacteristicSender(ble_handler->charAddObstacle, &onCharAddObstacleArrive);
     positioning_system = new PositioningSystem(DW1000_ANCHOR_1_SHORT_ADDRESS, DW1000_ANCHOR_2_SHORT_ADDRESS, DW1000_ANCHOR_3_SHORT_ADDRESS);
-    motion_tracker = new MotionTracker(false, false, false, true);
+    motion_tracker = new MotionTracker(false, false, false, false, true);
     compass = new Compass(motion_tracker);
     save_file = new SaveFile();
     compass->setAngleOffset(save_file->getCompassAngleOffset());

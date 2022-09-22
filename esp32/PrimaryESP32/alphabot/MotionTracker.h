@@ -9,6 +9,9 @@ private:
     float accX;
     float accY;
     float accZ;
+    float linAccX;
+    float linAccY;
+    float linAccZ;
     float gyrX;
     float gyrY;
     float gyrZ;
@@ -27,6 +30,9 @@ public:
     float getAccX() const;
     float getAccY() const;
     float getAccZ() const;
+    float getLinAccX() const;
+    float getLinAccY() const;
+    float getLinAccZ() const;
     float getGyrX() const;
     float getGyrY() const;
     float getGyrZ() const;
@@ -34,7 +40,7 @@ public:
     float getMagY() const;
     float getMagZ() const;
 
-    MotionTracker(bool enable_gyro, bool enable_acc, bool enable_mag, bool enable_quat9);
+    MotionTracker(bool enable_gyro, bool enable_acc, bool enable_mag, bool enable_linAcc, bool enable_quat9);
 };
 
 #endif
