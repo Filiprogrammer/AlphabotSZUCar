@@ -236,4 +236,13 @@ void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNod
     }
 }
 
-Pathfinder::Pathfinder() {}
+Pathfinder::Pathfinder() {
+    target_x = 0;
+    target_y = 0;
+    starting_pos_x = 0;
+    starting_pos_y = 0;
+    map_x = -30;
+    map_y = -30;
+    map_width = 60;
+    map_height = 60;
+}
