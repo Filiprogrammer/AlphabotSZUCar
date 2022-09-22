@@ -64,7 +64,7 @@ float MotionTracker::getYaw() const {
     return yaw;
 }
 
-MotionTracker::MotionTracker() {
+MotionTracker::MotionTracker(bool enable_gyro, bool enable_acc, bool enable_mag, bool enable_quat9) {
     accX = 0;
     accY = 0;
     accZ = 0;
@@ -85,13 +85,13 @@ MotionTracker::MotionTracker() {
         .cs_pin = 10,                       // SPI chip select pin
         .spi_speed = 7000000,               // SPI clock speed in Hz, max speed is 7MHz
         .mode = 1,                          // 0 = low power mode, 1 = high performance mode
-        .enable_gyroscope = true,           // Enables gyroscope output
-        .enable_accelerometer = true,       // Enables accelerometer output
-        .enable_magnetometer = true,        // Enables magnetometer output // Enables quaternion output
+        .enable_gyroscope = enable_gyro,    // Enables gyroscope output
+        .enable_accelerometer = enable_acc, // Enables accelerometer output
+        .enable_magnetometer = enable_mag,  // Enables magnetometer output
         .enable_gravity = false,            // Enables gravity vector output
         .enable_linearAcceleration = false, // Enables linear acceleration output
         .enable_quaternion6 = false,        // Enables quaternion 6DOF output
-        .enable_quaternion9 = true,         // Enables quaternion 9DOF output
+        .enable_quaternion9 = enable_quat9, // Enables quaternion 9DOF output
         .enable_har = false,                // Enables activity recognition
         .enable_steps = false,              // Enables step counter
         .gyroscope_frequency = 50,          // Max frequency = 225, min frequency = 1
