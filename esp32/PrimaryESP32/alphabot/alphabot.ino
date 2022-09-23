@@ -312,6 +312,64 @@ void setup() {
     logging.pathfinder_path = false;
     logging.obstacle_distance = false;
     logging.positioning = false;
+
+    xTaskCreatePinnedToCore(
+        navigatorTask,
+        "navigatorTask",
+        3072,               // Stack size of task
+        NULL,               // parameter of the task
+        1,                  // priority of the task
+        NULL,               // Task handle to keep track of created task
+        !xPortGetCoreID()); // Core id to pin the task to
+}
+
+void navigatorTask(void* args) {
+    for (;;) {
+        if (settings.positioning && settings.navigation_mode) {
+            if (navigator->hasTarget()) {
+                std::list<Coordinate> path;
+                navigator->navigateStep(dir, path);
+
+                if (logging.pathfinder_path) {
+                    uint8_t vals[20];
+                    memset(vals, 0, 20);
+                    Coordinate previous_coords = {0, 0};
+                    bool isFirst = true;
+                    uint8_t step_offset = 6;
+
+                    for (Coordinate coord : path) {
+                        if (isFirst) {
+                            vals[0] = coord.x / 10;
+                            vals[1] = coord.y / 10;
+                            isFirst = false;
+                        } else {
+                            uint8_t val = ((coord.x > previous_coords.x) ? 2 : ((coord.x < previous_coords.x) ? 0 : 1)) * 3 +
+                                        ((coord.y > previous_coords.y) ? 2 : ((coord.y < previous_coords.y) ? 0 : 1));
+
+                            if (val == 8)
+                                val = 4;
+
+                            vals[2 + step_offset / 8] |= val << (step_offset % 8);
+
+                            if ((step_offset % 8) > 5)
+                                vals[2 + (step_offset + 3) / 8] |= val >> (8 - (step_offset % 8));
+
+                            vals[2]++;
+                            step_offset += 3;
+                        }
+
+                        previous_coords.x = coord.x;
+                        previous_coords.y = coord.y;
+                    }
+
+                    ble_handler->charPathfindingPath->setValue(vals, 2 + (step_offset + 7) / 8);
+                    ble_handler->charPathfindingPath->notify();
+                }
+            }
+        }
+
+        delay(20);
+    }
 }
 
 uint32_t loop_iteration = 0;
@@ -372,48 +430,7 @@ void loop() {
         }
     }
 
-    if (settings.positioning && settings.navigation_mode) {
-        if (navigator->hasTarget()) {
-            std::list<Coordinate> path;
-            navigator->navigateStep(dir, path);
-
-            if (logging.pathfinder_path) {
-                uint8_t vals[20];
-                memset(vals, 0, 20);
-                Coordinate previous_coords = {0, 0};
-                bool isFirst = true;
-                uint8_t step_offset = 6;
-
-                for (Coordinate coord : path) {
-                    if (isFirst) {
-                        vals[0] = coord.x / 10;
-                        vals[1] = coord.y / 10;
-                        isFirst = false;
-                    } else {
-                        uint8_t val = ((coord.x > previous_coords.x) ? 2 : ((coord.x < previous_coords.x) ? 0 : 1)) * 3 +
-                                      ((coord.y > previous_coords.y) ? 2 : ((coord.y < previous_coords.y) ? 0 : 1));
-
-                        if (val == 8)
-                            val = 4;
-
-                        vals[2 + step_offset / 8] |= val << (step_offset % 8);
-
-                        if ((step_offset % 8) > 5)
-                            vals[2 + (step_offset + 3) / 8] |= val >> (8 - (step_offset % 8));
-
-                        vals[2]++;
-                        step_offset += 3;
-                    }
-
-                    previous_coords.x = coord.x;
-                    previous_coords.y = coord.y;
-                }
-
-                ble_handler->charPathfindingPath->setValue(vals, 2 + (step_offset + 7) / 8);
-                ble_handler->charPathfindingPath->notify();
-            }
-        }
-    } else {
+    if (!(settings.positioning && settings.navigation_mode)) {
         if (settings.collision_avoidance) {
             driving_assistent->updateDistances(front_dist, left_dist, right_dist, back_dist);
             driving_assistent->updateSpeedAndSteer(two_motor_drive->getSpeed(), two_motor_drive->getSteerDirection());
