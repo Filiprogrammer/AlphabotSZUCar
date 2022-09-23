@@ -314,13 +314,17 @@ void setup() {
     logging.positioning = false;
 }
 
+uint32_t loop_iteration = 0;
+uint32_t time_last_second = 0;
+
 void loop() {
     if (!connected) {
-        delay(100);
+        delay(1000 / LOOP_FREQUENCY_HZ);
         return;
     }
 
-    uint32_t time_millis = millis();
+    if ((loop_iteration % LOOP_FREQUENCY_HZ) == 0)
+        time_last_second = millis();
 
     if (logging.obstacle_distance || settings.collision_avoidance || settings.explore_mode) {
         distance_meter->readValues(&front_dist, &left_dist, &right_dist, &back_dist);
@@ -494,15 +498,18 @@ void loop() {
         ble_handler->charWheelSpeed->notify();
     }
 
-    uint32_t time_diff = millis() - time_millis;
+    uint32_t time_passed = millis() - time_last_second;
+    uint32_t time_desired = (1000 / LOOP_FREQUENCY_HZ) * ((loop_iteration % LOOP_FREQUENCY_HZ) + 1);
 
     #ifdef DEBUG
-    Serial.print("time_diff: ");
-    Serial.println(time_diff);
+    Serial.print("time_passed: ");
+    Serial.println(time_passed);
     #endif
 
-    if (time_diff < 100)
-        delay(100 - time_diff);
+    if (time_passed < time_desired)
+        delay(time_desired - time_passed);
+
+    loop_iteration++;
 }
 
 void onDisconnect() {
