@@ -53,35 +53,38 @@ void Navigator::navigateStep(float dir, std::list<Coordinate>& path) {
     Serial.println("µs)");
     #endif
 
-    if (path.empty()) {
+    if (path.size() <= 1) {
         // Target reached
         has_target = false;
         two_motor_drive->updateMotors(0, 0);
         #ifdef DEBUG
         Serial.println("Target reached!");
         #endif
-        struct Coordinate coordinate = {(int32_t)pos_x, (int32_t)pos_y};
-        path.push_back(coordinate);
+
+        // Just in case the path happens to be empty for some reason
+        if (path.empty()) {
+            struct Coordinate coordinate = {(int32_t)pos_x, (int32_t)pos_y};
+            path.push_back(coordinate);
+        }
     } else {
-        Coordinate first_three_coords[3];
-        uint32_t i = 0;
+        Coordinate first_four_coords[4];
+        int8_t i = -1;
 
         for (Coordinate coord : path) {
-            first_three_coords[i].x = coord.x;
-            first_three_coords[i].y = coord.y;
-
-            if (i == 2)
-                break;
-
             ++i;
+            first_four_coords[i].x = coord.x;
+            first_four_coords[i].y = coord.y;
+
+            if (i == 3)
+                break;
         }
 
         float next_dir;
 
-        if (path.size() == 1) // O(1)
-            next_dir = atan2(first_three_coords[1].y - first_three_coords[0].y, first_three_coords[1].x - first_three_coords[0].x) * 57.2957795;
+        if (path.size() <= 2) // O(1)
+            next_dir = atan2(target_y - pos_y, target_x - pos_x) * 57.2957795;
         else
-            next_dir = atan2(first_three_coords[2].y - first_three_coords[0].y, first_three_coords[2].x - first_three_coords[0].x) * 57.2957795;
+            next_dir = atan2(first_four_coords[i].y - first_four_coords[0].y, first_four_coords[i].x - first_four_coords[0].x) * 57.2957795;
 
         #ifdef DEBUG
         Serial.print("next_dir: ");
