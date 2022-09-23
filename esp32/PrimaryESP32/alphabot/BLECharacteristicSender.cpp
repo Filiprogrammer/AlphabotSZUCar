@@ -43,13 +43,14 @@ BLECharacteristicSender::BLECharacteristicSender(BLECharacteristic* characterist
     currentlySendingMutex = xSemaphoreCreateBinary();
     xSemaphoreGive(currentlySendingMutex);
 
-    xTaskCreate(
+    xTaskCreatePinnedToCore(
         [](void* o) { static_cast<BLECharacteristicSender*>(o)->sendCharacteristicTask(); },
         "sendCharacteristicTask",
-        2048,           // Stack size of task
-        this,           // parameter of the task
-        1,              // priority of the task
-        &sendTask);     // Task handle to keep track of created task
+        2048,               // Stack size of task
+        this,               // parameter of the task
+        1,                  // priority of the task
+        &sendTask,          // Task handle to keep track of created task
+        !xPortGetCoreID()); // Core id to pin the task to
 }
 
 BLECharacteristicSender::~BLECharacteristicSender() {
