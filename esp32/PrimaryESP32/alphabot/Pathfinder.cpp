@@ -178,6 +178,9 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
             // Set next node to this node's parent
             p = p->parent;
         }
+
+        struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
+        path.push_front(coordinate);
     }
 
     delete[] nodes;
