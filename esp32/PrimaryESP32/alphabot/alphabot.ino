@@ -362,7 +362,7 @@ void loop() {
         Serial.println(lps_y);
         #endif
 
-        if (logging.anchor_distances) {
+        if (logging.anchor_distances && (loop_iteration % (LOOP_FREQUENCY_HZ / 5)) == 0) {
             uint16_t vals[3];
             vals[0] = anchor1_dist;
             vals[1] = anchor2_dist;
@@ -431,7 +431,7 @@ void loop() {
         }
     }
 
-    if (logging.positioning || logging.compass_direction || logging.obstacle_distance) {
+    if ((logging.positioning || logging.compass_direction || logging.obstacle_distance) && (loop_iteration % (LOOP_FREQUENCY_HZ / 5)) == 1) {
         uint8_t sensor_logging_val[19];
         uint8_t sensor_logging_val_len = 2;
         uint8_t sensor_logging_counter = 0;
@@ -490,7 +490,7 @@ void loop() {
         // TODO: Implement IMU logging
     }
 
-    if (logging.wheel_speed) {
+    if (logging.wheel_speed && (loop_iteration % (LOOP_FREQUENCY_HZ / 5)) == 2) {
         int8_t vals[2];
         vals[0] = two_motor_drive->getLeftSpeed() / 1.44;
         vals[1] = two_motor_drive->getRightSpeed() / 1.44;
