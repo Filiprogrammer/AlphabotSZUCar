@@ -15,7 +15,7 @@ void Pathfinder::updateMapDimensions() {
     map_y = _min(map_y, starting_pos_y - 30);
     map_x = _min(map_x, target_x - 30);
     map_y = _min(map_y, target_y - 30);
-    
+
     for (Obstacle o : obstacles) {
         map_width = _max(map_x + map_width, o.x + o.width + 50) - map_x;
         map_height = _max(map_y + map_height, o.y + o.height + 50) - map_y;
@@ -25,6 +25,11 @@ void Pathfinder::updateMapDimensions() {
     map_height = _max(map_y + map_height, starting_pos_y + 30) - map_y;
     map_width = _max(map_x + map_width, target_x + 30) - map_x;
     map_height = _max(map_y + map_height, target_y + 30) - map_y;
+
+    map_x = roundf(map_x / 10.0f) * 10;
+    map_y = roundf(map_y / 10.0f) * 10;
+    map_x = roundf(map_x / 10.0f) * 10;
+    map_y = roundf(map_y / 10.0f) * 10;
 }
 
 void Pathfinder::clearObstacles() {
@@ -91,13 +96,19 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
             nodes[y * nodes_width + x].y = y;
         }
 
-    for (Obstacle o : obstacles)
-        for (int32_t x = (o.x - map_x) / 10; x <= (o.x + o.width - map_x) / 10; ++x)
-            for (int32_t y = (o.y - map_y) / 10; y <= (o.y + o.height - map_y) / 10; ++y)
-                nodes[y * nodes_width + x].obstacle = true;
+    for (Obstacle o : obstacles) {
+        int32_t o_x1_rounded = roundf((o.x - map_x) / 10.0f);
+        int32_t o_x2_rounded = roundf((o.x + o.width - map_x) / 10.0f);
+        int32_t o_y1_rounded = roundf((o.y - map_y) / 10.0f);
+        int32_t o_y2_rounded = roundf((o.y + o.height - map_y) / 10.0f);
 
-    PathNode* node_start = &nodes[(((int32_t)starting_pos_y - map_y) / 10) * nodes_width + ((int32_t)starting_pos_x - map_x) / 10];
-    PathNode* node_target = &nodes[(((int32_t)target_y - map_y) / 10) * nodes_width + ((int32_t)target_x - map_x) / 10];
+        for (int32_t x = o_x1_rounded; x <= o_x2_rounded; ++x)
+            for (int32_t y = o_y1_rounded; y <= o_y2_rounded; ++y)
+                nodes[y * nodes_width + x].obstacle = true;
+    }
+
+    PathNode* node_start = &nodes[(int32_t)roundf((starting_pos_y - map_y) / 10.0f) * nodes_width + (int32_t)roundf((starting_pos_x - map_x) / 10.0f)];
+    PathNode* node_target = &nodes[(int32_t)roundf((target_y - map_y) / 10.0f) * nodes_width + (int32_t)roundf((target_x - map_x) / 10.0f)];
 
     auto distance = [](PathNode* a, PathNode* b) {
         return sqrtf((a->x - b->x) * (a->x - b->x) + (a->y - b->y) * (a->y - b->y));
