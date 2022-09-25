@@ -1,4 +1,5 @@
 #include "Navigator.h"
+#include "config.h"
 
 void Navigator::setOwnPosition(float x, float y) {
     pos_x = x;
@@ -94,8 +95,46 @@ void Navigator::navigateStep(float dir, std::list<Coordinate>& path) {
         int relative_dir = ((int)(next_dir - (((int)dir + 720) % 360) + 540) % 360) - 180;
         int8_t speed = 65;
 
+        bool driveBackward = false;
+
         // If car would have to turn more than 90 degrees, drive backwards instead
-        if (abs(relative_dir) > 90) {
+        if (abs(relative_dir) > 90)
+            driveBackward = true;
+
+        if (driveBackward) {
+            // If the navigator would switch from driving forward to driving backward and we do not steer quite that far, simply continue forward.
+            if (two_motor_drive->getSpeed() > 0 && abs(relative_dir) < (90 + NAVIGATOR_DIRECTION_TOLERANCE))
+                driveBackward = false;
+        } else {
+            // If the navigator would switch from driving backward to driving forward and we do not steer quite that far, simply continue backward.
+            if (two_motor_drive->getSpeed() < 0 && abs(relative_dir) > (90 - NAVIGATOR_DIRECTION_TOLERANCE))
+                driveBackward = true;
+        }
+
+        float to_x, to_y;
+
+        if (driveBackward) {
+            to_x = pos_x - cosf(dir * (PI / 180)) * 10;
+            to_y = pos_y - sinf(dir * (PI / 180)) * 10;
+        } else {
+            to_x = pos_x + cosf(dir * (PI / 180)) * 10;
+            to_y = pos_y + sinf(dir * (PI / 180)) * 10;
+        }
+
+        // Check wether would collide with obstacle
+        std::list<Obstacle> obstacles = pathfinder->getObstacles();
+        bool wouldCollide = std::any_of(obstacles.begin(), obstacles.end(), [&](const Obstacle& o) {
+            return to_x >= o.x && to_x <= o.x + o.width && to_y >= o.y && to_y <= o.y + o.height;
+        });
+
+        if (wouldCollide) {
+            driveBackward = !driveBackward;
+            #ifdef DEBUG
+            Serial.println("Reversing because I would collide otherwise");
+            #endif
+        }
+
+        if (driveBackward) {
             speed = -speed;
             relative_dir = -(((relative_dir + 360) % 360) - 180);
         }

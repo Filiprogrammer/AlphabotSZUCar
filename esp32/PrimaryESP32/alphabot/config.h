@@ -26,4 +26,6 @@
 
 #define LOOP_FREQUENCY_HZ 10
 
+#define NAVIGATOR_DIRECTION_TOLERANCE 23
+
 #endif
