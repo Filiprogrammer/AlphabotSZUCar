@@ -121,7 +121,7 @@ void Navigator::navigateStep(float dir, std::list<Coordinate>& path) {
             to_y = pos_y + sinf(dir * (PI / 180)) * 10;
         }
 
-        // Check wether would collide with obstacle
+        // Check wether car would collide with an obstacle
         std::list<Obstacle> obstacles = pathfinder->getObstacles();
         bool wouldCollide = std::any_of(obstacles.begin(), obstacles.end(), [&](const Obstacle& o) {
             return to_x >= o.x && to_x <= o.x + o.width && to_y >= o.y && to_y <= o.y + o.height;
