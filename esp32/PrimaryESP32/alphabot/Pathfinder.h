@@ -13,13 +13,13 @@ struct Obstacle {
 };
 
 struct PathNode {
-    bool obstacle = false;
-    bool visited = false;
-    float global_goal;
-    float local_goal;
-    int32_t x;
-    int32_t y;
-    PathNode* parent;
+    uint16_t global_goal;
+    uint16_t local_goal;
+    int16_t x;
+    int16_t y;
+    uint32_t parent : 30;
+    bool obstacle : 1;
+    bool visited : 1;
 };
 
 struct Coordinate {
@@ -40,7 +40,7 @@ private:
     float starting_pos_y;
 
     void updateMapDimensions();
-    void astar(PathNode* node_current, PathNode* node_neighbour, PathNode* node_target, std::list<PathNode*>* list_not_tested_nodes, PathNode* nodes, int32_t nodes_width, int32_t nodes_height);
+    void astar(PathNode* node_current, PathNode* node_neighbour, PathNode* node_target, std::list<PathNode*>* list_not_tested_nodes, PathNode* nodes, int16_t nodes_width, int16_t nodes_height);
 
 public:
     void clearObstacles();

@@ -80,30 +80,30 @@ void Pathfinder::setStartingPos(float x, float y, bool update) {
 }
 
 void Pathfinder::calculatePath(std::list<Coordinate>& path) {
-    int32_t nodes_width = (map_width + 9) / 10;
-    int32_t nodes_height = (map_height + 9) / 10;
+    int16_t nodes_width = (map_width + 9) / 10;
+    int16_t nodes_height = (map_height + 9) / 10;
     PathNode* nodes = new PathNode[nodes_width * nodes_height];
 
     // Reset nodes
-    for (int32_t x = 0; x < nodes_width; ++x)
-        for (int32_t y = 0; y < nodes_height; ++y) {
+    for (int16_t x = 0; x < nodes_width; ++x)
+        for (int16_t y = 0; y < nodes_height; ++y) {
             nodes[y * nodes_width + x].visited = false;
-            nodes[y * nodes_width + x].global_goal = INFINITY;
-            nodes[y * nodes_width + x].local_goal = INFINITY;
-            nodes[y * nodes_width + x].parent = nullptr;
+            nodes[y * nodes_width + x].global_goal = UINT16_MAX;
+            nodes[y * nodes_width + x].local_goal = UINT16_MAX;
+            nodes[y * nodes_width + x].parent = 0;
             nodes[y * nodes_width + x].obstacle = false;
             nodes[y * nodes_width + x].x = x;
             nodes[y * nodes_width + x].y = y;
         }
 
     for (Obstacle o : obstacles) {
-        int32_t o_x1_rounded = roundf((o.x - map_x) / 10.0f);
-        int32_t o_x2_rounded = roundf((o.x + o.width - map_x) / 10.0f);
-        int32_t o_y1_rounded = roundf((o.y - map_y) / 10.0f);
-        int32_t o_y2_rounded = roundf((o.y + o.height - map_y) / 10.0f);
+        int16_t o_x1_rounded = roundf((o.x - map_x) / 10.0f);
+        int16_t o_x2_rounded = roundf((o.x + o.width - map_x) / 10.0f);
+        int16_t o_y1_rounded = roundf((o.y - map_y) / 10.0f);
+        int16_t o_y2_rounded = roundf((o.y + o.height - map_y) / 10.0f);
 
-        for (int32_t x = o_x1_rounded; x <= o_x2_rounded; ++x)
-            for (int32_t y = o_y1_rounded; y <= o_y2_rounded; ++y)
+        for (int16_t x = o_x1_rounded; x <= o_x2_rounded; ++x)
+            for (int16_t y = o_y1_rounded; y <= o_y2_rounded; ++y)
                 nodes[y * nodes_width + x].obstacle = true;
     }
 
@@ -120,8 +120,8 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
 
     // Setup starting conditions
     PathNode* node_current = node_start;
-    node_start->local_goal = 0.0f;
-    node_start->global_goal = heuristic(node_start, node_target);
+    node_start->local_goal = 0;
+    node_start->global_goal = 10.0f * heuristic(node_start, node_target);
 
     // Add start node to not tested list - this will ensure it gets tested.
     // As the algorithm progresses, newly discovered nodes get added to this
@@ -146,8 +146,8 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
         node_current->visited = true; // We only explore a node once
 
         // Check each of this node's neighbours...
-        int32_t x = node_current->x;
-        int32_t y = node_current->y;
+        int16_t x = node_current->x;
+        int16_t y = node_current->y;
 
         if (y > 0)
             astar(node_current, &nodes[(y - 1) * nodes_width + (x + 0)], node_target, &list_not_tested_nodes, nodes, nodes_width, nodes_height);
@@ -171,12 +171,12 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
     if (node_target != nullptr) {
         PathNode* p = node_target;
 
-        while (p->parent != nullptr) {
+        while (p->parent != 0) {
             struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
             path.push_front(coordinate);
 
             // Set next node to this node's parent
-            p = p->parent;
+            p = (PathNode*)(p->parent << 2);
         }
 
         struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
@@ -186,7 +186,7 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
     delete[] nodes;
 }
 
-void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNode* node_target, std::list<PathNode*>* list_not_tested_nodes, PathNode* nodes, int32_t nodes_width, int32_t nodes_height) {
+void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNode* node_target, std::list<PathNode*>* list_not_tested_nodes, PathNode* nodes, int16_t nodes_width, int16_t nodes_height) {
     auto distance = [](PathNode* a, PathNode* b) {
         return sqrtf((a->x - b->x) * (a->x - b->x) + (a->y - b->y) * (a->y - b->y));
     };
@@ -198,8 +198,8 @@ void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNod
     if (node_neighbour->obstacle)
         return;
 
-    int32_t neighbour_x = node_neighbour->x;
-    int32_t neighbour_y = node_neighbour->y;
+    int16_t neighbour_x = node_neighbour->x;
+    int16_t neighbour_y = node_neighbour->y;
 
     if (neighbour_y > 0) {
         if (nodes[(neighbour_y - 1) * nodes_width + (neighbour_x + 0)].obstacle)
@@ -232,13 +232,13 @@ void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNod
         (*list_not_tested_nodes).push_back(node_neighbour);
 
     // Calculate the neighbours potential lowest parent distance
-    float fPossiblyLowerGoal = node_current->local_goal + distance(node_current, node_neighbour);
+    float fPossiblyLowerGoal = node_current->local_goal + 10.0f * distance(node_current, node_neighbour);
 
     // If choosing to path through this node is a lower distance than what
     // the neighbour currently has set, update the neighbour to use this node
     // as the path source, and set its distance scores as necessary
     if (fPossiblyLowerGoal < node_neighbour->local_goal) {
-        node_neighbour->parent = node_current;
+        node_neighbour->parent = (uint32_t)node_current >> 2;
         node_neighbour->local_goal = fPossiblyLowerGoal;
 
         // The best path length to the neighbour being tested has changed, so
@@ -246,7 +246,7 @@ void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNod
         // the path algorithm, so it knows if its getting better or worse. At some
         // point the algo will realise this path is worse and abandon it, and then go
         // and search along the next best path.
-        node_neighbour->global_goal = node_neighbour->local_goal + heuristic(node_neighbour, node_target);
+        node_neighbour->global_goal = node_neighbour->local_goal + 10.0f * heuristic(node_neighbour, node_target);
     }
 }
 
