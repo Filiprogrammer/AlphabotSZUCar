@@ -48,26 +48,26 @@
 
 |                            Part                         | Amount | Material |
 |---------------------------------------------------------|--------|----------|
-| stl/dwm1000.anchor.adapter.board.mount.stl              |   3x   |          |
-| stl/vehicle/base/alphabot.4Wheel.base.Top.esp32.stl     |   1x   |          |
-| stl/vehicle/base/alphabot.4Wheel.base.suspension.V6.stl |   1x   |          |
-| stl/vehicle/base/frontwheel.suspension.distance.stl     |   3x   |          |
-| stl/vehicle/steering/steering.axle.stl                  |   1x   |          |
-| stl/vehicle/steering/steering.stepper.pin.stl           |   1x   |          |
-| stl/vehicle/steering/suspension.left.V4.stl             |   1x   |          |
-| stl/vehicle/steering/suspension.right.V4.stl            |   1x   |          |
-| stl/vehicle/wheel/rim.front.62mm.V2.stl                 |   2x   |          |
-| stl/vehicle/wheel/rim.back.62mm.V2.stl                  |   2x   |          |
-| stl/vehicle/wheel/rim.62mm.front.bearing.cage.V2.stl    |   2x   |          |
-| stl/vehicle/wheel/rim.62mm.back.bearing.cage.V2.stl     |   2x   |          |
-| stl/vehicle/wheel/rim.62mm.front.nut.stl                |   4x   |          |
-| stl/vehicle/wheel/tire.base.62.78.stl                   |   4x   |  elastic |
-| stl/vehicle/wheel/rim.axle.back.stl                     |   2x   |          |
-| stl/vehicle/addon/wingv4.stl                            |   1x   |          |
-| stl/vehicle/addon/wing.holder.V4.hc-sr04.stl            |   1x   |          |
-| stl/vehicle/addon/dwm1000.tag.adapter.board.mount.stl   |   1x   |          |
-| stl/vehicle/addon/bumper.lidar.holder.stl               |   1x   |          |
-| stl/vehicle/addon/bumper.lidar.front.stl                |   1x   |          |
+| stl/dwm1000.anchor.adapter.board.mount.stl              |   3x   |   PLA    |
+| stl/vehicle/base/alphabot.4Wheel.base.Top.esp32.stl     |   1x   |   PLA    |
+| stl/vehicle/base/alphabot.4Wheel.base.suspension.V6.stl |   1x   |   PLA    |
+| stl/vehicle/base/frontwheel.suspension.distance.stl     |   3x   |   PLA    |
+| stl/vehicle/steering/steering.axle.stl                  |   1x   |   PLA    |
+| stl/vehicle/steering/steering.stepper.pin.stl           |   1x   |   PLA    |
+| stl/vehicle/steering/suspension.left.V4.stl             |   1x   |   PLA    |
+| stl/vehicle/steering/suspension.right.V4.stl            |   1x   |   PLA    |
+| stl/vehicle/wheel/rim.front.62mm.V2.stl                 |   2x   |   PLA    |
+| stl/vehicle/wheel/rim.back.62mm.V2.stl                  |   2x   |   PLA    |
+| stl/vehicle/wheel/rim.62mm.front.bearing.cage.V2.stl    |   2x   |   PLA    |
+| stl/vehicle/wheel/rim.62mm.back.bearing.cage.V2.stl     |   2x   |   PLA    |
+| stl/vehicle/wheel/rim.62mm.front.nut.stl                |   4x   |   PLA    |
+| stl/vehicle/wheel/tire.base.62.78.stl                   |   4x   | Fileflex |
+| stl/vehicle/wheel/rim.axle.back.stl                     |   2x   |   PLA    |
+| stl/vehicle/addon/wingv4.stl                            |   1x   |   PLA    |
+| stl/vehicle/addon/wing.holder.V4.hc-sr04.stl            |   1x   |   PLA    |
+| stl/vehicle/addon/dwm1000.tag.adapter.board.mount.stl   |   1x   |   PLA    |
+| stl/vehicle/addon/bumper.lidar.holder.stl               |   1x   |   PLA    |
+| stl/vehicle/addon/bumper.lidar.front.stl                |   1x   |   PLA    |
 
 
 ## PCB soldering
@@ -96,7 +96,7 @@ Now solder the pin headers for the ESP-WROOM-32, for the L298N motor driver, for
 
 PLACEHOLDER
 
-Also solder two B5B-XH-AM connector header for the stepper motors to the board as seen in the following picture.
+Also solder two B5B-XH-AM connector headers for the stepper motors to the board as seen in the following picture.
 
 PLACEHOLDER
 
