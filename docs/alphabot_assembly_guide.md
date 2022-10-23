@@ -19,7 +19,7 @@
 | 18650 Lithium-Ion Battery 3.7V               |     3x      |
 | DIN 912 M3x8 screw                           |     4x      |
 | L298N DC motor driver module                 |     1x      |
-| M2 screw                                     |     4x      |
+| M2 screw                                     |     6x      |
 | M2 male-female hex spacer                    |     4x      |
 | M2x6 screw                                   |     2x      |
 | M2 nut                                       |     2x      |
@@ -89,6 +89,22 @@ Finally plug the Arduino Pro Mini into the DWM1000 Adapter.
 ### Alphabot ESP32 PCB
 
 After ordering the PCB with assembly service, the board should look like this:
+
+PLACEHOLDER
+
+Now solder the pin headers for the ESP-WROOM-32, for the L298N motor driver, for the positioning module and for the TF-Luna LiDAR sensor to the board.
+
+PLACEHOLDER
+
+Also solder two B5B-XH-AM connector header for the stepper motors to the board as seen in the following picture.
+
+PLACEHOLDER
+
+Solder a CZM5/2 terminal block to the 12V power pins of the board.
+
+PLACEHOLDER
+
+Finally you can plug the ESP-WROOM-32 into the Alphabot ESP32 PCB.
 
 PLACEHOLDER
 
@@ -206,7 +222,7 @@ Then screw the wheel to the axle so that it does not come loose while driving.
 
 ![image111](image111.png)
 
-For obstacle detection, screw the TF-Luna LiDAR sensor to the dedicated holder at the front.
+For obstacle detection, screw the TF-Luna LiDAR sensor to the dedicated holder at the front. Use M2 screws for that.
 
 ![image112](image112.png)
 
@@ -231,11 +247,11 @@ Screw the L298N motor driver to the base plate and connect it to the drive motor
 REPLACE this image
 ![image118](image118.jpg)
 
-Now the heart of this Alphabot comes into play. Attach the Alphabot ESP32 PCB to the base plate using M2 male-female hex spacers and M2 screws.
+Now the heart of this Alphabot comes into play: the Alphabot ESP32 PCB. Attach the Alphabot ESP32 PCB with the ESP-WROOM-32 plugged in to the base plate using M2 male-female hex spacers and M2 screws.
 
 PLACEHOLDER
 
-Connect the Alphabot ESP32 PCB to the power supply through its 12V power connectors. In addition, plug the ESP-WROOM-32 into the Alphabot ESP32 PCB.
+Connect the Alphabot ESP32 PCB to the power supply through its 12V power connectors.
 
 PLACEHOLDER
 
