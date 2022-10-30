@@ -61,7 +61,7 @@
 | stl/vehicle/wheel/rim.62mm.front.bearing.cage.V2.stl    |   2x   |   PLA    |
 | stl/vehicle/wheel/rim.62mm.back.bearing.cage.V2.stl     |   2x   |   PLA    |
 | stl/vehicle/wheel/rim.62mm.front.nut.stl                |   4x   |   PLA    |
-| stl/vehicle/wheel/tire.base.62.78.stl                   |   4x   | Fileflex |
+| stl/vehicle/wheel/tire.base.62.78.stl                   |   4x   | Filaflex |
 | stl/vehicle/wheel/rim.axle.back.stl                     |   2x   |   PLA    |
 | stl/vehicle/addon/wingv4.stl                            |   1x   |   PLA    |
 | stl/vehicle/addon/wing.holder.V4.hc-sr04.stl            |   1x   |   PLA    |
