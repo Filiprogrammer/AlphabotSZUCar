@@ -356,6 +356,9 @@ void navigatorTask(void* args) {
 
                             vals[2]++;
                             step_offset += 3;
+
+                            if (step_offset == 144)
+                                break;
                         }
 
                         previous_coords.x = coord.x;
