@@ -82,7 +82,17 @@ void Pathfinder::setStartingPos(float x, float y, bool update) {
 void Pathfinder::calculatePath(std::list<Coordinate>& path) {
     int16_t nodes_width = (map_width + 9) / 10;
     int16_t nodes_height = (map_height + 9) / 10;
-    PathNode* nodes = new PathNode[nodes_width * nodes_height];
+
+    if (nodes_width * nodes_height > nodes_size) {
+        #ifdef DEBUG
+        Serial.print("Not enough memory for Pathfinder (Tried to use ");
+        Serial.print(nodes_width * nodes_height * sizeof(PathNode));
+        Serial.print(" bytes) (Only ");
+        Serial.print(nodes_size * sizeof(PathNode));
+        Serial.println(" bytes allocated)");
+        #endif
+        return;
+    }
 
     // Reset nodes
     for (int16_t x = 0; x < nodes_width; ++x)
@@ -174,8 +184,6 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
         struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
         path.push_front(coordinate);
     }
-
-    delete[] nodes;
 }
 
 void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNode* node_target, std::list<PathNode*>* list_not_tested_nodes, PathNode* nodes, int16_t nodes_width, int16_t nodes_height) {
@@ -257,4 +265,8 @@ Pathfinder::Pathfinder() {
     map_y = -30;
     map_width = 60;
     map_height = 60;
+
+    int32_t free_heap = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
+    nodes_size = max(free_heap - 24576, 10240) / sizeof(PathNode);
+    nodes = new PathNode[nodes_size];
 }

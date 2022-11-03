@@ -38,6 +38,8 @@ private:
     float target_y;
     float starting_pos_x;
     float starting_pos_y;
+    PathNode* nodes;
+    uint32_t nodes_size;
 
     void updateMapDimensions();
     void astar(PathNode* node_current, PathNode* node_neighbour, PathNode* node_target, std::list<PathNode*>* list_not_tested_nodes, PathNode* nodes, int16_t nodes_width, int16_t nodes_height);
