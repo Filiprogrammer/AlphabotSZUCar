@@ -133,16 +133,8 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
         // Sort Untested nodes by global goal, so lowest is first
         list_not_tested_nodes.sort([](const PathNode* lhs, const PathNode* rhs) { return lhs->global_goal < rhs->global_goal; });
 
-        // Front of list_not_tested_nodes is potentially the lowest distance node. Our
-        // list may also contain nodes that have been visited, so ditch these...
-        while (!list_not_tested_nodes.empty() && list_not_tested_nodes.front()->visited)
-            list_not_tested_nodes.pop_front();
-
-        // ...or abort because there are no valid nodes left to test
-        if (list_not_tested_nodes.empty())
-            break;
-
         node_current = list_not_tested_nodes.front();
+        list_not_tested_nodes.pop_front();
         node_current->visited = true; // We only explore a node once
 
         // Check each of this node's neighbours...
@@ -226,10 +218,16 @@ void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNod
         if (nodes[(neighbour_y + 0) * nodes_width + (neighbour_x + 1)].obstacle)
             return;
 
-    // ... and only if the neighbour is not visited and is
-    // not an obstacle, add it to NotTested List
-    if (!node_neighbour->visited && node_neighbour->obstacle == false)
-        (*list_not_tested_nodes).push_back(node_neighbour);
+    // ... and only if the neighbour is not visited and is not an obstacle,
+    // add it to NotTested List if it is not already in that list
+    if (!node_neighbour->visited) {
+        bool contains_duplicate = std::any_of(list_not_tested_nodes->begin(), list_not_tested_nodes->end(), [&](const PathNode* node) {
+            return node->x == neighbour_x && node->y == neighbour_y;
+        });
+
+        if (!contains_duplicate)
+            (*list_not_tested_nodes).push_back(node_neighbour);
+    }
 
     // Calculate the neighbours potential lowest parent distance
     float fPossiblyLowerGoal = node_current->local_goal + 10.0f * distance(node_current, node_neighbour);
