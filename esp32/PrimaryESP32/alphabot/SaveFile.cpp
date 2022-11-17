@@ -47,11 +47,11 @@ void SaveFile::setMagnetSensorCalibratedMaxY(float max_y) {
 }
 
 void SaveFile::setMagnetSensorCalibratedMinZ(float min_z) {
-    magnetSensorCalibratedMinY = min_z;
+    magnetSensorCalibratedMinZ = min_z;
 }
 
 void SaveFile::setMagnetSensorCalibratedMaxZ(float max_z) {
-    magnetSensorCalibratedMaxY = max_z;
+    magnetSensorCalibratedMaxZ = max_z;
 }
 
 void SaveFile::setCompassAngleOffset(float angleOffset) {
