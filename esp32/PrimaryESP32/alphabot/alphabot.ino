@@ -316,7 +316,7 @@ void setup() {
     xTaskCreatePinnedToCore(
         navigatorTask,
         "navigatorTask",
-        3072,               // Stack size of task
+        2304,               // Stack size of task
         NULL,               // parameter of the task
         1,                  // priority of the task
         NULL,               // Task handle to keep track of created task
