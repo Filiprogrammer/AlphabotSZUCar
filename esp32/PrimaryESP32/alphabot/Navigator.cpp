@@ -64,7 +64,7 @@ void Navigator::navigateStep(float dir, std::list<Coordinate>& path) {
 
         // Just in case the path happens to be empty for some reason
         if (path.empty()) {
-            struct Coordinate coordinate = {(int32_t)pos_x, (int32_t)pos_y};
+            struct Coordinate coordinate = {(int16_t)pos_x, (int16_t)pos_y};
             path.push_back(coordinate);
         }
     } else {

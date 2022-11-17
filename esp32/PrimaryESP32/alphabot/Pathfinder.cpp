@@ -174,14 +174,17 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
         PathNode* p = node_target;
 
         while (p->parent != 0) {
-            struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
+            if (path.size() > 50)
+                path.pop_back();
+
+            struct Coordinate coordinate = {(int16_t)(map_x + p->x * 10), (int16_t)(map_y + p->y * 10)};
             path.push_front(coordinate);
 
             // Set next node to this node's parent
             p = (PathNode*)(p->parent << 2);
         }
 
-        struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
+        struct Coordinate coordinate = {(int16_t)(map_x + p->x * 10), (int16_t)(map_y + p->y * 10)};
         path.push_front(coordinate);
     }
 }
