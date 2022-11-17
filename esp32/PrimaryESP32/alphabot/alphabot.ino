@@ -165,6 +165,7 @@ void charCalibrateDataReceived(const char* data, size_t len) {
                     break;
                 case 3: // Finish magnetometer calibration
                     magnet_sensor_calibration = false;
+                    compass->finishMagnetSensorCalibration();
                     save_file->setMagnetSensorCalibratedMinX(compass->getMinX());
                     save_file->setMagnetSensorCalibratedMaxX(compass->getMaxX());
                     save_file->setMagnetSensorCalibratedMinY(compass->getMinY());
@@ -315,6 +316,7 @@ void setup() {
         save_file->getMagnetSensorCalibratedMinZ(),
         save_file->getMagnetSensorCalibratedMaxZ());
     compass->setAngleOffset(save_file->getCompassAngleOffset());
+    compass->finishMagnetSensorCalibration();
     navigator = new Navigator(two_motor_drive);
 
     settings.explore_mode = false;
