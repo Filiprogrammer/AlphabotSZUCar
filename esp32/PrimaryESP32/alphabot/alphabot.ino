@@ -61,6 +61,7 @@ struct logging {
 } logging;
 
 bool connected = false;
+bool magnet_sensor_calibration = false;
 
 BLEHandler* ble_handler = NULL;
 BLECharacteristicSender* ble_char_toggle_sender = NULL;
@@ -159,8 +160,19 @@ void charCalibrateDataReceived(const char* data, size_t len) {
                     // TODO: Automatic magnetometer calibration
                     break;
                 case 2: // Begin manual magnetometer calibration
+                    compass->beginMagnetSensorCalibration();
+                    magnet_sensor_calibration = true;
                     break;
                 case 3: // Finish magnetometer calibration
+                    magnet_sensor_calibration = false;
+                    compass->finishMagnetSensorCalibration();
+                    save_file->setMagnetSensorCalibratedMinX(compass->getMinX());
+                    save_file->setMagnetSensorCalibratedMaxX(compass->getMaxX());
+                    save_file->setMagnetSensorCalibratedMinY(compass->getMinY());
+                    save_file->setMagnetSensorCalibratedMaxY(compass->getMaxY());
+                    save_file->setMagnetSensorCalibratedMinZ(compass->getMinZ());
+                    save_file->setMagnetSensorCalibratedMaxZ(compass->getMaxZ());
+                    save_file->write();
                     break;
                 case 4: // Calibrate compass direction
                     float correct_dir = atan2(positioning_system->getAnc1Y() - lps_y, positioning_system->getAnc1X() - lps_x) * (180.0 / PI);
@@ -293,10 +305,18 @@ void setup() {
     ble_char_toggle_sender = new BLECharacteristicSender(ble_handler->charToggle, &onCharToggleArrive);
     ble_char_add_obstacle_sender = new BLECharacteristicSender(ble_handler->charAddObstacle, &onCharAddObstacleArrive);
     positioning_system = new PositioningSystem(DW1000_ANCHOR_1_SHORT_ADDRESS, DW1000_ANCHOR_2_SHORT_ADDRESS, DW1000_ANCHOR_3_SHORT_ADDRESS);
-    motion_tracker = new MotionTracker(false, false, false, false, true);
+    motion_tracker = new MotionTracker(false, false, true, false, false, true, false);
     compass = new Compass(motion_tracker);
     save_file = new SaveFile();
+    compass->setMagnetSensorCalibratedValues(
+        save_file->getMagnetSensorCalibratedMinX(),
+        save_file->getMagnetSensorCalibratedMaxX(),
+        save_file->getMagnetSensorCalibratedMinY(),
+        save_file->getMagnetSensorCalibratedMaxY(),
+        save_file->getMagnetSensorCalibratedMinZ(),
+        save_file->getMagnetSensorCalibratedMaxZ());
     compass->setAngleOffset(save_file->getCompassAngleOffset());
+    compass->finishMagnetSensorCalibration();
     navigator = new Navigator(two_motor_drive);
 
     settings.explore_mode = false;
@@ -400,6 +420,9 @@ void loop() {
         Serial.println(back_dist);
         #endif
     }
+
+    if (magnet_sensor_calibration)
+        compass->magnetSensorCalibrate();
 
     if (logging.compass_direction || settings.positioning) {
         raw_dir = compass->getRawDirection();
