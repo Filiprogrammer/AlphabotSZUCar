@@ -82,7 +82,17 @@ void Pathfinder::setStartingPos(float x, float y, bool update) {
 void Pathfinder::calculatePath(std::list<Coordinate>& path) {
     int16_t nodes_width = (map_width + 9) / 10;
     int16_t nodes_height = (map_height + 9) / 10;
-    PathNode* nodes = new PathNode[nodes_width * nodes_height];
+
+    if (nodes_width * nodes_height > nodes_size) {
+        #ifdef DEBUG
+        Serial.print("Not enough memory for Pathfinder (Tried to use ");
+        Serial.print(nodes_width * nodes_height * sizeof(PathNode));
+        Serial.print(" bytes) (Only ");
+        Serial.print(nodes_size * sizeof(PathNode));
+        Serial.println(" bytes allocated)");
+        #endif
+        return;
+    }
 
     // Reset nodes
     for (int16_t x = 0; x < nodes_width; ++x)
@@ -133,16 +143,8 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
         // Sort Untested nodes by global goal, so lowest is first
         list_not_tested_nodes.sort([](const PathNode* lhs, const PathNode* rhs) { return lhs->global_goal < rhs->global_goal; });
 
-        // Front of list_not_tested_nodes is potentially the lowest distance node. Our
-        // list may also contain nodes that have been visited, so ditch these...
-        while (!list_not_tested_nodes.empty() && list_not_tested_nodes.front()->visited)
-            list_not_tested_nodes.pop_front();
-
-        // ...or abort because there are no valid nodes left to test
-        if (list_not_tested_nodes.empty())
-            break;
-
         node_current = list_not_tested_nodes.front();
+        list_not_tested_nodes.pop_front();
         node_current->visited = true; // We only explore a node once
 
         // Check each of this node's neighbours...
@@ -172,18 +174,19 @@ void Pathfinder::calculatePath(std::list<Coordinate>& path) {
         PathNode* p = node_target;
 
         while (p->parent != 0) {
-            struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
+            if (path.size() > 50)
+                path.pop_back();
+
+            struct Coordinate coordinate = {(int16_t)(map_x + p->x * 10), (int16_t)(map_y + p->y * 10)};
             path.push_front(coordinate);
 
             // Set next node to this node's parent
             p = (PathNode*)(p->parent << 2);
         }
 
-        struct Coordinate coordinate = {map_x + p->x * 10, map_y + p->y * 10};
+        struct Coordinate coordinate = {(int16_t)(map_x + p->x * 10), (int16_t)(map_y + p->y * 10)};
         path.push_front(coordinate);
     }
-
-    delete[] nodes;
 }
 
 void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNode* node_target, std::list<PathNode*>* list_not_tested_nodes, PathNode* nodes, int16_t nodes_width, int16_t nodes_height) {
@@ -226,10 +229,16 @@ void Pathfinder::astar(PathNode* node_current, PathNode* node_neighbour, PathNod
         if (nodes[(neighbour_y + 0) * nodes_width + (neighbour_x + 1)].obstacle)
             return;
 
-    // ... and only if the neighbour is not visited and is
-    // not an obstacle, add it to NotTested List
-    if (!node_neighbour->visited && node_neighbour->obstacle == false)
-        (*list_not_tested_nodes).push_back(node_neighbour);
+    // ... and only if the neighbour is not visited and is not an obstacle,
+    // add it to NotTested List if it is not already in that list
+    if (!node_neighbour->visited) {
+        bool contains_duplicate = std::any_of(list_not_tested_nodes->begin(), list_not_tested_nodes->end(), [&](const PathNode* node) {
+            return node->x == neighbour_x && node->y == neighbour_y;
+        });
+
+        if (!contains_duplicate)
+            (*list_not_tested_nodes).push_back(node_neighbour);
+    }
 
     // Calculate the neighbours potential lowest parent distance
     float fPossiblyLowerGoal = node_current->local_goal + 10.0f * distance(node_current, node_neighbour);
@@ -259,4 +268,8 @@ Pathfinder::Pathfinder() {
     map_y = -30;
     map_width = 60;
     map_height = 60;
+
+    int32_t free_heap = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
+    nodes_size = max(free_heap - 24576, 10240) / sizeof(PathNode);
+    nodes = new PathNode[nodes_size];
 }
