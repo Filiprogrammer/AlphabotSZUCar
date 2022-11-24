@@ -8,33 +8,36 @@
 | DIN 912 M3x10 screw                          |     9x      |
 | 28BYJ-48 stepper motor                       |     2x      |
 | DIN 912 M3x5 screw                           |     2x      |
-| Ball bearing 10x15x4                         |     4x      | for the wheels
-| Ball bearing 5x11x4                          |     4x      | for steering wheel suspensions
-| Ball bearing 5x8x2.5                         |     2x      | for steering axle
+| Ball bearing 10x15x4                         |     4x      |
+| Ball bearing 5x11x4                          |     4x      |
+| Ball bearing 5x8x2.5                         |     2x      |
 | DIN 912 M3x14 screw                          |     4x      |
 | TF-Luna LiDAR sensor                         |     1x      |
-| M1.7x6mm screw                               |     2x      | for TF-Luna
+| M2x6 screw                                   |     4x      |
 | 3S 18650 battery holder case box (7.6x6x2cm) |     1x      |
-| M2.5x5mm screw                               |     2x      | for battery case
+| M2.5x5 screw                                 |     2x      |
 | 18650 Lithium-Ion Battery 3.7V               |     3x      |
-| DIN 912 M3x8 screw                           |     4x      |
+| DIN 912 M3x8 screw                           |     2x      |
+| DIN 912 M3x6 screw                           |     2x      |
 | L298N DC motor driver module                 |     1x      |
-| M2 screw                                     |     6x      |
+| M2 screw                                     |     4x      |
 | M2 male-female hex spacer                    |     4x      |
-| M2x6 screw                                   |     2x      |
 | M2 nut                                       |     2x      |
-| M2.5 screw                                   |     4x      |
+| M2.5 screw                                   |     5x      |
 | M2.5 male-female hex spacer                  |     4x      |
-| ESP-WROOM-32                                 |     1x      |
+| ESP-WROOM-32 board                           |     1x      |
 | Arduino Pro Mini 16MHz 5V                    |     4x      |
 | 15mm*21mm 2 pins rocker switch               |     1x      |
-| CZM5/2 terminal blocks                       |     2x      |
-| 2.54mm female 18 pin header                  |     2x      |
-| 2.54mm any 18 pin header                     | 2x optional |
+| CZM5/2 terminal block                        |     2x      |
+| 2.54mm female 12 pin header                  |     8x      |
+| 2.54mm female 19 pin header                  |     2x      |
+| 2.54mm any 19 pin header                     | 2x optional |
 | 2.54mm any 6 pin header                      |     3x      |
 | 2.54mm any 4 pin header                      |     1x      |
-| B5B-XH-AM connector header                   |     2x      | for the stepper motors
-
+| B5B-XH-AM connector header                   |     2x      |
+| DIN 912 M3x5 screw                           |     6x      |
+| wire                                         |     16x     |
+| FC-03 infrared sensor                        |     1x      |
 
 ## Custom PCBs to produce
 
@@ -42,7 +45,6 @@
 |------------------------|--------|
 | pcb/dwm1000_adapter    |   4x   |
 | pcb/alphabot_esp32_pcb |   1x   |
-
 
 ## Parts to 3D print
 
@@ -68,7 +70,7 @@
 | stl/vehicle/addon/dwm1000.tag.adapter.board.mount.stl   |   1x   |   PLA    |
 | stl/vehicle/addon/bumper.lidar.holder.stl               |   1x   |   PLA    |
 | stl/vehicle/addon/bumper.lidar.front.stl                |   1x   |   PLA    |
-
+| stl/vehicle/addon/wheel.encoder.stl                     |   1x   |   PLA    |
 
 ## PCB soldering
 
@@ -90,7 +92,7 @@ Finally plug the Arduino Pro Mini into the DWM1000 Adapter.
 
 After ordering the PCB with assembly service, the board should look like this:
 
-PLACEHOLDER
+![T-U13W273319A-01](T-U13W273319A-01.jpg)
 
 Now solder the pin headers for the ESP-WROOM-32, for the L298N motor driver, for the positioning module and for the TF-Luna LiDAR sensor to the board.
 
@@ -110,13 +112,21 @@ PLACEHOLDER
 
 ## Assembly
 
+### Alphabot car
+
 Start with soldering the gear motors. Both contacts of the motor are to be soldered to a separate wire.
 
-![image81](image81.png)
+![20221114_232438](20221114_232438.jpg)
 
-Once the gear motors are soldered, insert them on the bottom of the base plate (stl/vehicle/base/alphabot.4Wheel.base.Top.V5.plus.esp32.stl) of the Alphabot.
+Once the gear motors are soldered, insert them on the bottom of the base plate (stl/vehicle/base/alphabot.4Wheel.base.Top.esp32.stl) of the Alphabot.
 
 ![image83](image83.png)
+
+Now take the wheel encoder (stl/vehicle/addon/wheel.encoder.stl) and put it onto the hub of the motor as seen in the pictures below.
+
+![image_wheel_encoder_1](image_wheel_encoder_1.png)
+
+![image_wheel_encoder_2](image_wheel_encoder_2.png)
 
 Next, pull a tire (stl/vehicle/wheel/tire.base.62.78.stl) onto a rear wheel. (stl/vehicle/wheel/rim.back.62mm.V2.stl)
 
@@ -146,7 +156,7 @@ Attach the rear wheel to the axle.
 
 ![image90](image90.png)
 
-Screw the wheel to the axle with a DIN 912 M3x14 screw so that the wheel is securely mounted on the axle.
+Screw the wheel to the axle with a wheel nut (stl/vehicle/wheel/rim.62mm.front.nut.stl) and a DIN 912 M3x14 screw so that the wheel is securely mounted on the axle.
 
 ![image91](image91.png)
 
@@ -160,7 +170,7 @@ Next, the base plate with the motors can be put aside for the time being. Screw 
 
 ![image94](image94.png)
 
-Now screw a 28BYJ-48 stepper motor to the front bumper (stl/vehicle/addon/bumper.lidar.front.stl) using DIN 912 M3x10 screws.
+Now screw a 28BYJ-48 stepper motor to the front bumper (stl/vehicle/addon/bumper.lidar.front.stl) using two DIN 912 M3x10 screws.
 
 ![image95](image95.png)
 
@@ -182,9 +192,7 @@ In the next step, return to the base plate. Attach a stepper motor for steering 
 
 Once the stepper motor has been screwed to the base plate, the steering extension (stl/vehicle/steering/steering.stepper.pin.stl) can be attached to the the stepper motor hub protruding from the bottom of the base plate.
 
-![image101](image101.png)
-
-![image102](image102.png)
+![image101_102](image101_102.png)
 
 Now insert the two 5x8x2.5 ball bearings on the steering bracket (stl/vehicle/steering/steering.axle.stl).
 
@@ -218,25 +226,35 @@ Slide the front wheel (stl/vehicle/wheel/rim.front.62mm.V2.stl & stl/vehicle/whe
 
 ![image110](image110.png)
 
-Then screw the wheel to the axle so that it does not come loose while driving.
+Then screw the wheel to the axle with a wheel nut (stl/vehicle/wheel/rim.62mm.front.nut.stl) and a DIN 912 M3x14 screw so that it does not come loose while driving.
 
 ![image111](image111.png)
 
-For obstacle detection, screw the TF-Luna LiDAR sensor to the dedicated holder at the front. Use M2 screws for that.
+For obstacle detection, screw the TF-Luna LiDAR sensor to the dedicated holder at the front. Use M2x6 screws for that.
 
 ![image112](image112.png)
 
 ![image113](image113.png)
 
-The battery case can be screwed to the underside of the base plate with two M2.5x5mm screws. Furthermore, interrupt a power line from the battery case with a 15mm*21mm 2 pins rocker switch. Insert the switch through the base plate at the designated location.
+Insert a 15mm*21mm 2 pins rocker switch through the base plate at the designated location.
 
-![image114](image114.png)
+![rocker_switch](rocker_switch.png)
 
-Up next, mount the rear spoiler (stl/vehicle/addon/wing.holder.V4.hc-sr04.stl & stl/vehicle/addon/wingv4.stl) to the rear of the base plate with four DIN 912 M3x8 screws.
+The battery case can be screwed to the underside of the base plate with two M2.5x5mm screws. Furthermore, interrupt a power line from the battery case with the rocker switch.
 
-![image115](image115.png)
+![20221116_101925](20221116_101925.jpg)
 
-![image116](image116.png)
+Mount the FC-03 infrared sensor around the encoder wheel with an M2.5 screw.
+
+![20221116_102728](20221116_102728.jpg)
+
+Screw four M2 hex spacers into the screw holes provided for the Alphabot ESP32 PCB and screw four M2.5 hex spacers into the screw holes provided for the L298N.
+
+![hex_spacers](hex_spacers.png)
+
+Up next, mount the rear spoiler to the rear of the base plate. Mount the wing holder (stl/vehicle/addon/wing.holder.V4.hc-sr04.stl) to the base plate with two DIN 912 M3x8 screws and mount the wing (stl/vehicle/addon/wingv4.stl) to the wing holder with two DIN 912 M3x6 screws.
+
+![image115_116](image115_116.png)
 
 For the positioning module, glue the holder for the tag (stl/vehicle/addon/dwm1000.tag.adapter.board.mount.stl) to the base plate.
 
@@ -244,8 +262,7 @@ For the positioning module, glue the holder for the tag (stl/vehicle/addon/dwm10
 
 Screw the L298N motor driver to the base plate and connect it to the drive motors and the power supply.
 
-REPLACE this image
-![image118](image118.jpg)
+![20221116_113454](20221116_113454.jpg)
 
 Now the heart of this Alphabot comes into play: the Alphabot ESP32 PCB. Attach the Alphabot ESP32 PCB with the ESP-WROOM-32 plugged in to the base plate using M2 male-female hex spacers and M2 screws.
 
@@ -255,7 +272,7 @@ Connect the Alphabot ESP32 PCB to the power supply through its 12V power connect
 
 PLACEHOLDER
 
-Connect the Pins of the L298N motor driver to the Alphabot ESP32 PCB.
+Connect the pins of the L298N motor driver to the Alphabot ESP32 PCB.
 
 PLACEHOLDER
 
@@ -280,3 +297,9 @@ Connect the TF-Luna LiDAR sensor at the front to the Alphabot ESP32 PCB.
 PLACEHOLDER
 
 Now that the Alphabot is successfully assembled, the software part can begin.
+
+### Positioning Anchor
+
+![DWM1000_ANCHOR_mount](DWM1000_ANCHOR_mount.png)
+
+![positioning_anchor_mounted](positioning_anchor_mounted.png)
