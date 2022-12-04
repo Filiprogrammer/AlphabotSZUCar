@@ -96,19 +96,19 @@ After ordering the PCB with assembly service, the board should look like this:
 
 Now solder the pin headers for the ESP-WROOM-32, for the L298N motor driver, for the positioning module and for the TF-Luna LiDAR sensor to the board.
 
-PLACEHOLDER
+![alphabot_esp32_pcb_1](alphabot_esp32_pcb_1.png)
 
 Also solder two B5B-XH-AM connector headers for the stepper motors to the board as seen in the following picture.
 
-PLACEHOLDER
+![alphabot_esp32_pcb_2](alphabot_esp32_pcb_2.png)
 
 Solder a CZM5/2 terminal block to the 12V power pins of the board.
 
-PLACEHOLDER
+![alphabot_esp32_pcb_3](alphabot_esp32_pcb_3.png)
 
 Finally you can plug the ESP-WROOM-32 into the Alphabot ESP32 PCB.
 
-PLACEHOLDER
+![alphabot_esp32_pcb_4](alphabot_esp32_pcb_4.png)
 
 ## Assembly
 
