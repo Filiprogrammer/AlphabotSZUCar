@@ -28,13 +28,12 @@
 | ESP-WROOM-32 board                           |     1x      |
 | Arduino Pro Mini 16MHz 5V                    |     4x      |
 | 15mm*21mm 2 pins rocker switch               |     1x      |
-| CZM5/2 terminal block                        |     2x      |
+| CZM5/2 terminal block                        |     1x      |
 | 2.54mm female 12 pin header                  |     8x      |
 | 2.54mm female 19 pin header                  |     2x      |
-| 2.54mm any 19 pin header                     | 2x optional |
 | 2.54mm any 6 pin header                      |     3x      |
 | 2.54mm any 4 pin header                      |     1x      |
-| B5B-XH-AM connector header                   |     2x      |
+| S5B-XH-A connector header                    |     2x      |
 | DIN 912 M3x5 screw                           |     6x      |
 | wire                                         |     16x     |
 | FC-03 infrared sensor                        |     1x      |
