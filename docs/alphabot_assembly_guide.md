@@ -97,7 +97,7 @@ Now solder the pin headers for the ESP-WROOM-32, for the L298N motor driver, for
 
 ![alphabot_esp32_pcb_1](alphabot_esp32_pcb_1.png)
 
-Also solder two B5B-XH-AM connector headers for the stepper motors to the board as seen in the following picture.
+Also solder two S5B-XH-A connector headers for the stepper motors to the board as seen in the following picture.
 
 ![alphabot_esp32_pcb_2](alphabot_esp32_pcb_2.png)
 
