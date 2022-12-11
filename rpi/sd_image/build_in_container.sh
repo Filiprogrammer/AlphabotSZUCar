@@ -75,7 +75,7 @@ apt-get install -y --allow-unauthenticated dosfstools qemu-user-static debootstr
 # Setup basic debian filesystem.
 debootstrap --verbose --foreign --arch arm64 --variant=minbase --include=ifupdown,iproute2,iputils-ping,isc-dhcp-client,libiptc0 --components main,contrib,non-free buster $RASPI_DEBIAN_ROOT http://deb.debian.org/debian
 
-rm $RASPI_DEBIAN_ROOT/proc
+rm -rf $RASPI_DEBIAN_ROOT/proc
 mkdir $RASPI_DEBIAN_ROOT/proc
 
 # Copy qemu to the target filesystem.
