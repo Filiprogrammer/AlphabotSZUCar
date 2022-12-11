@@ -233,7 +233,7 @@ For obstacle detection, screw the TF-Luna LiDAR sensor to the dedicated holder a
 
 ![image112](image112.png)
 
-![image113](image113.png)
+![image113](image113.jpg)
 
 Insert a 15mm*21mm 2 pins rocker switch through the base plate at the designated location.
 
@@ -305,4 +305,4 @@ Now that the Alphabot is successfully assembled, the software part can begin.
 
 ![DWM1000_ANCHOR_mount](DWM1000_ANCHOR_mount.png)
 
-![positioning_anchor_mounted](positioning_anchor_mounted.png)
+![positioning_anchor_mounted](positioning_anchor_mounted.jpg)
