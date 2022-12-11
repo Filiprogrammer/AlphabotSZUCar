@@ -265,35 +265,39 @@ Screw the L298N motor driver to the base plate and connect it to the drive motor
 
 Now the heart of this Alphabot comes into play: the Alphabot ESP32 PCB. Attach the Alphabot ESP32 PCB with the ESP-WROOM-32 plugged in to the base plate using M2 male-female hex spacers and M2 screws.
 
-PLACEHOLDER
+![frame48](frame48.png)
 
 Connect the Alphabot ESP32 PCB to the power supply through its 12V power connectors.
 
-PLACEHOLDER
+![frame49](frame49.png)
 
 Connect the pins of the L298N motor driver to the Alphabot ESP32 PCB.
 
-PLACEHOLDER
+![frame50](frame50.png)
 
-Next, insert the positioning module into the DWM1000 tag holder and screw it on with two M2x6 screws and two M2 nuts.
+Next, insert the positioning module into the DWM1000 tag holder.
 
-PLACEHOLDER
+![frame52](frame52.png)
 
 Connect the GND, VCC and TXO pins on the Arduino Pro Mini of the positioning module to the Alphabot ESP32 PCB.
 
-PLACEHOLDER
+![frame53](frame53.png)
+
+Screw the positioning module on with two M2x6 screws and two M2 nuts.
+
+![frame54_screws](frame54_screws.png)
 
 Connect the steering stepper motor to the correspondingly labeled B5B-XH-AM connector header on the Alphabot ESP32 PCB.
 
-PLACEHOLDER
+![frame55](frame55.png)
 
 Connect the stepper motor at the front to the other B5B-XH-AM connector header on the Alphabot ESP32 PCB.
 
-PLACEHOLDER
+![frame56](frame56.png)
 
 Connect the TF-Luna LiDAR sensor at the front to the Alphabot ESP32 PCB.
 
-PLACEHOLDER
+![frame57](frame57.png)
 
 Now that the Alphabot is successfully assembled, the software part can begin.
 
