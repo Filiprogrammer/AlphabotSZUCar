@@ -1,4 +1,4 @@
-# Alphabot Assembly Guide
+# Alphabot Build Instructions
 
 First of all, the Alphabot repository is needed. This can be cloned from GitHub with with the following command:
 
