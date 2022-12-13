@@ -4,39 +4,40 @@
 
 |                     Part                     |   Amount    |
 |----------------------------------------------|-------------|
-| TT DC Gearbox Motor                          |     2x      |
-| DIN 912 M3x10 screw                          |     9x      |
-| 28BYJ-48 stepper motor                       |     2x      |
-| DIN 912 M3x5 screw                           |     2x      |
-| Ball bearing 10x15x4                         |     4x      |
-| Ball bearing 5x11x4                          |     4x      |
-| Ball bearing 5x8x2.5                         |     2x      |
-| DIN 912 M3x14 screw                          |     4x      |
-| TF-Luna LiDAR sensor                         |     1x      |
-| M2x6 screw                                   |     4x      |
-| 3S 18650 battery holder case box (7.6x6x2cm) |     1x      |
-| M2.5x5 screw                                 |     2x      |
-| 18650 Lithium-Ion Battery 3.7V               |     3x      |
-| DIN 912 M3x8 screw                           |     2x      |
-| DIN 912 M3x6 screw                           |     2x      |
-| L298N DC motor driver module                 |     1x      |
-| M2 screw                                     |     4x      |
-| M2 male-female hex spacer                    |     4x      |
-| M2 nut                                       |     2x      |
-| M2.5 screw                                   |     5x      |
-| M2.5 male-female hex spacer                  |     4x      |
-| ESP-WROOM-32 board                           |     1x      |
-| Arduino Pro Mini 16MHz 5V                    |     4x      |
-| 15mm*21mm 2 pins rocker switch               |     1x      |
-| CZM5/2 terminal block                        |     1x      |
-| 2.54mm female 12 pin header                  |     8x      |
-| 2.54mm female 19 pin header                  |     2x      |
-| 2.54mm any 6 pin header                      |     3x      |
-| 2.54mm any 4 pin header                      |     1x      |
-| S5B-XH-A connector header                    |     2x      |
-| DIN 912 M3x5 screw                           |     6x      |
+| TT DC Gearbox Motor                          |      2x     |
+| DIN 912 M3x10 screw                          |      9x     |
+| 28BYJ-48 stepper motor                       |      2x     |
+| DIN 912 M3x5 screw                           |      2x     |
+| Ball bearing 10x15x4                         |      4x     |
+| Ball bearing 5x11x4                          |      4x     |
+| Ball bearing 5x8x2.5                         |      2x     |
+| DIN 912 M3x14 screw                          |      4x     |
+| TF-Luna LiDAR sensor                         |      1x     |
+| M2x6 screw                                   |     10x     |
+| 3S 18650 battery holder case box (7.6x6x2cm) |      1x     |
+| M2.5x5 screw                                 |      2x     |
+| 18650 Lithium-Ion Battery 3.7V               |      3x     |
+| DIN 912 M3x8 screw                           |      2x     |
+| DIN 912 M3x6 screw                           |      2x     |
+| L298N DC motor driver module                 |      1x     |
+| M2 screw                                     |      4x     |
+| M2 male-female hex spacer                    |      4x     |
+| M2 nut                                       |      8x     |
+| M2.5 screw                                   |      5x     |
+| M2.5 male-female hex spacer                  |      4x     |
+| ESP-WROOM-32 board                           |      1x     |
+| Arduino Pro Mini 16MHz 5V                    |      4x     |
+| USB to TTL adapter (e.g. FT232RL)            |      1x     |
+| 15mm*21mm 2 pins rocker switch               |      1x     |
+| CZM5/2 terminal block                        |      1x     |
+| 2.54mm female 12 pin header                  |      8x     |
+| 2.54mm female 19 pin header                  |      2x     |
+| 2.54mm any 6 pin header                      |      3x     |
+| 2.54mm any 4 pin header                      |      1x     |
+| S5B-XH-A connector header                    |      2x     |
+| DIN 912 M3x5 screw                           |      6x     |
 | wire                                         |     16x     |
-| FC-03 infrared sensor                        |     1x      |
+| FC-03 infrared sensor                        |      1x     |
 
 ## Custom PCBs to produce
 
@@ -71,11 +72,11 @@
 | stl/vehicle/addon/bumper.lidar.front.stl                |   1x   |   PLA    |
 | stl/vehicle/addon/wheel.encoder.stl                     |   1x   |   PLA    |
 
-## PCB soldering
+## Positioning module
 
-### DWM1000 Adapter
+### Assembly
 
-After ordering the PCB with assembly service, the board should look like this:
+After ordering the DWM1000 adapter PCB with assembly service, the board should look like this:
 
 ![positioning_module_assembly_1](positioning_module_assembly_1.png)
 
@@ -87,9 +88,65 @@ Finally plug the Arduino Pro Mini into the DWM1000 Adapter.
 
 ![positioning_module_assembly_3](positioning_module_assembly_3.png)
 
-### Alphabot ESP32 PCB
+### Software
 
-After ordering the PCB with assembly service, the board should look like this:
+The software for the microcontrollers can be built with PlatformIO. PlatformIO is a useful tool for development for various embedded systems. This tool can be used either standalone or as an extension in Visual Studio Code. The process with this Visual Studio Code extension is explained below.
+
+To install the extension, click on the Extensions tab in Visual Studio Code and search for PlatformIO.
+
+![image132](image132.png)
+
+Click "Install" to install the extension. Restart Visual Studio Code once the installation has completed.
+
+For the positioning system, the Arduino Pro Mini, which acts as a "tag" on the Alphabot, must be flashed with the appropriate firmware. Open the positioning_tag folder of the Alphabot repository in VSCode. The Arduino Pro Mini has to be connected to the computer with a USB to TTL adapter like the FT232RL.
+
+![image135](image135.jpg)
+
+The firmware can be uploaded to the Arduino Pro Mini by clicking the upload button in VSCode.
+
+![image133](image133.png)
+
+Now the firmware is built and uploaded to the Arduino Pro Mini via the adapter. Once this process completes, check whether it worked by taking a look at the Serial Monitor.
+
+![image134](image134.png)
+
+If the process was successful, the following message will appear in the Serial Monitor:
+
+![image136](image136.png)
+
+Next, the anchors can be set up. Plug an Arduino Pro Mini that is to be used as an anchor into the adapter. Open the folder positioning_anchor of the Alphabot repository in VSCode.
+
+Now go to line 27 of positioning_anchor/DWM1000_Anchor/DWM1000_Anchor.ino.
+
+![image137](image137.png)
+
+Each anchor should have its own address. The addresses from the comments on lines 24 to 26 are to be used when uploading. For clarity, it is helpful to label the positioning modules accordingly.
+
+![image138](image138.jpg)
+
+Once the firmware is uploaded, the serial monitor should display the following message with the corresponding address:
+
+![image139](image139.png)
+
+Upload the firmware to the other two anchors as well. Always make sure that the correct address is entered on line 27 before uploading.
+
+If everything went well, all anchors will connect to the tag when the positioning modules are connected to the power. Each Arduino Pro Mini should write the measured distances to the serial interface.
+
+### Attaching an anchor to a holder
+
+Insert a positioning module configured as an anchor into an anchor holder (stl/dwm1000.anchor.adapter.board.mount.stl)
+
+![dwm1000_anchor_with_mount](dwm1000_anchor_with_mount.png)
+
+Screw the positioning module on with two M2x6 screws and two M2 nuts.
+
+![positioning_anchor_mounted](positioning_anchor_mounted.jpg)
+
+Repeat this process for the other two anchors.
+
+## Alphabot ESP32 PCB assembly
+
+After ordering the Alphabot ESP32 PCB with assembly service, the board should look like this:
 
 ![T-U13W273319A-01](T-U13W273319A-01.jpg)
 
@@ -109,9 +166,7 @@ Finally you can plug the ESP-WROOM-32 into the Alphabot ESP32 PCB.
 
 ![alphabot_esp32_pcb_4](alphabot_esp32_pcb_4.png)
 
-## Assembly
-
-### Alphabot car
+## Alphabot car assembly
 
 Start with soldering the gear motors. Both contacts of the motor are to be soldered to a separate wire.
 
@@ -275,7 +330,7 @@ Connect the pins of the L298N motor driver to the Alphabot ESP32 PCB.
 
 ![frame50](frame50.png)
 
-Next, insert the positioning module into the DWM1000 tag holder.
+Now insert the positioning module configured as a tag into the DWM1000 tag holder.
 
 ![frame52](frame52.png)
 
@@ -301,8 +356,4 @@ Connect the TF-Luna LiDAR sensor at the front to the Alphabot ESP32 PCB.
 
 Now that the Alphabot is successfully assembled, the software part can begin.
 
-### Positioning Anchor
 
-![DWM1000_ANCHOR_mount](DWM1000_ANCHOR_mount.png)
-
-![positioning_anchor_mounted](positioning_anchor_mounted.jpg)
