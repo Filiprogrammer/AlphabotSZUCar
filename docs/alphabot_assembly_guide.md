@@ -1,5 +1,13 @@
 # Alphabot Assembly Guide
 
+First of all, the Alphabot repository is needed. This can be cloned from GitHub with with the following command:
+
+```console
+git clone --recursive https://github.com/Filiprogrammer/AlphabotSZUCar.git
+```
+
+The ```--recursive``` option ensures that all submodules are cloned as well.
+
 ## Parts list
 
 |                     Part                     |   Amount    |
