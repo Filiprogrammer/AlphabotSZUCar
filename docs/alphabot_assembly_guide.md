@@ -364,4 +364,16 @@ Connect the TF-Luna LiDAR sensor at the front to the Alphabot ESP32 PCB.
 
 Now that the Alphabot is successfully assembled, the software part can begin.
 
+![alphabot_assembled](alphabot_assembled.png)
 
+## ESP32 Software
+
+Open the directory esp32/PrimaryESP32 in VSCode. Make sure that the Alphabot's power is turned off and connect the ESP32 to the computer. The firmware can be uploaded to the ESP32 by clicking the Upload button in VSCode.
+
+Alternatively this can also be done via the command line:
+
+```console
+pio run --target upload
+```
+
+If the upload process was successful, the ESP32 will now execute the uploaded code. The ESP32 can be unplugged from the computer and be used in real operation.
