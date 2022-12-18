@@ -410,7 +410,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.6"
+          python-version: "3.10"
       - name: Install Python modules
         run: pip install colorama
       - name: Run emulator with all tests
