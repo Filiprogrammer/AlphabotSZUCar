@@ -1,3 +1,5 @@
+![Assembled Alphabot](docs/images/alphabot_assembled.png)
+
 AlphabotSZUCar
 ==============
 
