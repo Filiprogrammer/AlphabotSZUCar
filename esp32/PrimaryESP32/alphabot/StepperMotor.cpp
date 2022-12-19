@@ -211,7 +211,7 @@ void StepperMotor::startStepperTask() {
 
     size_t size = sizeof(stepperUlpTask) / sizeof(ulp_insn_t);
     ulp_process_macros_and_load(0, stepperUlpTask, &size);
-    memset(&(RTC_SLOW_MEM[0x1000 / 4]), 0, 16);
+    memset(&(RTC_SLOW_MEM[RTC_MEM_VARIABLE_ADDRESS / sizeof(uint32_t)]), 0, 16);
     ulp_run(0);
 }
 
