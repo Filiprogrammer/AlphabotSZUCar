@@ -27,6 +27,9 @@ bool gyro_data_ready = false;
 float accel[3];
 bool accel_data_ready = false;
 
+float uncal_mag[3];
+bool uncal_mag_data_ready = false;
+
 float mag[3];
 bool mag_data_ready = false;
 
@@ -413,6 +416,11 @@ void build_sensor_event_data(void * context, enum inv_icm20948_sensor sensortype
       memcpy(event.data.mag.vect, &raw_bias_data[0], sizeof(event.data.mag.vect));
       memcpy(event.data.mag.bias, &raw_bias_data[3], sizeof(event.data.mag.bias));
       memcpy(&(event.data.gyr.accuracy_flag), arg, sizeof(event.data.gyr.accuracy_flag));
+
+      uncal_mag[0] = event.data.mag.vect[0];
+      uncal_mag[1] = event.data.mag.vect[1];
+      uncal_mag[2] = event.data.mag.vect[2];
+      uncal_mag_data_ready = true;
       break;
     case INV_SENSOR_TYPE_GYROSCOPE:
       memcpy(event.data.gyr.vect, data, sizeof(event.data.gyr.vect));
@@ -623,6 +631,7 @@ void ArduinoICM20948::init(ArduinoICM20948Settings settings)
   // Set frequency
   rc = inv_icm20948_set_sensor_period(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_GYROSCOPE), 1000 / settings.gyroscope_frequency);
   rc = inv_icm20948_set_sensor_period(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_ACCELEROMETER), 1000 / settings.accelerometer_frequency);
+  rc = inv_icm20948_set_sensor_period(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_UNCAL_MAGNETOMETER), 1000 / settings.uncal_magnetometer_frequency);
   rc = inv_icm20948_set_sensor_period(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_MAGNETOMETER), 1000 / settings.magnetometer_frequency);
   rc = inv_icm20948_set_sensor_period(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_GAME_ROTATION_VECTOR), 1000 / settings.quaternion6_frequency);
   rc = inv_icm20948_set_sensor_period(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_ROTATION_VECTOR), 1000 / settings.quaternion9_frequency);
@@ -636,6 +645,7 @@ void ArduinoICM20948::init(ArduinoICM20948Settings settings)
   // Enable / disable
   rc = inv_icm20948_enable_sensor(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_GYROSCOPE), settings.enable_gyroscope);
   rc = inv_icm20948_enable_sensor(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_ACCELEROMETER), settings.enable_accelerometer);
+  rc = inv_icm20948_enable_sensor(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_UNCAL_MAGNETOMETER), settings.enable_uncal_magnetometer);
   rc = inv_icm20948_enable_sensor(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_MAGNETOMETER), settings.enable_magnetometer);
   rc = inv_icm20948_enable_sensor(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_GAME_ROTATION_VECTOR), settings.enable_quaternion6);
   rc = inv_icm20948_enable_sensor(&icm_device, idd_sensortype_conversion(INV_SENSOR_TYPE_ROTATION_VECTOR), settings.enable_quaternion9);
@@ -662,6 +672,10 @@ bool ArduinoICM20948::accelDataIsReady()
   return accel_data_ready;
 }
 
+bool ArduinoICM20948::uncalMagDataIsReady()
+{
+  return uncal_mag_data_ready;
+}
 
 bool ArduinoICM20948::magDataIsReady()
 {
@@ -722,6 +736,14 @@ void ArduinoICM20948::readAccelData(float *x, float *y, float *z)
   *y = accel[1];
   *z = accel[2];
   accel_data_ready = false;
+}
+
+void ArduinoICM20948::readUncalMagData(float *x, float *y, float *z)
+{
+  *x = uncal_mag[0];
+  *y = uncal_mag[1];
+  *z = uncal_mag[2];
+  uncal_mag_data_ready = false;
 }
 
 void ArduinoICM20948::readMagData(float *x, float *y, float *z)

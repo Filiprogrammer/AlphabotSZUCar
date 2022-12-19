@@ -13,6 +13,7 @@ typedef struct {
   int mode;
   bool enable_gyroscope;
   bool enable_accelerometer;
+  bool enable_uncal_magnetometer;
   bool enable_magnetometer;
   bool enable_gravity;
   bool enable_linearAcceleration;
@@ -22,6 +23,7 @@ typedef struct {
   bool enable_steps;
   int gyroscope_frequency;
   int accelerometer_frequency;
+  int uncal_magnetometer_frequency;
   int magnetometer_frequency;
   int gravity_frequency;
   int linearAcceleration_frequency;
@@ -48,6 +50,7 @@ class ArduinoICM20948
 
     bool gyroDataIsReady();
     bool accelDataIsReady();
+    bool uncalMagDataIsReady();
     bool magDataIsReady();
     bool gravDataIsReady();
     bool linearAccelDataIsReady();
@@ -60,6 +63,7 @@ class ArduinoICM20948
 
     void readGyroData(float *x, float *y, float *z);
     void readAccelData(float *x, float *y, float *z);
+    void readUncalMagData(float *x, float *y, float *z);
     void readMagData(float *x, float *y, float *z);
     void readGravData(float* x, float* y, float* z);
     void readLinearAccelData(float* x, float* y, float* z);
@@ -70,6 +74,5 @@ class ArduinoICM20948
     void readHarData(char* activity);
     void readStepsData(unsigned long* steps_count);
 };
-
 
 #endif
