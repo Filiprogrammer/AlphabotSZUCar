@@ -1,8 +1,6 @@
 #ifndef POSITIONING_KALMAN_FILTER_H
 #define POSITIONING_KALMAN_FILTER_H
 
-#include "quaternion.h"
-
 // State Vector
 // This tracks the pose states in a 9-element vector.
 // The states are:
