@@ -331,31 +331,8 @@ void setup() {
     posFilter->set_PositionNoise(positionNoise);
     double velocityNoise[3] = { 1.0E-6, 1.0E-6, 1.0E-6 };
     posFilter->set_VelocityNoise(velocityNoise);
-    double geomagneticVectorNoise[3] = { 1.0E-6, 1.0E-6, 1.0E-6 };
-    posFilter->set_GeomagneticVectorNoise(geomagneticVectorNoise);
-    double quaternionNoise[4] = { 0.01, 0.01, 0.01, 0.01 };
-    posFilter->set_QuaternionNoise(quaternionNoise);
-    double angularVelocityNoise[3] = { 0.015 * (PI / 180.0), 0.015 * (PI / 180.0), 0.015 * (PI / 180.0) };
-    posFilter->set_AngularVelocityNoise(angularVelocityNoise);
     double accelerationNoise[3] = { (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0 };
     posFilter->set_AccelerationNoise(accelerationNoise);
-    double magnetometerBiasNoise[3] = { 1.0E-7, 1.0E-7, 1.0E-7 };
-    posFilter->set_MagnetometerBiasNoise(magnetometerBiasNoise);
-    double accelerometerBiasNoise[3] = { 1.0E-7, 1.0E-7, 1.0E-7 };
-    posFilter->set_AccelerometerBiasNoise(accelerometerBiasNoise);
-    double gyroscopeBiasNoise[3] = { 1.0E-7, 1.0E-7, 1.0E-7 };
-    posFilter->set_GyroscopeBiasNoise(gyroscopeBiasNoise);
-
-    // Orientation
-    posFilter->State.orientation.a = 0; // TODO: Initialize it with real values somewhere in the loop
-    posFilter->State.orientation.b = 0;
-    posFilter->State.orientation.c = 0;
-    posFilter->State.orientation.d = 1;
-
-    // Angular Velocity
-    posFilter->State.angularVelocity[0] = 0;
-    posFilter->State.angularVelocity[1] = 0;
-    posFilter->State.angularVelocity[2] = 0;
 
     // Position
     posFilter->State.position[0] = 0; // TODO: Initialize it with real values somewhere in the loop
@@ -371,26 +348,6 @@ void setup() {
     posFilter->State.acceleration[0] = 0;
     posFilter->State.acceleration[1] = 0;
     posFilter->State.acceleration[2] = 0;
-
-    // Accelerometer Bias
-    posFilter->State.accelerometerBias[0] = 0;
-    posFilter->State.accelerometerBias[1] = 0;
-    posFilter->State.accelerometerBias[2] = 0;
-
-    // Gyroscope Bias
-    posFilter->State.gyroscopeBias[0] = 0;
-    posFilter->State.gyroscopeBias[1] = 0;
-    posFilter->State.gyroscopeBias[2] = 0;
-
-    // Geomagnetic Field Vector
-    posFilter->State.geomagneticFieldVector[0] = 0; // Yeah... I don't know what kinda magnetic field I have here.
-    posFilter->State.geomagneticFieldVector[1] = 0;
-    posFilter->State.geomagneticFieldVector[2] = 0;
-
-    // Magnetometer Bias
-    posFilter->State.magnetometerBias[0] = 0;
-    posFilter->State.magnetometerBias[1] = 0;
-    posFilter->State.magnetometerBias[2] = 0;
 
     settings.explore_mode = false;
     settings.navigation_mode = false;
@@ -545,16 +502,6 @@ void loop() {
         } else {
             posFilter->fusevel(vel, VELOCITY_COVARIANCE);
         }
-
-        posFilter->State.angularVelocity[0] = 0;
-        posFilter->State.angularVelocity[1] = 0;
-        posFilter->State.angularVelocity[2] = 0;
-
-        double dir_rad = (90 - (compass->getAngleOffset() + raw_dir)) * 3.14159265359 / 180.0;
-        posFilter->State.orientation.a = sin(dir_rad / 2.0);
-        posFilter->State.orientation.b = 0;
-        posFilter->State.orientation.c = 0;
-        posFilter->State.orientation.d = cos(dir_rad / 2.0);
 
         lps_x = posFilter->State.position[0] * 100.0;
         lps_y = posFilter->State.position[1] * 100.0;
