@@ -273,3 +273,13 @@ void PositioningKalmanFilter::setAccelerationNoise(const double val[2]) {
 void PositioningKalmanFilter::setStateCovariance(const double val[6 * 6]) {
     std::copy(&val[0], &val[6 * 6], &StateCovariance[0]);
 }
+
+PositioningKalmanFilter::PositioningKalmanFilter() {
+    PositionNoise[0] = 0.0;
+    PositionNoise[1] = 0.0;
+    VelocityNoise[0] = 0.0;
+    VelocityNoise[1] = 0.0;
+    AccelerationNoise[0] = 0.0;
+    AccelerationNoise[1] = 0.0;
+    memset(StateCovariance, 0, sizeof(StateCovariance));
+}

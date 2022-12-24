@@ -41,6 +41,8 @@ public:
     void fusevel(const double vel[2], double velCov);
     void pose(double pos[2]) const;
 
+    PositioningKalmanFilter();
+
 };
 
 #endif

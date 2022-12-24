@@ -89,13 +89,11 @@ void charToggleDataReceived(const char* data, size_t len) {
             struct settings toggle_settings = *((struct settings*)data);
             struct logging toggle_logging = *((struct logging*)&(data[1]));
 
-            if (settings.explore_mode != toggle_settings.explore_mode) {
+            if (settings.explore_mode != toggle_settings.explore_mode)
                 settings.explore_mode = toggle_settings.explore_mode;
-            }
 
-            if (settings.navigation_mode != toggle_settings.navigation_mode) {
+            if (settings.navigation_mode != toggle_settings.navigation_mode)
                 settings.navigation_mode = toggle_settings.navigation_mode;
-            }
 
             if (settings.collision_avoidance != toggle_settings.collision_avoidance) {
                 settings.collision_avoidance = toggle_settings.collision_avoidance;
@@ -190,7 +188,7 @@ void charCalibrateDataReceived(const char* data, size_t len) {
     }
 }
 
-static uint16_t id = 0;
+static uint16_t next_obstacle_id = 0;
 
 void charAddObstacleDataReceived(const char* data, size_t len) {
     if (len >= 16) {
@@ -204,16 +202,16 @@ void charAddObstacleDataReceived(const char* data, size_t len) {
             int16_t obstacle_y = data[10] | (data[11] << 8);
             uint16_t obstacle_w = data[12] | (data[13] << 8);
             uint16_t obstacle_h = data[14] | (data[15] << 8);
-            navigator->addObstacle(obstacle_x, obstacle_y, obstacle_w, obstacle_h, id);
+            navigator->addObstacle(obstacle_x, obstacle_y, obstacle_w, obstacle_h, next_obstacle_id);
 
             uint8_t val[18];
 
             for (uint8_t i = 0; i < 16; ++i)
                 val[i] = data[i];
 
-            val[16] = id;
-            val[17] = id << 8;
-            id++;
+            val[16] = next_obstacle_id;
+            val[17] = next_obstacle_id << 8;
+            next_obstacle_id++;
             ble_char_add_obstacle_sender->sendValue(val, 18);
         }
     }

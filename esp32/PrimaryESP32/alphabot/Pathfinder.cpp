@@ -273,3 +273,7 @@ Pathfinder::Pathfinder() {
     nodes_size = max(free_heap - 24576, 10240) / sizeof(PathNode);
     nodes = new PathNode[nodes_size];
 }
+
+Pathfinder::~Pathfinder() {
+    delete nodes;
+}
