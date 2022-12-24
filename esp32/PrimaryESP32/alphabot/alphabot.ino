@@ -15,6 +15,7 @@
 #include "Navigator.h"
 #include <BLECharacteristic.h>
 #include "BLECharacteristicSender.h"
+#include "PositioningKalmanFilter.h"
 
 TwoMotorDrive* two_motor_drive = NULL;
 DistanceMeter* distance_meter = NULL;
@@ -25,12 +26,15 @@ MotionTracker* motion_tracker = NULL;
 Compass* compass = NULL;
 SaveFile* save_file = NULL;
 Navigator* navigator = NULL;
+PositioningKalmanFilter* posFilter = NULL;
 
 float raw_dir = 0.0;
 float dir = 0.0;
 float anchor1_dist = 0.0;
 float anchor2_dist = 0.0;
 float anchor3_dist = 0.0;
+float raw_pos_x = 0;
+float raw_pos_y = 0;
 float lps_x = 0;
 float lps_y = 0;
 int8_t drive_input_steer = 0;
@@ -280,7 +284,7 @@ void onCharAddObstacleArrive() {
 
 void setup() {
     REG_CLR_BIT(RTC_CNTL_BROWN_OUT_REG, RTC_CNTL_BROWN_OUT_ENA);
-    setCpuFrequencyMhz(80);
+    setCpuFrequencyMhz(240);
     #ifdef DEBUG
     Serial.begin(115200);
     #endif
@@ -318,6 +322,29 @@ void setup() {
     compass->setAngleOffset(save_file->getCompassAngleOffset());
     compass->finishMagnetSensorCalibration();
     navigator = new Navigator(two_motor_drive);
+
+    posFilter = new PositioningKalmanFilter();
+
+    // Set the process noise values.
+    // The process noise variance describes the uncertainty of the motion model the filter uses.
+    double positionNoise[2] = { 1.0E-6, 1.0E-6 };
+    posFilter->setPositionNoise(positionNoise);
+    double velocityNoise[2] = { 1.0E-6, 1.0E-6 };
+    posFilter->setVelocityNoise(velocityNoise);
+    double accelerationNoise[2] = { (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0 };
+    posFilter->setAccelerationNoise(accelerationNoise);
+
+    // Position
+    posFilter->State.position[0] = 0; // TODO: Initialize it with real values somewhere in the loop
+    posFilter->State.position[1] = 0;
+
+    // Velocity
+    posFilter->State.velocity[0] = 0;
+    posFilter->State.velocity[1] = 0;
+
+    // Acceleration
+    posFilter->State.acceleration[0] = 0;
+    posFilter->State.acceleration[1] = 0;
 
     settings.explore_mode = false;
     settings.navigation_mode = false;
@@ -395,8 +422,13 @@ void navigatorTask(void* args) {
     }
 }
 
+template <typename T> int signum(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 uint32_t loop_iteration = 0;
 uint32_t time_last_second = 0;
+double moving_speed = 0.0;
 
 void loop() {
     if (!connected) {
@@ -406,6 +438,18 @@ void loop() {
 
     if ((loop_iteration % LOOP_FREQUENCY_HZ) == 0)
         time_last_second = millis();
+
+    int8_t speed = two_motor_drive->getSpeed();
+
+    if ((speed != 0 && signum(speed) != signum(moving_speed)) || abs(speed) > abs(moving_speed)) {
+        moving_speed = speed;
+    } else {
+        bool signbit_before = std::signbit(moving_speed);
+        moving_speed -= signum(moving_speed - speed) * (25.0 / LOOP_FREQUENCY_HZ);
+
+        if (std::signbit(moving_speed) != signbit_before || abs(moving_speed) < abs(speed))
+            moving_speed = speed;
+    }
 
     if (logging.obstacle_distance || settings.collision_avoidance || settings.explore_mode) {
         distance_meter->readValues(&front_dist, &left_dist, &right_dist, &back_dist);
@@ -430,8 +474,34 @@ void loop() {
     }
 
     if (settings.positioning) {
-        positioning_system->readDistances(&anchor1_dist, &anchor2_dist, &anchor3_dist);
-        positioning_system->calculatePosition(anchor1_dist, anchor2_dist, anchor3_dist, &lps_x, &lps_y);
+        posFilter->predict(1.0 / LOOP_FREQUENCY_HZ);
+
+        double correctedSpeed = 0;
+        int8_t absSpeed = std::abs(moving_speed);
+
+        if (absSpeed > 45) {
+            correctedSpeed = 0.0207 * absSpeed - 1.131 + std::pow(2.71828, -((absSpeed - 30) * 0.051 * (absSpeed - 30) * 0.051)) * 0.4;
+
+            if (std::signbit(moving_speed))
+                correctedSpeed = -correctedSpeed;
+        }
+
+        double vel[2];
+        vel[0] = std::sin((90 - dir) * 0.017453292519943295) * correctedSpeed;
+        vel[1] = std::cos((90 - dir) * 0.017453292519943295) * correctedSpeed;
+
+        if (positioning_system->readDistances(&anchor1_dist, &anchor2_dist, &anchor3_dist)) {
+            // New positioning data
+            positioning_system->calculatePosition(anchor1_dist, anchor2_dist, anchor3_dist, &raw_pos_x, &raw_pos_y);
+            double raw_pos[2] = { raw_pos_x / 100.0, raw_pos_y / 100.0 };
+            posFilter->fusegps(raw_pos, POSITION_COVARIANCE, vel, VELOCITY_COVARIANCE);
+        } else {
+            posFilter->fusevel(vel, VELOCITY_COVARIANCE);
+        }
+
+        lps_x = posFilter->State.position[0] * 100.0;
+        lps_y = posFilter->State.position[1] * 100.0;
+
         navigator->setOwnPosition(lps_x, lps_y);
         #ifdef DEBUG
         Serial.print("anchor1_dist: ");
