@@ -93,21 +93,21 @@ void PositioningSystem::setAnchorPositions(float anc1_x, float anc1_y, float anc
     this->anc3_y = anc3_y;
 }
 
-inline void r2_subtract(float* v1, float* v2, float* result) {
+inline void r2_subtract(const float* v1, const float* v2, float* result) {
     result[0] = v1[0] - v2[0];
     result[1] = v1[1] - v2[1];
 }
 
-inline void r2_scale(float* v, float r, float* result) {
+inline void r2_scale(const float* v, float r, float* result) {
     result[0] = r * v[0];
     result[1] = r * v[1];
 }
 
-inline float r2_dot(float* v1, float* v2) {
+inline float r2_dot(const float* v1, const float* v2) {
     return v1[0] * v2[0] + v1[1] * v2[1];
 }
 
-inline float r2_norm(float* v) {
+inline float r2_norm(const float* v) {
     return sqrt(sq(v[0]) + sq(v[1]));
 }
 

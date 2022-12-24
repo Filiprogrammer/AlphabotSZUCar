@@ -55,6 +55,7 @@ public:
     void calculatePath(std::list<Coordinate>& path);
 
     Pathfinder();
+    ~Pathfinder();
 };
 
 #endif

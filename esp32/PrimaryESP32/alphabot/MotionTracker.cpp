@@ -119,6 +119,9 @@ MotionTracker::MotionTracker(bool enable_gyro, bool enable_acc, bool enable_unca
     gyrX = 0;
     gyrY = 0;
     gyrZ = 0;
+    uncalMagX = 0;
+    uncalMagY = 0;
+    uncalMagZ = 0;
     magX = 0;
     magY = 0;
     magZ = 0;
