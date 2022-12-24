@@ -109,7 +109,7 @@ void PositioningKalmanFilter::fusegps(const double rawPos[3], double posCov, con
             b_P[jA] = StateCovariance[jA] - smax;
         }
     }
-    set_StateCovariance(b_P);
+    setStateCovariance(b_P);
 }
 
 void PositioningKalmanFilter::fusevel(const double vel[3], double velCov) {
@@ -212,7 +212,7 @@ void PositioningKalmanFilter::fusevel(const double vel[3], double velCov) {
             b_P[jA] = StateCovariance[jA] - smax;
         }
     }
-    set_StateCovariance(b_P);
+    setStateCovariance(b_P);
 }
 
 void PositioningKalmanFilter::pose(double pos[3]) const {
@@ -264,25 +264,24 @@ void PositioningKalmanFilter::predict(double dt) {
     }
 }
 
-void PositioningKalmanFilter::set_PositionNoise(const double val[3]) {
+void PositioningKalmanFilter::setPositionNoise(const double val[3]) {
     PositionNoise[0] = val[0];
     PositionNoise[1] = val[1];
     PositionNoise[2] = val[2];
 }
 
-void PositioningKalmanFilter::set_VelocityNoise(const double val[3]) {
+void PositioningKalmanFilter::setVelocityNoise(const double val[3]) {
     VelocityNoise[0] = val[0];
     VelocityNoise[1] = val[1];
     VelocityNoise[2] = val[2];
 }
 
-void PositioningKalmanFilter::set_AccelerationNoise(const double val[3]) {
-    // 100.0
+void PositioningKalmanFilter::setAccelerationNoise(const double val[3]) {
     AccelerationNoise[0] = val[0];
     AccelerationNoise[1] = val[1];
     AccelerationNoise[2] = val[2];
 }
 
-void PositioningKalmanFilter::set_StateCovariance(const double val[9 * 9]) {
+void PositioningKalmanFilter::setStateCovariance(const double val[9 * 9]) {
     std::copy(&val[0], &val[9 * 9], &StateCovariance[0]);
 }

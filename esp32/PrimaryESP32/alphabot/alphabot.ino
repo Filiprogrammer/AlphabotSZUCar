@@ -328,11 +328,11 @@ void setup() {
     // Set the process noise values.
     // The process noise variance describes the uncertainty of the motion model the filter uses.
     double positionNoise[3] = { 1.0E-6, 1.0E-6, 1.0E-6 };
-    posFilter->set_PositionNoise(positionNoise);
+    posFilter->setPositionNoise(positionNoise);
     double velocityNoise[3] = { 1.0E-6, 1.0E-6, 1.0E-6 };
-    posFilter->set_VelocityNoise(velocityNoise);
+    posFilter->setVelocityNoise(velocityNoise);
     double accelerationNoise[3] = { (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0 };
-    posFilter->set_AccelerationNoise(accelerationNoise);
+    posFilter->setAccelerationNoise(accelerationNoise);
 
     // Position
     posFilter->State.position[0] = 0; // TODO: Initialize it with real values somewhere in the loop

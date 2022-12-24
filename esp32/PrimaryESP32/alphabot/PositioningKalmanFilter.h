@@ -23,22 +23,24 @@ union state {
 };
 
 class PositioningKalmanFilter {
+private:
+    double StateCovariance[9 * 9];
+    double PositionNoise[3];
+    double VelocityNoise[3];
+    double AccelerationNoise[3];
+
 public:
-    void set_PositionNoise(const double val[3]);
-    void set_VelocityNoise(const double val[3]);
-    void set_AccelerationNoise(const double val[3]);
-    void set_StateCovariance(const double val[9 * 9]);
+    union state State;
+
+    void setPositionNoise(const double val[3]);
+    void setVelocityNoise(const double val[3]);
+    void setAccelerationNoise(const double val[3]);
+    void setStateCovariance(const double val[9 * 9]);
     void predict(double dt);
     void fusegps(const double rawPos[3], double posCov, const double vel[3], double velCov);
     void fusevel(const double vel[3], double velCov);
     void pose(double pos[3]) const;
 
-public:
-    double StateCovariance[9 * 9];
-    double PositionNoise[3];
-    double VelocityNoise[3];
-    double AccelerationNoise[3];
-    union state State;
 };
 
 #endif
