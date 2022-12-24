@@ -42,7 +42,6 @@ public:
     void pose(double pos[2]) const;
 
     PositioningKalmanFilter();
-
 };
 
 #endif
