@@ -327,27 +327,24 @@ void setup() {
 
     // Set the process noise values.
     // The process noise variance describes the uncertainty of the motion model the filter uses.
-    double positionNoise[3] = { 1.0E-6, 1.0E-6, 1.0E-6 };
+    double positionNoise[2] = { 1.0E-6, 1.0E-6 };
     posFilter->setPositionNoise(positionNoise);
-    double velocityNoise[3] = { 1.0E-6, 1.0E-6, 1.0E-6 };
+    double velocityNoise[2] = { 1.0E-6, 1.0E-6 };
     posFilter->setVelocityNoise(velocityNoise);
-    double accelerationNoise[3] = { (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0 };
+    double accelerationNoise[2] = { (230.0 * 9.81) / 1000000.0, (230.0 * 9.81) / 1000000.0 };
     posFilter->setAccelerationNoise(accelerationNoise);
 
     // Position
     posFilter->State.position[0] = 0; // TODO: Initialize it with real values somewhere in the loop
     posFilter->State.position[1] = 0;
-    posFilter->State.position[2] = 0;
 
     // Velocity
     posFilter->State.velocity[0] = 0;
     posFilter->State.velocity[1] = 0;
-    posFilter->State.velocity[2] = 0;
 
     // Acceleration
     posFilter->State.acceleration[0] = 0;
     posFilter->State.acceleration[1] = 0;
-    posFilter->State.acceleration[2] = 0;
 
     settings.explore_mode = false;
     settings.navigation_mode = false;
@@ -489,15 +486,14 @@ void loop() {
                 correctedSpeed = -correctedSpeed;
         }
 
-        double vel[3];
+        double vel[2];
         vel[0] = std::sin((90 - dir) * 0.017453292519943295) * correctedSpeed;
         vel[1] = std::cos((90 - dir) * 0.017453292519943295) * correctedSpeed;
-        vel[2] = 0;
 
         if (positioning_system->readDistances(&anchor1_dist, &anchor2_dist, &anchor3_dist)) {
             // New positioning data
             positioning_system->calculatePosition(anchor1_dist, anchor2_dist, anchor3_dist, &raw_pos_x, &raw_pos_y);
-            double raw_pos[3] = { raw_pos_x / 100.0, raw_pos_y / 100.0, 0 };
+            double raw_pos[2] = { raw_pos_x / 100.0, raw_pos_y / 100.0 };
             posFilter->fusegps(raw_pos, POSITION_COVARIANCE, vel, VELOCITY_COVARIANCE);
         } else {
             posFilter->fusevel(vel, VELOCITY_COVARIANCE);
