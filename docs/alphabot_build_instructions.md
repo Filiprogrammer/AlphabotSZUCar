@@ -322,7 +322,7 @@ For the positioning module, glue the holder for the tag (stl/vehicle/addon/dwm10
 
 ![Glue the tag holder to the base plate](images/tag_holder.png)
 
-Screw the L298N motor driver to the base plate and connect it to the drive motors and the power supply.
+Screw the L298N motor driver to the base plate with M2.5 screws and connect it to the drive motors and the power supply.
 
 ![L298N motor driver](images/l298n_motor_driver.jpg)
 
