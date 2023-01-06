@@ -31,7 +31,7 @@ The ```--recursive``` option ensures that all submodules are cloned as well.
 | M2 screw                                     |      4x     |
 | M2 male-female hex spacer                    |      4x     |
 | M2 nut                                       |      8x     |
-| M2.5 screw                                   |      5x     |
+| M2.5 screw                                   |      6x     |
 | M2.5 male-female hex spacer                  |      4x     |
 | ESP-WROOM-32 board                           |      1x     |
 | Arduino Pro Mini 16MHz 5V                    |      4x     |
@@ -45,7 +45,7 @@ The ```--recursive``` option ensures that all submodules are cloned as well.
 | S5B-XH-A connector header                    |      2x     |
 | DIN 912 M3x5 screw                           |      6x     |
 | wire                                         |     16x     |
-| FC-03 infrared sensor                        |      1x     |
+| FC-03 infrared sensor                        |      2x     |
 
 ## Custom PCBs to produce
 
@@ -78,7 +78,7 @@ The ```--recursive``` option ensures that all submodules are cloned as well.
 | stl/vehicle/addon/dwm1000.tag.adapter.board.mount.stl   |   1x   |   PLA    |
 | stl/vehicle/addon/bumper.lidar.holder.stl               |   1x   |   PLA    |
 | stl/vehicle/addon/bumper.lidar.front.stl                |   1x   |   PLA    |
-| stl/vehicle/addon/wheel.encoder.stl                     |   1x   |   PLA    |
+| stl/vehicle/addon/wheel.encoder.stl                     |   2x   |   PLA    |
 
 ## Positioning module
 
@@ -184,7 +184,7 @@ Once the gear motors are soldered, insert them on the bottom of the base plate (
 
 ![Insert gear motors into the base plate](images/base_plate_insert_gear_motors.png)
 
-Now take the wheel encoder (stl/vehicle/addon/wheel.encoder.stl) and put it onto the hub of the motor as seen in the pictures below.
+Now take the wheel encoders (stl/vehicle/addon/wheel.encoder.stl) and put them onto the hubs of the motors as seen in the pictures below.
 
 ![Insert the wheel encoder 1](images/insert_wheel_encoder_1.png)
 
@@ -306,7 +306,7 @@ The battery case can be screwed to the underside of the base plate with two M2.5
 
 ![Battery case on the underside of the base plate](images/battery_case.jpg)
 
-Mount the FC-03 infrared sensor around the encoder wheel with an M2.5 screw.
+Mount an FC-03 infrared sensor around the encoder wheel with an M2.5 screw. Do the same thing around the other encoder wheel.
 
 ![FC-03 infrared sensor](images/fc-03_infrared_sensor.jpg)
 
@@ -318,13 +318,13 @@ Up next, mount the rear spoiler to the rear of the base plate. Mount the wing ho
 
 ![Mount the wing](images/wing.png)
 
-For the positioning module, glue the holder for the tag (stl/vehicle/addon/dwm1000.tag.adapter.board.mount.stl) to the base plate.
+For the positioning module, attach the holder for the tag (stl/vehicle/addon/dwm1000.tag.adapter.board.mount.stl) to the base plate.
 
-![Glue the tag holder to the base plate](images/tag_holder.png)
+![Attach the tag holder to the base plate](images/tag_holder.png)
 
 Screw the L298N motor driver to the base plate with M2.5 screws and connect it to the drive motors and the power supply.
 
-![L298N motor driver](images/l298n_motor_driver.jpg)
+![L298N motor driver](images/l298n_motor_driver.png)
 
 Now the heart of this Alphabot comes into play: the Alphabot ESP32 PCB. Attach the Alphabot ESP32 PCB with the ESP-WROOM-32 plugged in to the base plate using M2 male-female hex spacers and M2 screws.
 
