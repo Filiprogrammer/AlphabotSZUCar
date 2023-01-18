@@ -18,6 +18,7 @@ import android.widget.Toast;
 import android.widget.Button;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -380,8 +381,6 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                kmphView.setText((Math.round((carSpeed / 40.0) * 10.0) / 10.0) + " km/h");
-                                mpsView.setText((Math.round((carSpeed / 144.0) * 10.0) / 10.0) + " m/s");
                                 speedBar.setProgress(Math.max(0, Math.abs(carSpeed) - 60));
                             }
                         });
@@ -542,8 +541,13 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            speedLeftBar.setProgress(Math.max(0, Math.abs(speed_left) - 20));
-                            speedRightBar.setProgress(Math.max(0, Math.abs(speed_right) - 20));
+                            speedLeftBar.setProgress((Math.max(speed_left, 0) * 100) / 127);
+                            speedLeftBar.setSecondaryProgress((Math.max(-speed_left, 0) * 100) / 127);
+                            speedRightBar.setProgress((Math.max(speed_right, 0) * 100) / 127);
+                            speedRightBar.setSecondaryProgress((Math.max(-speed_right, 0) * 100) / 127);
+                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                            kmphView.setText(decimalFormat.format(((speed_left + speed_right) / 2.0) * 0.036) + " km/h");
+                            mpsView.setText(decimalFormat.format(((speed_left + speed_right) / 2.0) * 0.01) + " m/s");
                         }
                     });
                 } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_ERROR) == 0) {

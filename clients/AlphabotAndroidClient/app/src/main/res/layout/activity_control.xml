@@ -200,24 +200,24 @@
             android:id="@+id/speedLeftBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="8dp"
             android:layout_weight="1"
-            android:layout_marginBottom="-4dp"
-            android:layout_marginTop="-4dp"
-            android:max="64"
-            android:progress="0" />
+            android:max="100"
+            android:progress="0"
+            android:secondaryProgress="0"
+            android:progressDrawable="@drawable/wheel_speed_progress_bar" />
 
         <ProgressBar
             android:id="@+id/speedRightBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="8dp"
             android:layout_weight="1"
-            android:layout_marginBottom="-4dp"
-            android:layout_marginTop="-4dp"
-            android:max="64"
+            android:max="100"
             android:progress="0"
-            android:rotation="180" />
+            android:secondaryProgress="0"
+            android:rotation="180"
+            android:progressDrawable="@drawable/wheel_speed_progress_bar" />
 
     </LinearLayout>
 
