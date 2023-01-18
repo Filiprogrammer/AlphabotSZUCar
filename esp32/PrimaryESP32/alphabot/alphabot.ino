@@ -11,6 +11,8 @@
 #include <math.h>
 #include "MotionTracker.h"
 #include "Compass.h"
+#include "WheelEncoderLeft.h"
+#include "WheelEncoderRight.h"
 #include "SaveFile.h"
 #include "Navigator.h"
 #include <BLECharacteristic.h>
@@ -24,6 +26,8 @@ DrivingAssistent* driving_assistent = NULL;
 PositioningSystem* positioning_system = NULL;
 MotionTracker* motion_tracker = NULL;
 Compass* compass = NULL;
+WheelEncoderLeft* left_wheel_encoder = NULL;
+WheelEncoderRight* right_wheel_encoder = NULL;
 SaveFile* save_file = NULL;
 Navigator* navigator = NULL;
 PositioningKalmanFilter* posFilter = NULL;
@@ -319,6 +323,8 @@ void setup() {
         save_file->getMagnetSensorCalibratedMaxZ());
     compass->setAngleOffset(save_file->getCompassAngleOffset());
     compass->finishMagnetSensorCalibration();
+    left_wheel_encoder = WheelEncoderLeft::getInstance();
+    right_wheel_encoder = WheelEncoderRight::getInstance();
     navigator = new Navigator(two_motor_drive);
 
     posFilter = new PositioningKalmanFilter();
@@ -484,9 +490,25 @@ void loop() {
                 correctedSpeed = -correctedSpeed;
         }
 
+        float left_wheel_mps = 0;
+        float right_wheel_mps = 0;
+
+        if (speed > 0) {
+            left_wheel_mps = left_wheel_encoder->getWheelSpeedMps();
+            right_wheel_mps = right_wheel_encoder->getWheelSpeedMps();
+        } else if (speed < 0) {
+            left_wheel_mps = -left_wheel_encoder->getWheelSpeedMps();
+            right_wheel_mps = -right_wheel_encoder->getWheelSpeedMps();
+        }
+
+        float approximate_moving_speed_mps = (left_wheel_mps + right_wheel_mps) / 2.0;
+
+        if (fabs(approximate_moving_speed_mps) < MIN_MOVING_SPEED_MPS)
+            approximate_moving_speed_mps = 0;
+
         double vel[2];
-        vel[0] = std::sin((90 - dir) * 0.017453292519943295) * correctedSpeed;
-        vel[1] = std::cos((90 - dir) * 0.017453292519943295) * correctedSpeed;
+        vel[0] = std::sin((90 - dir) * 0.017453292519943295) * ((4.0 * approximate_moving_speed_mps + correctedSpeed) / 5.0);
+        vel[1] = std::cos((90 - dir) * 0.017453292519943295) * ((4.0 * approximate_moving_speed_mps + correctedSpeed) / 5.0);
 
         if (positioning_system->readDistances(&anchor1_dist, &anchor2_dist, &anchor3_dist)) {
             // New positioning data
@@ -603,8 +625,24 @@ void loop() {
 
     if (logging.wheel_speed && (loop_iteration % (LOOP_FREQUENCY_HZ / 5)) == 2) {
         int8_t vals[2];
-        vals[0] = two_motor_drive->getLeftSpeed() / 1.44;
-        vals[1] = two_motor_drive->getRightSpeed() / 1.44;
+        int8_t left_speed = two_motor_drive->getLeftSpeed();
+
+        if (left_speed > 0)
+            vals[0] = min(left_wheel_encoder->getWheelSpeedMps() * 100.0, 127.0);
+        else if (left_speed < 0)
+            vals[0] = -min(left_wheel_encoder->getWheelSpeedMps() * 100.0, 127.0);
+        else
+            vals[0] = 0;
+
+        int8_t right_speed = two_motor_drive->getRightSpeed();
+
+        if (right_speed > 0)
+            vals[1] = min(right_wheel_encoder->getWheelSpeedMps() * 100.0, 127.0);
+        else if (right_speed < 0)
+            vals[1] = -min(right_wheel_encoder->getWheelSpeedMps() * 100.0, 127.0);
+        else
+            vals[1] = 0;
+
         ble_handler->charWheelSpeed->setValue((uint8_t*)vals, 2);
         ble_handler->charWheelSpeed->notify();
     }
