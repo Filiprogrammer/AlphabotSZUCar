@@ -158,7 +158,7 @@ After ordering the Alphabot ESP32 PCB with assembly service, the board should lo
 
 ![Alphabot ESP32 PCB](images/alphabot_esp32_pcb.jpg)
 
-Now solder the pin headers for the ESP-WROOM-32, for the L298N motor driver, for the positioning module and for the TF-Luna LiDAR sensor to the board.
+Now solder the pin headers for the ESP-WROOM-32, for the L298N motor driver, for the positioning module, for the TF-Luna LiDAR sensor and for the wheel encoders to the board.
 
 ![Alphabot ESP32 PCB assembly 1](images/alphabot_esp32_pcb_assembly_1.png)
 
@@ -361,6 +361,12 @@ Connect the stepper motor at the front to the other B5B-XH-AM connector header o
 Connect the TF-Luna LiDAR sensor at the front to the Alphabot ESP32 PCB.
 
 ![Connect the TF-Luna to the Alphabot ESP32 PCB](images/connect_tf-luna_to_alphabot_esp32_pcb.png)
+
+Connect the FC-03 wheel encoder sensors to the Alphabot ESP32 PCB via the VCC, GND and D0 pins.
+
+![Connect the FC-03 sensors to the Alphabot ESP32 PCB 1](images/connect_fc-03_sensors_to_alphabot_esp32_pcb_1.jpg)
+
+![Connect the FC-03 sensors to the Alphabot ESP32 PCB 2](images/connect_fc-03_sensors_to_alphabot_esp32_pcb_2.png)
 
 Now that the Alphabot is successfully assembled, the software part can begin.
 
