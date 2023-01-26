@@ -21,7 +21,6 @@
 #define I2C_SCL 22
 
 #define SERIAL2_RX 16
-#define SERIAL2_TX 17
 
 #define LEFT_WHEEL_ENCODER_D0 35
 #define RIGHT_WHEEL_ENCODER_D0 34
