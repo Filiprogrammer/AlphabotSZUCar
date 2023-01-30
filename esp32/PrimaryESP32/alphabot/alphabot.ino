@@ -292,7 +292,7 @@ void setup() {
     #endif
     Motor* motor_left = new Motor(MOTOR_LEFT_FORWARD, MOTOR_LEFT_BACKWARD, MOTOR_LEFT_SPEED, 0);
     Motor* motor_right = new Motor(MOTOR_RIGHT_FORWARD, MOTOR_RIGHT_BACKWARD, MOTOR_RIGHT_SPEED, 1);
-    stepper_motor = new StepperMotor(STEPPER_IN1, STEPPER_IN2, STEPPER_IN3, STEPPER_IN4);
+    stepper_motor = new StepperMotor(STEPPER_IN1, STEPPER_IN2, STEPPER_IN3, STEPPER_IN4, 625);
     stepper_motor->calibrate();
     two_motor_drive = new TwoMotorDrive(motor_left, motor_right, stepper_motor);
     driving_assistent = new DrivingAssistent();
