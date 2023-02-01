@@ -176,5 +176,5 @@ PositioningSystem::PositioningSystem(uint16_t anc1_short_address, uint16_t anc2_
     last_anc_ranges[1] = 0;
     last_anc_ranges[2] = 0;
 
-    Serial2.begin(115200, SERIAL_8N1, SERIAL2_RX, SERIAL2_TX);
+    Serial2.begin(115200, SERIAL_8N1, SERIAL2_RX, -1);
 }
