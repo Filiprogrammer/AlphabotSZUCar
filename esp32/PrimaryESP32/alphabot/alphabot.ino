@@ -1,6 +1,7 @@
 #include "TwoMotorDrive.h"
 #include "StepperMotor.h"
 #include "DistanceMeter.h"
+#include "TFLunaObstacleScanner.h"
 #include "DrivingAssistent.h"
 #include "BLEHandler.h"
 #include "config.h"
@@ -18,16 +19,20 @@
 #include <BLECharacteristic.h>
 #include "BLECharacteristicSender.h"
 #include "PositioningKalmanFilter.h"
+#include <algorithm>
+#include <deque>
+#include <Wire.h>
 
 TwoMotorDrive* two_motor_drive = NULL;
 DistanceMeter* distance_meter = NULL;
-StepperMotor* stepper_motor = NULL;
+StepperMotor* steering_stepper_motor = NULL;
 DrivingAssistent* driving_assistent = NULL;
 PositioningSystem* positioning_system = NULL;
 MotionTracker* motion_tracker = NULL;
 Compass* compass = NULL;
 WheelEncoderLeft* left_wheel_encoder = NULL;
 WheelEncoderRight* right_wheel_encoder = NULL;
+TFLunaObstacleScanner* tfl_obstacle_scanner = NULL;
 SaveFile* save_file = NULL;
 Navigator* navigator = NULL;
 PositioningKalmanFilter* posFilter = NULL;
@@ -47,6 +52,7 @@ uint16_t front_dist = 0;
 uint16_t left_dist = 0;
 uint16_t right_dist = 0;
 uint16_t back_dist = 0;
+std::deque<uint8_t> obstacle_distance_angles_to_send_deque;
 
 struct settings {
     uint8_t unused : 3;
@@ -160,7 +166,7 @@ void charCalibrateDataReceived(const char* data, size_t len) {
 
             switch (data[0]) {
                 case 0: // Calibrate steering
-                    stepper_motor->calibrate();
+                    steering_stepper_motor->calibrate();
                     break;
                 case 1: // Automatic magnetometer calibration
                     // TODO: Automatic magnetometer calibration
@@ -292,9 +298,9 @@ void setup() {
     #endif
     Motor* motor_left = new Motor(MOTOR_LEFT_FORWARD, MOTOR_LEFT_BACKWARD, MOTOR_LEFT_SPEED, 0);
     Motor* motor_right = new Motor(MOTOR_RIGHT_FORWARD, MOTOR_RIGHT_BACKWARD, MOTOR_RIGHT_SPEED, 1);
-    stepper_motor = new StepperMotor(STEPPER_IN1, STEPPER_IN2, STEPPER_IN3, STEPPER_IN4, 625);
-    stepper_motor->calibrate();
-    two_motor_drive = new TwoMotorDrive(motor_left, motor_right, stepper_motor);
+    steering_stepper_motor = new StepperMotor(STEPPER_STEER_IN1, STEPPER_STEER_IN2, STEPPER_STEER_IN3, STEPPER_STEER_IN4, 625);
+    steering_stepper_motor->calibrate();
+    two_motor_drive = new TwoMotorDrive(motor_left, motor_right, steering_stepper_motor);
     driving_assistent = new DrivingAssistent();
     Wire.begin(I2C_SDA, I2C_SCL, (uint32_t)400000);
     distance_meter = new DistanceMeter(5);
@@ -325,6 +331,9 @@ void setup() {
     compass->finishMagnetSensorCalibration();
     left_wheel_encoder = WheelEncoderLeft::getInstance();
     right_wheel_encoder = WheelEncoderRight::getInstance();
+    StepperMotor* front_stepper_motor = new StepperMotor(STEPPER_FRONT_IN1, STEPPER_FRONT_IN2, STEPPER_FRONT_IN3, STEPPER_FRONT_IN4, 510);
+    TFLunaI2C* tfluna_i2c = new TFLunaI2C(TFL_DEFAULT_ADDRESS);
+    tfl_obstacle_scanner = new TFLunaObstacleScanner(front_stepper_motor, tfluna_i2c, 250);
     navigator = new Navigator(two_motor_drive);
 
     posFilter = new PositioningKalmanFilter();
@@ -467,6 +476,13 @@ void loop() {
         Serial.print("\tBack: ");
         Serial.println(back_dist);
         #endif
+        int16_t angle = tfl_obstacle_scanner->scan();
+
+        if (logging.obstacle_distance && angle >= 0 && (angle % 2) == 0) {
+            // If element was not found, add it
+            if (std::find(obstacle_distance_angles_to_send_deque.begin(), obstacle_distance_angles_to_send_deque.end(), angle / 2) == obstacle_distance_angles_to_send_deque.end())
+                obstacle_distance_angles_to_send_deque.push_back(angle / 2);
+        }
     }
 
     if (magnet_sensor_calibration)
@@ -590,29 +606,17 @@ void loop() {
         }
 
         if (logging.obstacle_distance) {
-            sensor_logging_val[sensor_logging_val_len] = 0;
-            sensor_logging_val[sensor_logging_val_len + 1] = front_dist / 2;
-            sensor_logging_val_len += 2;
-            sensor_logging_val[sensor_logging_counter / 4] |= 1 << ((sensor_logging_counter % 4) * 2);
-            sensor_logging_counter++;
+            size_t number_of_sensor_values_to_send = min((size_t)(sizeof(sensor_logging_val) - sensor_logging_val_len) / 2, obstacle_distance_angles_to_send_deque.size());
 
-            sensor_logging_val[sensor_logging_val_len] = 335 / 2;
-            sensor_logging_val[sensor_logging_val_len + 1] = left_dist / 2;
-            sensor_logging_val_len += 2;
-            sensor_logging_val[sensor_logging_counter / 4] |= 1 << ((sensor_logging_counter % 4) * 2);
-            sensor_logging_counter++;
-
-            sensor_logging_val[sensor_logging_val_len] = 25 / 2;
-            sensor_logging_val[sensor_logging_val_len + 1] = right_dist / 2;
-            sensor_logging_val_len += 2;
-            sensor_logging_val[sensor_logging_counter / 4] |= 1 << ((sensor_logging_counter % 4) * 2);
-            sensor_logging_counter++;
-
-            sensor_logging_val[sensor_logging_val_len] = 180 / 2;
-            sensor_logging_val[sensor_logging_val_len + 1] = back_dist / 2;
-            sensor_logging_val_len += 2;
-            sensor_logging_val[sensor_logging_counter / 4] |= 1 << ((sensor_logging_counter % 4) * 2);
-            sensor_logging_counter++;
+            for (uint8_t i = 0; i < number_of_sensor_values_to_send; ++i) {
+                uint16_t angle = (uint16_t)obstacle_distance_angles_to_send_deque.front() * 2;
+                sensor_logging_val[sensor_logging_val_len] = angle / 2;
+                sensor_logging_val[sensor_logging_val_len + 1] = tfl_obstacle_scanner->getObstacleDistance(angle) / 2;
+                sensor_logging_val_len += 2;
+                sensor_logging_val[sensor_logging_counter / 4] |= 1 << ((sensor_logging_counter % 4) * 2);
+                sensor_logging_counter++;
+                obstacle_distance_angles_to_send_deque.pop_front();
+            }
         }
 
         ble_handler->charSensor->setValue(sensor_logging_val, sensor_logging_val_len);
