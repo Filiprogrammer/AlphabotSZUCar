@@ -26,6 +26,14 @@
 static uint8_t id_counter = 0;
 static bool ulp_task_running = false;
 
+int16_t StepperMotor::getCurrentDirection() const {
+    return RTC_SLOW_MEM[RTC_MEM_VARIABLE_ADDRESS / sizeof(uint32_t) + id * 16 + CURRENT_DIRECTION_OFFSET];
+}
+
+int16_t StepperMotor::getDesiredDirection() const {
+    return desired_direction;
+}
+
 void StepperMotor::turnTo(int16_t dir) {
     uint16_t stepper_calibration_steps = RTC_SLOW_MEM[RTC_MEM_VARIABLE_ADDRESS / sizeof(uint32_t) + id * 16 + CALIBRATION_STEPS_OFFSET];
     desired_direction = constrain(dir, -stepper_calibration_steps / 2, stepper_calibration_steps / 2);

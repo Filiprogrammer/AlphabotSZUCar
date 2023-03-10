@@ -15,6 +15,8 @@ private:
     void startStepperTask();
 
 public:
+    int16_t getCurrentDirection() const;
+    int16_t getDesiredDirection() const;
     void turnTo(int16_t dir);
     void calibrate();
 
