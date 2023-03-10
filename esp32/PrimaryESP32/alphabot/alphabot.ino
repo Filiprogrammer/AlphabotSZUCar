@@ -1,6 +1,5 @@
 #include "TwoMotorDrive.h"
 #include "StepperMotor.h"
-#include "DistanceMeter.h"
 #include "TFLunaObstacleScanner.h"
 #include "DrivingAssistent.h"
 #include "BLEHandler.h"
@@ -24,7 +23,6 @@
 #include <Wire.h>
 
 TwoMotorDrive* two_motor_drive = NULL;
-DistanceMeter* distance_meter = NULL;
 StepperMotor* steering_stepper_motor = NULL;
 DrivingAssistent* driving_assistent = NULL;
 PositioningSystem* positioning_system = NULL;
@@ -48,10 +46,6 @@ float lps_x = 0;
 float lps_y = 0;
 int8_t drive_input_steer = 0;
 int8_t drive_input_speed = 0;
-uint16_t front_dist = 0;
-uint16_t left_dist = 0;
-uint16_t right_dist = 0;
-uint16_t back_dist = 0;
 std::deque<uint8_t> obstacle_distance_angles_to_send_deque;
 
 struct settings {
@@ -303,7 +297,6 @@ void setup() {
     two_motor_drive = new TwoMotorDrive(motor_left, motor_right, steering_stepper_motor);
     driving_assistent = new DrivingAssistent();
     Wire.begin(I2C_SDA, I2C_SCL, (uint32_t)400000);
-    distance_meter = new DistanceMeter(5);
     ble_handler = new BLEHandler(&charUpdateMotorsDataReceived,
                                  &charToggleDataReceived,
                                  &charToggleStateChanged,
@@ -465,17 +458,6 @@ void loop() {
     }
 
     if (logging.obstacle_distance || settings.collision_avoidance || settings.explore_mode) {
-        distance_meter->readValues(&front_dist, &left_dist, &right_dist, &back_dist);
-        #ifdef DEBUG
-        Serial.print("Front: ");
-        Serial.print(front_dist);
-        Serial.print("\tLeft: ");
-        Serial.print(left_dist);
-        Serial.print("\tRight: ");
-        Serial.print(right_dist);
-        Serial.print("\tBack: ");
-        Serial.println(back_dist);
-        #endif
         int16_t angle = tfl_obstacle_scanner->scan();
 
         if (logging.obstacle_distance && angle >= 0 && (angle % 2) == 0) {
@@ -564,7 +546,10 @@ void loop() {
 
     if (!(settings.positioning && settings.navigation_mode)) {
         if (settings.collision_avoidance) {
-            driving_assistent->updateDistances(front_dist, left_dist, right_dist, back_dist);
+            driving_assistent->updateDistances(tfl_obstacle_scanner->getObstacleDistance(0),
+                                               tfl_obstacle_scanner->getObstacleDistance(335),
+                                               tfl_obstacle_scanner->getObstacleDistance(25),
+                                               100);
             driving_assistent->updateSpeedAndSteer(two_motor_drive->getSpeed(), two_motor_drive->getSteerDirection());
 
             int8_t val_y = drive_input_speed;
