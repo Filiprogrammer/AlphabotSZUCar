@@ -505,35 +505,6 @@ jobs:
         with:
           name: esp32_primary_firmware.bin
           path: esp32/PrimaryESP32/.pio/build/esp32dev/firmware.bin
-  build_esp32_secondary_image:
-    name: Build ESP32 Secondary Image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Cache ESP32 Secondary Image
-        id: esp32-secondary-image
-        uses: actions/cache@v2
-        with:
-          path: esp32/SecondaryESP32/.pio/build/esp32dev/firmware.bin
-          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('esp32/SecondaryESP32') }}
-      - name: Setup Python
-        if: steps.esp32-secondary-image.outputs.cache-hit != 'true'
-        uses: actions/setup-python@v2
-      - name: Install PlatformIO
-        if: steps.esp32-secondary-image.outputs.cache-hit != 'true'
-        run: |
-          python -m pip install --upgrade pip
-          pip install --upgrade platformio
-      - name: Build Image
-        if: steps.esp32-secondary-image.outputs.cache-hit != 'true'
-        run: cd esp32/SecondaryESP32 && pio run
-        shell: sh
-      - name: Archive artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: esp32_secondary_firmware.bin
-          path: esp32/SecondaryESP32/.pio/build/esp32dev/firmware.bin
   build_client_library:
     runs-on: windows-latest
     name: Build Client Library
