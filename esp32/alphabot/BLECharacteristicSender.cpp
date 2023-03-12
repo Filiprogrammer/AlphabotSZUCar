@@ -36,11 +36,11 @@ void BLECharacteristicSender::stateChanged(BLECharacteristicCallbacks::Status s,
     }
 }
 
-BLECharacteristicSender::BLECharacteristicSender(BLECharacteristic* characteristic, void (*valueArrived)()) {
+BLECharacteristicSender::BLECharacteristicSender(BLECharacteristic* characteristic, void (*valueArrived)())
+    : currentlySendingMutex(xSemaphoreCreateBinary()) {
     this->characteristic = characteristic;
     this->valueArrived = valueArrived;
     currentlySending = NULL;
-    currentlySendingMutex = xSemaphoreCreateBinary();
     xSemaphoreGive(currentlySendingMutex);
 
     xTaskCreatePinnedToCore(
