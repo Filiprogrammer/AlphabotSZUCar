@@ -374,7 +374,7 @@ Now that the Alphabot is successfully assembled, the software part can begin.
 
 ## ESP32 Software
 
-Open the directory esp32/PrimaryESP32 in VSCode. Make sure that the Alphabot's power is turned off and connect the ESP32 to the computer. The firmware can be uploaded to the ESP32 by clicking the Upload button in VSCode.
+Open the directory esp32 in VSCode. Make sure that the Alphabot's power is turned off and connect the ESP32 to the computer. The firmware can be uploaded to the ESP32 by clicking the Upload button in VSCode.
 
 Alternatively this can also be done via the command line:
 
