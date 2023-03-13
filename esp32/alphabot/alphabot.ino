@@ -214,7 +214,7 @@ void charAddObstacleDataReceived(const char* data, size_t len) {
                 val[i] = data[i];
 
             val[16] = next_obstacle_id;
-            val[17] = next_obstacle_id << 8;
+            val[17] = next_obstacle_id >> 8;
             next_obstacle_id++;
             ble_char_add_obstacle_sender->sendValue(val, 18);
         }
