@@ -506,9 +506,21 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                         short x = (short)(vals[8] | ((int)vals[9] << 8));
                         short y = (short)(vals[10] | ((int)vals[11] << 8));
                         lpsView.removeObstacle(x, y);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                lpsView.invalidate();
+                            }
+                        });
                     } else if (vals.length >= 10) {
                         short id = (short)(vals[8] | ((int)vals[9] << 8));
                         lpsView.removeObstacle(id);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                lpsView.invalidate();
+                            }
+                        });
 
                         if (pendingObstacleToRemove != null && pendingObstacleToRemove.getId() == id) {
                             pendingObstacleToRemove = null;
