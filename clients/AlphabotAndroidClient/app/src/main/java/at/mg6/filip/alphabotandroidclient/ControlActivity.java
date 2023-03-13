@@ -465,8 +465,10 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
 
                     if (obstacle == null) {
                         if (pendingObstacleToAdd != null) {
-                            pendingObstacleToAdd.setId(id);
+                            lpsView.removeObstacle(pendingObstacleToAdd);
                             pendingObstacleToAdd = null;
+                            obstacle = new Obstacle(x, y, width, height, id);
+                            lpsView.addObstacle(obstacle);
 
                             runOnUiThread(new Runnable() {
                                 @Override
