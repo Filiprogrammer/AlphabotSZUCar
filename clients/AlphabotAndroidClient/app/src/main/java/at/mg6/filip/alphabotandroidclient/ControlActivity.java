@@ -209,7 +209,7 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                     btnRemoveObstacle.setEnabled(false);
 
                     byte[] vals = new byte[10];
-                    short id = selectedObstacle.getId();
+                    int id = selectedObstacle.getId();
                     vals[8] = (byte)id;
                     vals[9] = (byte)(id >> 8);
                     writeTimestamp(vals, 0);
@@ -455,11 +455,11 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                     }
                 } else if (characteristic.getUuid().compareTo(bleHandler.CHAR_UUID_ADD_OBSTACLE) == 0) {
                     byte[] vals = characteristic.getValue();
-                    short x = (short)(vals[8] | ((int)vals[9] << 8));
-                    short y = (short)(vals[10] | ((int)vals[11] << 8));
-                    short width = (short)(vals[12] | ((int)vals[13] << 8));
-                    short height = (short)(vals[14] | ((int)vals[15] << 8));
-                    short id = (short)(vals[16] | vals[17]);
+                    short x = (short)((vals[8] & 0xFF) | (vals[9] << 8));
+                    short y = (short)((vals[10] & 0xFF) | (vals[11] << 8));
+                    int width = (vals[12] & 0xFF) | ((vals[13] & 0xFF) << 8);
+                    int height = (vals[14] & 0xFF) | ((vals[15] & 0xFF) << 8);
+                    int id = (vals[16] & 0xFF) | ((vals[17] & 0xFF) << 8);
 
                     Obstacle obstacle = lpsView.getObstacle(id);
 

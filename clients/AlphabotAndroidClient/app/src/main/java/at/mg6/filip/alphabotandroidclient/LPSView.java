@@ -210,7 +210,7 @@ public class LPSView extends View implements View.OnTouchListener {
         return Collections.unmodifiableList(obstacles);
     }
 
-    public Obstacle getObstacle(short id) {
+    public Obstacle getObstacle(int id) {
         for (Obstacle obstacle : obstacles)
             if (obstacle.hasId() && obstacle.getId() == id)
                 return obstacle;

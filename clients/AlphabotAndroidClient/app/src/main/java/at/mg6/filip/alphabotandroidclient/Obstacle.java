@@ -3,12 +3,12 @@ package at.mg6.filip.alphabotandroidclient;
 public class Obstacle {
     private short x;
     private short y;
-    private short width;
-    private short height;
-    private short id;
+    private int width;
+    private int height;
+    private int id;
     private boolean hasId;
 
-    public Obstacle(short x, short y, short width, short height) {
+    public Obstacle(short x, short y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -16,7 +16,7 @@ public class Obstacle {
         hasId = false;
     }
 
-    public Obstacle(short x, short y, short width, short height, short id) {
+    public Obstacle(short x, short y, int width, int height, int id) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -41,28 +41,28 @@ public class Obstacle {
         return y;
     }
 
-    public void setWidth(short width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    public short getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public void setHeight(short height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public short getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setId(short id) {
+    public void setId(int id) {
         this.id = id;
         hasId = true;
     }
 
-    public short getId() {
+    public int getId() {
         return id;
     }
 
