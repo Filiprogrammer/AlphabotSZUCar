@@ -366,7 +366,7 @@ jobs:
           key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('rpi') }}
       - name: Setup Docker
         if: steps.rpi-sd-image.outputs.cache-hit != 'true'
-        uses: docker-practice/actions-setup-docker@v1
+        uses: docker-practice/actions-setup-docker@master
       - name: Install tools
         if: steps.rpi-sd-image.outputs.cache-hit != 'true'
         run: sudo apt-get install kpartx parted
