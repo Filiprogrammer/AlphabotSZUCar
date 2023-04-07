@@ -16,17 +16,17 @@ Start the android client and type the BLE MAC address of the ESP32 on the Alphab
 
 What should be immediately apparent, is that tilting the phone steers the front wheels of the car.
 
-Disabling collision avoidance grants the user unrestricted control over the movement of the vehicle. Holding down the "Accelerate" button makes the vehicle accelerate forwards. The longer that button is held down, the faster the vehicle gets. Upon releasing the button the vehicle starts slowing down. To maintain a slow speed forwards, the "Accelerate" button has to be pushed and released in regular intervals. If the user wishes to stop the car abruptly, they can do so by briefly pressing the 'Brake' button. The "Brake" button can also be used the same way as the "Accelerate" button to drive backwards. The "Accelerate" button also stops a vehicle that is driving backwards. The desired speed is shown as a progress bar above the two buttons.
+Disabling collision avoidance grants the user unrestricted control over the movement of the vehicle. Holding down the "Accelerate" button makes the vehicle accelerate forwards. The longer that button is held down, the faster the vehicle gets. Upon releasing the button the vehicle starts slowing down. To maintain a slow speed forwards, the "Accelerate" button has to be pushed and released in regular intervals. If the user wishes to stop the car abruptly, they can do so by briefly pressing the "Brake" button. The "Brake" button can also be used the same way as the "Accelerate" button to drive backwards. The "Accelerate" button also stops a vehicle that is driving backwards. The desired speed is shown as a progress bar above the two buttons.
 
 ![Local speedometer in the Android client](images/android_local_speedometer.png)
 
-Enabling the "Log wheel speed" switch displays the mean wheel speed to the right of the "Accelerate" button. The actual speed of the rear wheels is also indicated by two progress bars just above the magenta progress bar. The faster the wheels get the more they fill towards the center of the screen. The left bar represents the left rear wheel and the right bar represents the right rear wheel.
+Enabling the "Log wheel speed" switch displays the mean wheel speed to the right of the "Accelerate" button. The actual speed of the rear wheels is also indicated by two progress bars just above the magenta progress bar. The faster the wheels get, the more the bars fill towards the center of the screen. The left bar represents the left rear wheel and the right bar represents the right rear wheel.
 
 ![Wheel speedometers in the Android client](images/android_wheel_speedometers.png)
 
 ## Using the compass to determine the direction of the vehicle
 
-Enabling the "Log Compass Dir" switch makes the vehicle on the minimap face into the same direction as the Alphabot. Odds are, that the displayed direction is incorrect. To fix this, the magnetometer first needs to be calibrated. To do that, place the vehicle on a flat surface away from any magnetic interferences. Then enable the "Calibr MAG" switch. Now drive the vehicle in a circle a few times or simply rotate it by hand, making sure it always lies flat on the ground. Once that is done, disable the "Calibr MAG" switch. Now the measured direction should rotate proportionally to the vehicle rotating, but the direction is probably offset by some number of degrees from the users desired direction. Here the user should decide how to setup a positioning system and relative to that in which direction the vehicle should face.
+Enabling the "Log Compass Dir" switch makes the vehicle on the minimap face into the same direction as the Alphabot. Odds are, that the displayed direction is incorrect. To fix this, the magnetometer first needs to be calibrated. To do that, place the vehicle on a flat surface away from any magnetic interferences. Then enable the "Calibr MAG" switch. Now drive the vehicle in a circle a few times or simply rotate it by hand, making sure it always lies flat on the ground. Once that is done, disable the "Calibr MAG" switch. Now the measured direction should rotate proportionally to the rotation of the vehicle. However the direction is probably offset by some number of degrees from the user's desired direction. Here the user should decide how to setup a positioning system and relative to that in which direction the vehicle should face.
 
 ## Setting up the positioning system
 
@@ -70,7 +70,7 @@ Pressing "OK" adds the obstacle to the map.
 
 ![Map with an obstacle in the Android client](images/android_map_with_obstacle.png)
 
-To remove an obstacle, simply select it by tapping it. The selected obstacle should turn green. Then press the "Remove Obstacle" button.
+To remove an obstacle, simply select it by tapping on it. The selected obstacle should turn green. Then press the "Remove Obstacle" button.
 
 ![Selecting an obstacle in the Android client](images/android_select_obstacle.png)
 
