@@ -42,3 +42,8 @@ Connecting to Alphabot with a client
 ------------------------------------
 
 [Alphabot Client](docs/alphabot_client.md)
+
+Using the Alphabot
+------------------
+
+[Alphabot Usage](docs/alphabot_usage.md)
