@@ -62,6 +62,89 @@ public class LPSView extends View implements View.OnTouchListener {
         bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
     }
 
+    private float[] moveVertices(float[] vertices, float x, float y) {
+        float[] new_points = new float[vertices.length];
+
+        for (int i = 0; i < vertices.length / 2; ++i) {
+            new_points[i * 2] = vertices[i * 2] + x;
+            new_points[i * 2 + 1] = vertices[i * 2 + 1] + y;
+        }
+
+        return new_points;
+    }
+
+    private float[] rotateVertices(float[] vertices, float angle, float origin_x, float origin_y) {
+        angle *= 3.14159265359 / 180;
+        double cos_val = Math.cos(angle);
+        double sin_val = Math.sin(angle);
+        float[] new_points = new float[vertices.length];
+
+        for (int i = 0; i < vertices.length / 2; ++i) {
+            float x_old = vertices[i * 2];
+            float y_old = vertices[i * 2 + 1];
+            x_old -= origin_x;
+            y_old -= origin_y;
+            float x_new = (float) (x_old * cos_val - y_old * sin_val);
+            float y_new = (float) (x_old * sin_val + y_old * cos_val);
+            new_points[i * 2] = x_new + origin_x;
+            new_points[i * 2 + 1] = y_new + origin_y;
+        }
+
+        return new_points;
+    }
+
+    private void drawCar(Canvas canvas) {
+        int minX = Math.min(anchor0x, Math.min(anchor1x, Math.min(anchor2x, posX))) - 5;
+        int minY = Math.min(anchor0y, Math.min(anchor1y, Math.min(anchor2y, posY))) - 5;
+        int maxX = Math.max(anchor0x, Math.max(anchor1x, Math.max(anchor2x, posX))) + 5;
+        int maxY = Math.max(anchor0y, Math.max(anchor1y, Math.max(anchor2y, posY))) + 5;
+        float zoom = Math.min(canvas.getWidth() / (float)(maxX - minX), canvas.getHeight() / (float)(maxY - minY));
+
+        float[] car_base_vertices = { -4.5f, -8, 0, -10, 4.5f, -8, 2, -8, 2, -4, 6, -2.5f, 2.5f, -1, 2.5f, 2, 6.5f, 6, 6.5f, 18, 3, 18, 2, 21, 7.5f, 21, 7.5f, 26.5f, -7.5f, 26.5f, -7.5f, 21, -2, 21, -3, 18, -6.5f, 18, -6.5f, 6, -2.5f, 2, -2.5f, -1, -6, -2.5f, -2, -4, -2, -8, -4.5f, -8 };
+        float[] car_wheel_vertices = { -1.8f, -3.8f, 1.8f, -3.8f, 1.8f, 3.8f, -1.8f, 3.8f, -1.8f, -3.8f };
+
+        for (int i = 0; i < car_base_vertices.length; ++i)
+            car_base_vertices[i] *= zoom;
+
+        for (int i = 0; i < car_wheel_vertices.length; ++i)
+            car_wheel_vertices[i] *= zoom;
+
+        car_base_vertices = moveVertices(car_base_vertices, 0, -3f * zoom);
+        car_base_vertices = rotateVertices(car_base_vertices, dir + 90, 0, 0);
+        car_base_vertices = moveVertices(car_base_vertices, (posX - minX) * zoom, (posY - minY) * zoom);
+
+        float[] car_wheel_left_front_moved = moveVertices(car_wheel_vertices, -8f * zoom, -5f * zoom);
+        float[] car_wheel_left_front = rotateVertices(car_wheel_left_front_moved, dir + 90, 0, 0);
+        car_wheel_left_front = moveVertices(car_wheel_left_front, (posX - minX) * zoom, (posY - minY) * zoom);
+
+        float[] car_wheel_right_front_moved = moveVertices(car_wheel_vertices, 8f * zoom, -5f * zoom);
+        float[] car_wheel_right_front = rotateVertices(car_wheel_right_front_moved, dir + 90, 0, 0);
+        car_wheel_right_front = moveVertices(car_wheel_right_front, (posX - minX) * zoom, (posY - minY) * zoom);
+
+        float[] car_wheel_left_back_moved = moveVertices(car_wheel_vertices, -8.5f * zoom, 13.5f * zoom);
+        float[] car_wheel_left_back = rotateVertices(car_wheel_left_back_moved, dir + 90, 0, 0);
+        car_wheel_left_back = moveVertices(car_wheel_left_back, (posX - minX) * zoom, (posY - minY) * zoom);
+
+        float[] car_wheel_right_back_moved = moveVertices(car_wheel_vertices, 8.5f * zoom, 13.5f * zoom);
+        float[] car_wheel_right_back = rotateVertices(car_wheel_right_back_moved, dir + 90, 0, 0);
+        car_wheel_right_back = moveVertices(car_wheel_right_back, (posX - minX) * zoom, (posY - minY) * zoom);
+
+        canvas.drawLines(car_base_vertices, 0, car_base_vertices.length, paint);
+        canvas.drawLines(car_base_vertices, 2, car_base_vertices.length-4, paint);
+
+        canvas.drawLines(car_wheel_left_front, 0, car_wheel_left_front.length-2, paint);
+        canvas.drawLines(car_wheel_left_front, 2, car_wheel_left_front.length-2, paint);
+
+        canvas.drawLines(car_wheel_right_front, 0, car_wheel_right_front.length-2, paint);
+        canvas.drawLines(car_wheel_right_front, 2, car_wheel_right_front.length-2, paint);
+
+        canvas.drawLines(car_wheel_left_back, 0, car_wheel_left_back.length-2, paint);
+        canvas.drawLines(car_wheel_left_back, 2, car_wheel_left_back.length-2, paint);
+
+        canvas.drawLines(car_wheel_right_back, 0, car_wheel_right_back.length-2, paint);
+        canvas.drawLines(car_wheel_right_back, 2, car_wheel_right_back.length-2, paint);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -137,8 +220,7 @@ public class LPSView extends View implements View.OnTouchListener {
         }
 
         paint.setColor(Color.GREEN);
-        canvas.drawCircle((posX - minX) * zoom, (posY - minY) * zoom, 15 * zoom, paint);
-        canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir)) * 20 - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir)) * 20 - minY) * zoom, paint);
+        drawCar(canvas);
         paint.setColor(Color.CYAN);
 
         for (Integer direction : obstacleDistances.keySet()) {
