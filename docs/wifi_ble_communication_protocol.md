@@ -89,7 +89,7 @@ No further data
 
 ## 1.3. Responses (Alphabot to client)
 
-### Distance sensor response (Packet ID: 0x01)
+### Front distance sensor response (Packet ID: 0x01)
 
 Degree 0 represents the direction, in which the Alphabot is headed towards.
 Degree 90 is the right direction.
@@ -195,6 +195,16 @@ see [3.1. Toggle bit field](#31-toggle---bit-field)
 | Error ID       | uint8              | The error ID, see [3.4.](#34-error-id-format)  |
 | Packet header  | uint8              | The packet header that threw the error         |
 | Payload        | uint8 array (0-20) | The payload of the packet that threw the error |
+
+### Back distance sensor response (Packet ID: 0x0E)
+
+Degree 0 represents the opposite direction, in which the Alphabot is headed towards.
+Degree 90 is the left direction.
+
+| Field Name | Field Type | Notes                            |
+|------------|------------|----------------------------------|
+| Degree     | int16      | The degree of the sensor (0-359) |
+| Distance   | uint16     | The distance in centimetres      |
 
 # 2. BLE Protocol
 
@@ -356,21 +366,31 @@ The first two bytes describe the sensor types that will follow. Then the payload
 
 ### Example bit stream
 
-In the first byte 0b01 is sent twice, because two distance sensor packets will follow, the following bits in the first two bytes are filled with 0. Byte 2 and 3 represent the payload of the first distance sensor data. Byte 4 and 5 represent the payload of the second distance sensor data.
+In the first byte 0b01 is sent twice, because two front distance sensor packets will follow. The following bits in the first two bytes do not matter in this case, because the bit stream does not contain more sensor data. Byte 2 and 3 represent the payload of the first distance sensor data. Byte 4 and 5 represent the payload of the second distance sensor data.
 
 | Byte 0   | Byte 1   | Byte 2   | Byte 3   | Byte 4   | Byte 5   |
 |----------|----------|----------|----------|----------|----------|
 | 00000101 | 00000000 | 00000101 | 10000000 | 01100100 | 10000001 |
 
-### Distance sensor response (Sensor type: 0b01)
+### Back distance sensor response (Sensor type: 0b00)
+
+Degree 0 represents the opposite direction, in which the Alphabot is headed towards.
+Degree 90 is the left direction.
+
+| Field Name | Field Type | Notes                                    |
+|------------|------------|------------------------------------------|
+| Degree     | int8       | The degree of the sensor (-128-127)      |
+| Distance   | uint8      | The distance in centimetres divided by 2 |
+
+### Front distance sensor response (Sensor type: 0b01)
 
 Degree 0 represents the direction, in which the Alphabot is headed towards.
 Degree 90 is the right direction.
 
-| Field Name | Field Type | Notes                                         |
-|------------|------------|-----------------------------------------------|
-| Degree     | uint8      | The degree of the sensor divided by 2 (0-179) |
-| Distance   | uint8      | The distance in centimetres divided by 2      |
+| Field Name | Field Type | Notes                                    |
+|------------|------------|------------------------------------------|
+| Degree     | int8       | The degree of the sensor (-128-127)      |
+| Distance   | uint8      | The distance in centimetres divided by 2 |
 
 ### Positioning response (Sensor type: 0b10)
 

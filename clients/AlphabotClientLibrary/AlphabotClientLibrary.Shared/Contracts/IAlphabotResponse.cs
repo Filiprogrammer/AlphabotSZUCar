@@ -5,7 +5,8 @@ namespace AlphabotClientLibrary.Shared.Contracts
     public enum AlphabotResponseType
     {
         Compass,
-        DistanceSensor,
+        FrontDistanceSensor,
+        BackDistanceSensor,
         Error,
         MultipleSensor,
         NewObstacle,

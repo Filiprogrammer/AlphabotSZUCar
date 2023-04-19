@@ -64,16 +64,31 @@ namespace AlphabotClientLibrary.Test
         }
 
         [Fact]
-        public void TestDistanceSensorResponse()
+        public void TestFrontDistanceSensorResponse()
         {
             byte[] bytes = { 0x01, 0x02, 0x00, 0x02, 0x01 };
             short expectedDegree = 2;
             ushort expectedDistance = 258;
 
             IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
-            Assert.True(response is DistanceSensorResponse, "Response was of the wrong type");
+            Assert.True(response is FrontDistanceSensorResponse, "Response was of the wrong type");
 
-            DistanceSensorResponse distanceSensorResponse = response as DistanceSensorResponse;
+            FrontDistanceSensorResponse distanceSensorResponse = response as FrontDistanceSensorResponse;
+            Assert.Equal(expectedDegree, distanceSensorResponse.Degree);
+            Assert.Equal(expectedDistance, distanceSensorResponse.Distance);
+        }
+
+        [Fact]
+        public void TestBackDistanceSensorResponse()
+        {
+            byte[] bytes = { 0x0E, 0x02, 0x00, 0x02, 0x01 };
+            short expectedDegree = 2;
+            ushort expectedDistance = 258;
+
+            IAlphabotResponse response = new TcpResponseInterpreter(bytes).GetResponse();
+            Assert.True(response is BackDistanceSensorResponse, "Response was of the wrong type");
+
+            BackDistanceSensorResponse distanceSensorResponse = response as BackDistanceSensorResponse;
             Assert.Equal(expectedDegree, distanceSensorResponse.Degree);
             Assert.Equal(expectedDistance, distanceSensorResponse.Distance);
         }

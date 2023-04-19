@@ -402,27 +402,43 @@ public class ControlActivity extends ImmersiveActivity implements SensorEventLis
                     byte[] vals = characteristic.getValue();
                     byte[] sensorTypes = new byte[8];
                     byte sensorCount = 8;
+                    byte offset = 2;
 
                     for (byte i = 0; i < 8; ++i) {
-                        byte sensorType = (byte) ((vals[i / 4] >> ((i % 4) * 2)) & 0x03);
-
-                        if (sensorType == 0)
+                        if (offset >= vals.length) {
                             sensorCount = i;
+                            break;
+                        }
+
+                        byte sensorType = (byte) ((vals[i / 4] >> ((i % 4) * 2)) & 0x03);
+                        sensorTypes[i] = sensorType;
+
+                        if (sensorType == 2)
+                            offset += 3;
                         else
-                            sensorTypes[i] = sensorType;
+                            offset += 2;
                     }
 
-                    byte offset = 2;
+                    offset = 2;
 
                     for (byte i = 0; i < sensorCount; ++i) {
                         switch (sensorTypes[i]) {
-                            case 1:
-                                // Distance sensor
-                                int direction = (vals[offset] & 0xFF) * 2;
+                            case 0: {
+                                // Distance sensor - Back
+                                int direction = vals[offset];
                                 int distance = (vals[offset + 1] & 0xFF) * 2;
-                                lpsView.updateObstacleSensorDistance(direction, distance, false);
+                                lpsView.updateBackObstacleSensorDistance(direction, distance, false);
                                 offset += 2;
                                 break;
+                            }
+                            case 1: {
+                                // Distance sensor - Front
+                                int direction = vals[offset];
+                                int distance = (vals[offset + 1] & 0xFF) * 2;
+                                lpsView.updateFrontObstacleSensorDistance(direction, distance, false);
+                                offset += 2;
+                                break;
+                            }
                             case 2:
                                 // Position
                                 final int x = (vals[offset] & 0xFF) | ((vals[offset + 1] & 0x07) << 8) | (((vals[offset + 1] & 0x08) != 0) ? 0xFFFFF800 : 0);
