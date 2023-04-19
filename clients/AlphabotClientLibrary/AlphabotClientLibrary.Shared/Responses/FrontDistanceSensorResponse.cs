@@ -7,7 +7,7 @@ namespace AlphabotClientLibrary.Shared.Responses
     {
         public FrontDistanceSensorResponse(short degree, ushort distance) : base(degree, distance) {}
 
-        public AlphabotResponseType GetResponseType()
+        public override AlphabotResponseType GetResponseType()
         {
             return AlphabotResponseType.FrontDistanceSensor;
         }
