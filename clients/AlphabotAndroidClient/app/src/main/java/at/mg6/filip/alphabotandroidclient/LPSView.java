@@ -113,20 +113,20 @@ public class LPSView extends View implements View.OnTouchListener {
         car_base_vertices = rotateVertices(car_base_vertices, dir + 90, 0, 0);
         car_base_vertices = moveVertices(car_base_vertices, (posX - minX) * zoom, (posY - minY) * zoom);
 
-        float[] car_wheel_left_front_moved = moveVertices(car_wheel_vertices, -8f * zoom, -5f * zoom);
-        float[] car_wheel_left_front = rotateVertices(car_wheel_left_front_moved, dir + 90, 0, 0);
+        float[] car_wheel_left_front = moveVertices(car_wheel_vertices, -8f * zoom, -5f * zoom);
+        car_wheel_left_front = rotateVertices(car_wheel_left_front, dir + 90, 0, 0);
         car_wheel_left_front = moveVertices(car_wheel_left_front, (posX - minX) * zoom, (posY - minY) * zoom);
 
-        float[] car_wheel_right_front_moved = moveVertices(car_wheel_vertices, 8f * zoom, -5f * zoom);
-        float[] car_wheel_right_front = rotateVertices(car_wheel_right_front_moved, dir + 90, 0, 0);
+        float[] car_wheel_right_front = moveVertices(car_wheel_vertices, 8f * zoom, -5f * zoom);
+        car_wheel_right_front = rotateVertices(car_wheel_right_front, dir + 90, 0, 0);
         car_wheel_right_front = moveVertices(car_wheel_right_front, (posX - minX) * zoom, (posY - minY) * zoom);
 
-        float[] car_wheel_left_back_moved = moveVertices(car_wheel_vertices, -8.5f * zoom, 13.5f * zoom);
-        float[] car_wheel_left_back = rotateVertices(car_wheel_left_back_moved, dir + 90, 0, 0);
+        float[] car_wheel_left_back = moveVertices(car_wheel_vertices, -8.5f * zoom, 13.5f * zoom);
+        car_wheel_left_back = rotateVertices(car_wheel_left_back, dir + 90, 0, 0);
         car_wheel_left_back = moveVertices(car_wheel_left_back, (posX - minX) * zoom, (posY - minY) * zoom);
 
-        float[] car_wheel_right_back_moved = moveVertices(car_wheel_vertices, 8.5f * zoom, 13.5f * zoom);
-        float[] car_wheel_right_back = rotateVertices(car_wheel_right_back_moved, dir + 90, 0, 0);
+        float[] car_wheel_right_back = moveVertices(car_wheel_vertices, 8.5f * zoom, 13.5f * zoom);
+        car_wheel_right_back = rotateVertices(car_wheel_right_back, dir + 90, 0, 0);
         car_wheel_right_back = moveVertices(car_wheel_right_back, (posX - minX) * zoom, (posY - minY) * zoom);
 
         canvas.drawLines(car_base_vertices, 0, car_base_vertices.length, paint);
