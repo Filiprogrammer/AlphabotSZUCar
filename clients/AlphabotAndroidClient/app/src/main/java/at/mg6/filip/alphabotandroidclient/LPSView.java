@@ -75,7 +75,7 @@ public class LPSView extends View implements View.OnTouchListener {
     }
 
     private float[] rotateVertices(float[] vertices, float angle, float origin_x, float origin_y) {
-        angle *= 3.14159265359 / 180;
+        angle *= Math.PI / 180;
         double cos_val = Math.cos(angle);
         double sin_val = Math.sin(angle);
         float[] new_points = new float[vertices.length];
