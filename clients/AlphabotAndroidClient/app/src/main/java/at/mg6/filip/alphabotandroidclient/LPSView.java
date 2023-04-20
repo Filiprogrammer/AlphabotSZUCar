@@ -23,7 +23,8 @@ public class LPSView extends View implements View.OnTouchListener {
     private int posX = 0;
     private int posY = 0;
     private float dir = 0;
-    private Map<Integer, Integer> obstacleDistances = new HashMap<>();
+    private Map<Integer, Integer> frontObstacleDistances = new HashMap<>();
+    private Map<Integer, Integer> backObstacleDistances = new HashMap<>();
     private Obstacle selectedObstacle = null;
     private int targetX = 0;
     private int targetY = 0;
@@ -223,9 +224,32 @@ public class LPSView extends View implements View.OnTouchListener {
         drawCar(canvas);
         paint.setColor(Color.CYAN);
 
-        for (Integer direction : obstacleDistances.keySet()) {
-            int distance = obstacleDistances.get(direction);
-            canvas.drawLine((posX - minX) * zoom, (posY - minY) * zoom, (float) (posX + Math.cos(Math.toRadians(dir + direction)) * distance - minX) * zoom, (float) (posY + Math.sin(Math.toRadians(dir + direction)) * distance - minY) * zoom, paint);
+        float frontSensorPivotX = (float) (posX + Math.sin((90 - dir) * (Math.PI / 180)) * 11);
+        float frontSensorPivotY = (float) (posY + Math.cos((90 - dir) * (Math.PI / 180)) * 11);
+
+        for (Integer direction : frontObstacleDistances.keySet()) {
+            int distance = frontObstacleDistances.get(direction);
+            float ray_dir_x = (float) Math.sin((90 - dir - direction) * (Math.PI / 180));
+            float ray_dir_y = (float) Math.cos((90 - dir - direction) * (Math.PI / 180));
+            canvas.drawLine(((frontSensorPivotX + ray_dir_x * 4) - minX) * zoom,
+                            ((frontSensorPivotY + ray_dir_y * 4) - minY) * zoom,
+                            ((frontSensorPivotX + ray_dir_x * (4 + distance)) - minX) * zoom,
+                            ((frontSensorPivotY + ray_dir_y * (4 + distance)) - minY) * zoom,
+                            paint);
+        }
+
+        float backSensorPivotX = (float) (posX - Math.sin((90 - dir) * (Math.PI / 180)) * 18);
+        float backSensorPivotY = (float) (posY - Math.cos((90 - dir) * (Math.PI / 180)) * 18);
+
+        for (Integer direction : backObstacleDistances.keySet()) {
+            int distance = backObstacleDistances.get(direction);
+            float ray_dir_x = (float) Math.sin((270 - dir - direction) * (Math.PI / 180));
+            float ray_dir_y = (float) Math.cos((270 - dir - direction) * (Math.PI / 180));
+            canvas.drawLine((backSensorPivotX - minX) * zoom,
+                            (backSensorPivotY - minY) * zoom,
+                            ((backSensorPivotX + ray_dir_x * distance) - minX) * zoom,
+                            ((backSensorPivotY + ray_dir_y * distance) - minY) * zoom,
+                            paint);
         }
 
         canvas.drawCircle((targetX - minX) * zoom, (targetY - minY) * zoom, 5 * zoom, paint);
@@ -246,8 +270,15 @@ public class LPSView extends View implements View.OnTouchListener {
             invalidate();
     }
 
-    public void updateObstacleSensorDistance(int direction, int distance, boolean invalidate) {
-        obstacleDistances.put(direction, distance);
+    public void updateFrontObstacleSensorDistance(int direction, int distance, boolean invalidate) {
+        frontObstacleDistances.put(direction, distance);
+
+        if (invalidate)
+            invalidate();
+    }
+
+    public void updateBackObstacleSensorDistance(int direction, int distance, boolean invalidate) {
+        backObstacleDistances.put(direction, distance);
 
         if (invalidate)
             invalidate();

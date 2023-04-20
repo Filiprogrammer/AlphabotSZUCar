@@ -25,7 +25,7 @@ namespace AlphabotClientLibrary.Core.Tcp
                     // 0x00 gets sent, when a connection ends
                     return null;
                 case 0x01:
-                    return GetDistanceSensorResponse();
+                    return GetFrontDistanceSensorResponse();
                 case 0x02:
                     return GetPositioningResponse();
                 case 0x03:
@@ -50,6 +50,8 @@ namespace AlphabotClientLibrary.Core.Tcp
                     return GetMagnetometerResponse();
                 case 0x0D:
                     return GetErrorResponse();
+                case 0x0E:
+                    return GetBackDistanceSensorResponse();
             }
 
             throw new Exception("Received packet id is not valid");
@@ -89,12 +91,20 @@ namespace AlphabotClientLibrary.Core.Tcp
             return new AnchorDistancesResponse(distanceAnchor0, distanceAnchor1, distanceAnchor2);
         }
 
-        private DistanceSensorResponse GetDistanceSensorResponse()
+        private FrontDistanceSensorResponse GetFrontDistanceSensorResponse()
         {
             short degree = (short)(DataBytes[0] | (DataBytes[1] << 8));
             ushort distance = (ushort)(DataBytes[2] | (DataBytes[3] << 8));
 
-            return new DistanceSensorResponse(degree, distance);
+            return new FrontDistanceSensorResponse(degree, distance);
+        }
+
+        private BackDistanceSensorResponse GetBackDistanceSensorResponse()
+        {
+            short degree = (short)(DataBytes[0] | (DataBytes[1] << 8));
+            ushort distance = (ushort)(DataBytes[2] | (DataBytes[3] << 8));
+
+            return new BackDistanceSensorResponse(degree, distance);
         }
 
         private PositioningResponse GetPositioningResponse()

@@ -3,7 +3,7 @@ using AlphabotClientLibrary.Shared.Contracts;
 
 namespace AlphabotClientLibrary.Shared.Responses
 {
-    public class DistanceSensorResponse : IAlphabotResponse
+    public abstract class DistanceSensorResponse : IAlphabotResponse
     {
         public short Degree { get; private set; }
 
@@ -15,9 +15,6 @@ namespace AlphabotClientLibrary.Shared.Responses
             Distance = distance;
         }
 
-        public AlphabotResponseType GetResponseType()
-        {
-            return AlphabotResponseType.DistanceSensor;
-        }
+        public abstract AlphabotResponseType GetResponseType();
     }
 }

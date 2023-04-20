@@ -46,7 +46,7 @@ float lps_x = 0;
 float lps_y = 0;
 int8_t drive_input_steer = 0;
 int8_t drive_input_speed = 0;
-std::deque<uint8_t> obstacle_distance_angles_to_send_deque;
+std::deque<int8_t> front_obstacle_distance_angles_to_send_deque;
 
 struct settings {
     uint8_t unused : 3;
@@ -460,10 +460,13 @@ void loop() {
     if (logging.obstacle_distance || settings.collision_avoidance || settings.explore_mode) {
         int16_t angle = tfl_obstacle_scanner->scan();
 
-        if (logging.obstacle_distance && angle >= 0 && (angle % 2) == 0) {
+        if (logging.obstacle_distance && angle >= 0) {
+            if (angle >= 180)
+                angle -= 360;
+
             // If element was not found, add it
-            if (std::find(obstacle_distance_angles_to_send_deque.begin(), obstacle_distance_angles_to_send_deque.end(), angle / 2) == obstacle_distance_angles_to_send_deque.end())
-                obstacle_distance_angles_to_send_deque.push_back(angle / 2);
+            if (std::find(front_obstacle_distance_angles_to_send_deque.begin(), front_obstacle_distance_angles_to_send_deque.end(), angle) == front_obstacle_distance_angles_to_send_deque.end())
+                front_obstacle_distance_angles_to_send_deque.push_back(angle);
         }
     }
 
@@ -591,16 +594,16 @@ void loop() {
         }
 
         if (logging.obstacle_distance) {
-            size_t number_of_sensor_values_to_send = min((size_t)(sizeof(sensor_logging_val) - sensor_logging_val_len) / 2, obstacle_distance_angles_to_send_deque.size());
+            size_t number_of_sensor_values_to_send = min((size_t)(sizeof(sensor_logging_val) - sensor_logging_val_len) / 2, front_obstacle_distance_angles_to_send_deque.size());
 
             for (uint8_t i = 0; i < number_of_sensor_values_to_send; ++i) {
-                uint16_t angle = (uint16_t)obstacle_distance_angles_to_send_deque.front() * 2;
-                sensor_logging_val[sensor_logging_val_len] = angle / 2;
-                sensor_logging_val[sensor_logging_val_len + 1] = tfl_obstacle_scanner->getObstacleDistance(angle) / 2;
+                int8_t angle = front_obstacle_distance_angles_to_send_deque.front();
+                sensor_logging_val[sensor_logging_val_len] = angle;
+                sensor_logging_val[sensor_logging_val_len + 1] = tfl_obstacle_scanner->getObstacleDistance((int16_t)angle + 360) / 2;
                 sensor_logging_val_len += 2;
                 sensor_logging_val[sensor_logging_counter / 4] |= 1 << ((sensor_logging_counter % 4) * 2);
                 sensor_logging_counter++;
-                obstacle_distance_angles_to_send_deque.pop_front();
+                front_obstacle_distance_angles_to_send_deque.pop_front();
             }
         }
 
