@@ -151,7 +151,7 @@ def run_tests():
     if auto_exit:
         os._exit(0)
 
-def rotate_verticies(points, angle, center):
+def rotate_vertices(points, angle, center):
     angle = math.radians(angle)
     cos_val = math.cos(angle)
     sin_val = math.sin(angle)
@@ -165,14 +165,14 @@ def rotate_verticies(points, angle, center):
         new_points.append([x_new + cx, y_new + cy])
     return new_points
 
-def move_verticies(points, vec):
+def move_vertices(points, vec):
     vx, vy = vec
     new_points = []
     for x, y in points:
         new_points.append([x + vx, y + vy])
     return new_points
 
-def scale_verticies(points, scale):
+def scale_vertices(points, scale):
     new_points = []
     for x, y in points:
         new_points.append([x * scale, y * scale])
@@ -220,22 +220,22 @@ def run_car_simulation(headless):
             for y in range(100 * gui_zoom, room_height * gui_zoom, 100 * gui_zoom):
                 canvas.create_line(0, y, room_width * gui_zoom, y, fill="dim gray")
 
-            car_base_verticies = [[-45, -80], [0, -100], [45, -80], [20, -80], [20, -40], [60, -25], [25, -10], [25, 20], [65, 60], [65, 180], [30, 180], [20, 210], [75, 210], [75, 265], [-75, 265], [-75, 210], [-20, 210], [-30, 180], [-65, 180], [-65, 60], [-25, 20], [-25, -10], [-60, -25], [-20, -40], [-20, -80]]
-            car_wheel_verticies = [[-18, -38], [18, -38], [18, 38], [-18, 38]]
+            car_base_vertices = [[-45, -80], [0, -100], [45, -80], [20, -80], [20, -40], [60, -25], [25, -10], [25, 20], [65, 60], [65, 180], [30, 180], [20, 210], [75, 210], [75, 265], [-75, 265], [-75, 210], [-20, 210], [-30, 180], [-65, 180], [-65, 60], [-25, 20], [-25, -10], [-60, -25], [-20, -40], [-20, -80]]
+            car_wheel_vertices = [[-18, -38], [18, -38], [18, 38], [-18, 38]]
 
-            car_wheel_left_front_verticies = rotate_verticies(car_wheel_verticies, steer_direction_angle, [20, 0])
-            car_wheel_right_front_verticies = rotate_verticies(car_wheel_verticies, steer_direction_angle, [-20, 0])
+            car_wheel_left_front_vertices = rotate_vertices(car_wheel_vertices, steer_direction_angle, [20, 0])
+            car_wheel_right_front_vertices = rotate_vertices(car_wheel_vertices, steer_direction_angle, [-20, 0])
 
-            car_wheel_left_front_verticies = move_verticies(car_wheel_left_front_verticies, [-80, -25])
-            car_wheel_right_front_verticies = move_verticies(car_wheel_right_front_verticies, [80, -25])
-            car_wheel_left_back_verticies = move_verticies(car_wheel_verticies, [-85, 160])
-            car_wheel_right_back_verticies = move_verticies(car_wheel_verticies, [85, 160])
+            car_wheel_left_front_vertices = move_vertices(car_wheel_left_front_vertices, [-80, -25])
+            car_wheel_right_front_vertices = move_vertices(car_wheel_right_front_vertices, [80, -25])
+            car_wheel_left_back_vertices = move_vertices(car_wheel_vertices, [-85, 160])
+            car_wheel_right_back_vertices = move_vertices(car_wheel_vertices, [85, 160])
 
-            car_base = canvas.create_polygon(scale_verticies(move_verticies(rotate_verticies(car_base_verticies, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill='deep sky blue')
-            car_wheel_left_front = canvas.create_polygon(scale_verticies(move_verticies(rotate_verticies(car_wheel_left_front_verticies, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
-            car_wheel_right_front = canvas.create_polygon(scale_verticies(move_verticies(rotate_verticies(car_wheel_right_front_verticies, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
-            car_wheel_left_back = canvas.create_polygon(scale_verticies(move_verticies(rotate_verticies(car_wheel_left_back_verticies, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
-            car_wheel_right_back = canvas.create_polygon(scale_verticies(move_verticies(rotate_verticies(car_wheel_right_back_verticies, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
+            car_base = canvas.create_polygon(scale_vertices(move_vertices(rotate_vertices(car_base_vertices, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill='deep sky blue')
+            car_wheel_left_front = canvas.create_polygon(scale_vertices(move_vertices(rotate_vertices(car_wheel_left_front_vertices, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
+            car_wheel_right_front = canvas.create_polygon(scale_vertices(move_vertices(rotate_vertices(car_wheel_right_front_vertices, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
+            car_wheel_left_back = canvas.create_polygon(scale_vertices(move_vertices(rotate_vertices(car_wheel_left_back_vertices, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
+            car_wheel_right_back = canvas.create_polygon(scale_vertices(move_vertices(rotate_vertices(car_wheel_right_back_vertices, car_angle, [0, 0]), [car_x * 10, car_y * 10]), 0.1 * gui_zoom), fill="black")
             label.config(text="Simulation Time: " + str("%.2f" % simulation_time))
             window.update()
             canvas.destroy()
