@@ -346,7 +346,7 @@ public class LPSView extends View implements View.OnTouchListener {
         int minY = Math.min(anchor0y, Math.min(anchor1y, Math.min(anchor2y, posY))) - 5;
         int maxX = Math.max(anchor0x, Math.max(anchor1x, Math.max(anchor2x, posX))) + 5;
         int maxY = Math.max(anchor0y, Math.max(anchor1y, Math.max(anchor2y, posY))) + 5;
-        float zoom = Math.min(bitmap.getWidth() / (float)maxX, bitmap.getHeight() / (float)maxY);
+        float zoom = Math.min(bitmap.getWidth() / (float)(maxX - minX), bitmap.getHeight() / (float)(maxY - minY));
 
         for (Obstacle obstacle : obstacles) {
             if (!obstacle.hasId())
